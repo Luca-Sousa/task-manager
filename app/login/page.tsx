@@ -2,8 +2,8 @@ import { Button } from "../_components/ui/button";
 
 const Login = () => {
   return (
-    <div className="flex flex-col gap-4 justify-center h-full w-2/5 px-32">
-      <h1 className="text-3xl font-bold w-">Task Manager</h1>
+    <div className="flex h-full w-2/5 flex-col justify-center gap-4 px-32">
+      <h1 className="w- text-3xl font-bold">Task Manager</h1>
 
       <div>
         <h2 className="text-xl font-bold">Bem-Vindo</h2>
