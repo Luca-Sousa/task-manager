@@ -13,11 +13,38 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model tasks {
-  id          String   @id @default(uuid())
-  title       String
+model Tasks {
+  id          String        @id @default(uuid())
+  name        String
   description String
-  completed   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  status      TasksStatus
+  category    TasksCategory
+  startTime   DateTime
+  endTime     DateTime
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+enum TasksStatus {
+  NOT_STARTED
+  UNREALIZED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum TasksCategory {
+  WORK // Trabalho relacionado: reuniões, prazos, projetos
+  STUDY // Estudos: leituras, revisões, aulas
+  HOME // Tarefas domésticas: limpeza, organização, reparos
+  HEALTH_AND_WELLNESS // Saúde e bem-estar: exercícios, consultas, meditação
+  FINANCIAL // Finanças: pagamento de contas, planejamento, investimentos
+  LEISURE // Lazer: hobbies, filmes, eventos sociais
+  RELATIONSHIPS // Relacionamentos: família, amigos, networking
+  VOLUNTEERING // Voluntariado: trabalho comunitário, doações
+  TRAVEL // Viagens e transporte: planejamento, deslocamentos
+  PERSONAL_DEVELOPMENT // Desenvolvimento pessoal: cursos, novos aprendizados
+  TECHNOLOGY // Tecnologia: backup, atualizações, configurações
+  SHOPPING // Compras: supermercado, itens domésticos
+  ERRANDS // Compromissos rápidos: correio, bancos, etc.
+  OTHER // Outras tarefas não categorizadas
 }
