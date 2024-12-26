@@ -1,5 +1,5 @@
 import { LogInIcon } from "lucide-react";
-import { Button } from "../_components/ui/button";
+import { Button } from "../../_components/ui/button";
 import { SignInButton, SignUpButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";

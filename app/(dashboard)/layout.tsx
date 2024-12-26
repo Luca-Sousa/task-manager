@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
+import { SidebarProvider } from "../_components/ui/sidebar";
+import { AppSidebar } from "../_components/app-sidebar";
+import { ptBR } from "@clerk/localizations";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,8 +36,12 @@ export default function RootLayout({
           appearance={{
             baseTheme: dark,
           }}
+          localization={ptBR}
         >
-          {children}
+          <SidebarProvider>
+            <AppSidebar />
+            {children}
+          </SidebarProvider>
         </ClerkProvider>
       </body>
     </html>
