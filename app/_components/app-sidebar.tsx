@@ -20,7 +20,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/app/_components/ui/sidebar";
-import { LogoSwitcher } from "./logo-switcher";
+import { Logo } from "./logo";
 
 // This is sample data.
 const data = {
@@ -128,7 +128,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <LogoSwitcher />
+        <Logo />
       </SidebarHeader>
 
       <SidebarContent>

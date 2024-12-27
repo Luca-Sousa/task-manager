@@ -9,7 +9,7 @@ import {
   SidebarMenuItem,
 } from "@/app/_components/ui/sidebar";
 
-export function LogoSwitcher() {
+export function Logo() {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
