@@ -33,11 +33,11 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { Button } from "./ui/button";
+import { Skeleton } from "./ui/skeleton";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
   const { user } = useUser();
-  if (!user) return "usuário não encontrado!";
 
   return (
     <SidebarMenu>
@@ -49,23 +49,38 @@ export function NavUser() {
                 size="lg"
                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
               >
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage
-                    className="rounded-full"
-                    src={user.imageUrl}
-                    alt="Imagem do usuário"
-                  />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">
-                    {user.fullName}
-                  </span>
-                  <span className="truncate text-xs">
-                    {user.emailAddresses[0].emailAddress}
-                  </span>
-                </div>
-                <ChevronsUpDown className="ml-auto size-4" />
+                {user ? (
+                  <>
+                    <Avatar className="h-8 w-8 rounded-lg">
+                      <AvatarImage
+                        className="rounded-full"
+                        src={user.imageUrl}
+                        alt="Imagem do usuário"
+                      />
+                      <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                    </Avatar>
+                    <div className="grid flex-1 text-left text-sm leading-tight">
+                      <span className="truncate font-semibold">
+                        {user.fullName}
+                      </span>
+                      <span className="truncate text-xs">
+                        {user.emailAddresses[0].emailAddress}
+                      </span>
+                    </div>
+                    <ChevronsUpDown className="ml-auto size-4" />
+                  </>
+                ) : (
+                  <>
+                    <Avatar className="h-8 w-8 rounded-lg">
+                      <Skeleton className="h-full w-full rounded-full bg-gray-400" />
+                    </Avatar>
+                    <div className="grid flex-1 text-left text-sm leading-tight">
+                      <Skeleton className="h-3 w-1/2 rounded bg-gray-400" />
+                      <Skeleton className="mt-1 h-3 w-4/5 rounded bg-gray-400" />
+                    </div>
+                    <ChevronsUpDown className="ml-auto size-4" />
+                  </>
+                )}
               </SidebarMenuButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -79,17 +94,17 @@ export function NavUser() {
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage
                       className="rounded-full"
-                      src={user.imageUrl}
+                      src={user?.imageUrl}
                       alt="Imagem do usuário"
                     />
                     <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">
-                      {user.fullName}
+                      {user?.fullName}
                     </span>
                     <span className="truncate text-xs">
-                      {user.emailAddresses[0].emailAddress}
+                      {user?.emailAddresses[0].emailAddress}
                     </span>
                   </div>
                 </div>
@@ -113,15 +128,6 @@ export function NavUser() {
                     Configurar Conta
                   </DropdownMenuItem>
                 </DialogTrigger>
-
-                {/* <DropdownMenuItem>
-                  <CreditCard />
-                  Billing
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Bell />
-                  Notifications
-                </DropdownMenuItem> */}
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
 

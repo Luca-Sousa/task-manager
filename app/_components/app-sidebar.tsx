@@ -1,65 +1,56 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
+  CircleHelpIcon,
   Frame,
-  GalleryVerticalEnd,
+  LayoutDashboardIcon,
   Map,
   PieChart,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react"
+  SignatureIcon,
+} from "lucide-react";
 
-import { NavMain } from "@/app/_components/nav-main"
-import { NavProjects } from "@/app/_components/nav-projects"
-import { NavUser } from "@/app/_components/nav-user"
-import { TeamSwitcher } from "@/app/_components/team-switcher"
+import { NavMain } from "@/app/_components/nav-main";
+import { NavProjects } from "@/app/_components/nav-projects";
+import { NavUser } from "@/app/_components/nav-user";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/app/_components/ui/sidebar"
+} from "@/app/_components/ui/sidebar";
+import { LogoSwitcher } from "./logo-switcher";
 
 // This is sample data.
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
+  // teams: [
+  //   {
+  //     name: "Acme Inc",
+  //     logo: GalleryVerticalEnd,
+  //     plan: "Enterprise",
+  //   },
+  //   {
+  //     name: "Acme Corp.",
+  //     logo: AudioWaveform,
+  //     plan: "Startup",
+  //   },
+  //   {
+  //     name: "Evil Corp.",
+  //     logo: Command,
+  //     plan: "Free",
+  //   },
+  // ],
   navMain: [
     {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
+      title: "Dashboard",
+      url: "/",
+      icon: LayoutDashboardIcon,
       isActive: true,
       items: [
         {
-          title: "History",
-          url: "#",
+          title: "Visualizar",
+          url: "/",
         },
         {
           title: "Starred",
@@ -72,16 +63,16 @@ const data = {
       ],
     },
     {
-      title: "Models",
-      url: "#",
-      icon: Bot,
+      title: "Assinatura",
+      url: "/subscription",
+      icon: SignatureIcon,
       items: [
         {
-          title: "Genesis",
-          url: "#",
+          title: "Ver Planos",
+          url: "/subscription",
         },
         {
-          title: "Explorer",
+          title: "Adquirir Premium",
           url: "#",
         },
         {
@@ -91,9 +82,9 @@ const data = {
       ],
     },
     {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
+      title: "FAQs",
+      url: "/faq",
+      icon: CircleHelpIcon,
       items: [
         {
           title: "Introduction",
@@ -113,31 +104,8 @@ const data = {
         },
       ],
     },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
   ],
-  projects: [
+  tasks: [
     {
       name: "Design Engineering",
       url: "#",
@@ -154,25 +122,24 @@ const data = {
       icon: Map,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <LogoSwitcher />
       </SidebarHeader>
 
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavProjects projects={data.tasks} />
       </SidebarContent>
-      
+
       <SidebarFooter>
         <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
