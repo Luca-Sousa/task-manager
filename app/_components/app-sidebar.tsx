@@ -22,6 +22,8 @@ import {
 } from "@/app/_components/ui/sidebar";
 import { Logo } from "./logo";
 
+import CurrentTime from "./nav-current-time";
+
 // This is sample data.
 const data = {
   // teams: [
@@ -131,9 +133,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <Logo />
       </SidebarHeader>
 
-      <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.tasks} />
+      <SidebarContent className="justify-between overflow-x-hidden">
+        <div>
+          <NavMain items={data.navMain} />
+          <NavProjects projects={data.tasks} />
+        </div>
+
+        <CurrentTime />
       </SidebarContent>
 
       <SidebarFooter>
