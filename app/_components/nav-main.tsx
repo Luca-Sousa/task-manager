@@ -18,6 +18,8 @@ import {
   SidebarMenuSubItem,
 } from "@/app/_components/ui/sidebar";
 import { useUser } from "@clerk/nextjs";
+import Link from "next/link";
+import { useSelectedItem } from "../_contexts/SelectedItemContext";
 
 export function NavMain({
   items,
@@ -34,6 +36,8 @@ export function NavMain({
   }[];
 }) {
   const { user, isLoaded } = useUser();
+  const { setSelectedItem, setSelectedSubItem, selectedSubItem, selectedItem } =
+    useSelectedItem();
 
   return (
     <SidebarGroup>
@@ -50,7 +54,10 @@ export function NavMain({
           >
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <SidebarMenuButton tooltip={item.title}>
+                <SidebarMenuButton
+                  tooltip={item.title}
+                  onClick={() => setSelectedItem(item.title)}
+                >
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -60,10 +67,24 @@ export function NavMain({
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
+                      <SidebarMenuSubButton
+                        asChild
+                        onClick={() => {
+                          // Atualiza o item principal e o subitem
+                          if (selectedItem !== item.title) {
+                            setSelectedItem(item.title); // Atualiza o item principal
+                            setSelectedSubItem(subItem.title); // Atualiza o subitem do novo item
+                          } else {
+                            // Se o item principal já estiver selecionado, apenas atualiza o subitem
+                            if (selectedSubItem !== subItem.title) {
+                              setSelectedSubItem(subItem.title); // Atualiza o subitem
+                            }
+                          }
+                        }}
+                      >
+                        <Link href={subItem.url}>
                           <span>{subItem.title}</span>
-                        </a>
+                        </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}

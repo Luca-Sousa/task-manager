@@ -1,11 +1,4 @@
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  BreadcrumbPage,
-} from "@/app/_components/ui/breadcrumb";
+import BreadcrumbPages from "@/app/_components/breadcrumbPages";
 import { Separator } from "@/app/_components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/app/_components/ui/sidebar";
 
@@ -16,19 +9,8 @@ const Faq = () => {
         <div className="flex items-center gap-2 px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">
-                  Building Your Application
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+
+          <BreadcrumbPages />
         </div>
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">

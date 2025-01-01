@@ -6,6 +6,7 @@ import { dark } from "@clerk/themes";
 import { SidebarProvider } from "../_components/ui/sidebar";
 import { AppSidebar } from "../_components/app-sidebar";
 import { ptBR } from "@clerk/localizations";
+import { SelectedItemProvider } from "../_contexts/SelectedItemContext";
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -31,8 +32,10 @@ export default function RootLayout({
           localization={ptBR}
         >
           <SidebarProvider>
-            <AppSidebar />
-            {children}
+            <SelectedItemProvider>
+              <AppSidebar />
+              {children}
+            </SelectedItemProvider>
           </SidebarProvider>
         </ClerkProvider>
       </body>
