@@ -17,7 +17,7 @@ export function Logo() {
           size="lg"
           className="cursor-default data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
         >
-          <div className="flex aspect-square size-10 items-center justify-center rounded-lg bg-primary text-sidebar-primary-foreground">
+          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-sidebar-primary-foreground ring-2 ring-primary">
             <Image src="/logo.png" alt="Logo" width={32} height={32} />
           </div>
 
