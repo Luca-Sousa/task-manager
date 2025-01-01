@@ -113,7 +113,7 @@ export function NavUser() {
 
               <DropdownMenuGroup>
                 <Link href={"/subscription"}>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
                     <Sparkles />
                     Atualize pro Premium
                   </DropdownMenuItem>
@@ -123,7 +123,7 @@ export function NavUser() {
 
               <DropdownMenuGroup>
                 <DialogTrigger asChild>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
                     <BadgeCheck />
                     Configurar Conta
                   </DropdownMenuItem>
@@ -134,8 +134,8 @@ export function NavUser() {
               <SignOutButton>
                 <DropdownMenuItem asChild>
                   <Button
-                    className="w-full justify-start"
-                    variant={"destructive"}
+                    className="w-full cursor-pointer justify-start bg-destructive/70 focus:bg-destructive focus-visible:ring-0"
+                    variant="destructive"
                   >
                     <LogOut />
                     Sair da Conta

@@ -3,7 +3,6 @@
 import { format } from "date-fns";
 import { CalendarIcon, ClockIcon } from "lucide-react";
 
-import { cn } from "@/app/_lib/utils";
 import { Calendar } from "@/app/_components/ui/calendar";
 import React, { useEffect, useState } from "react";
 import { ptBR } from "date-fns/locale";
@@ -45,7 +44,7 @@ const CurrentTime = () => {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className={cn("flex py-6 text-left font-normal")}
+              className="cursor-pointer data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="w-full">
                 <div className="flex items-center">
@@ -63,7 +62,7 @@ const CurrentTime = () => {
                   ) : (
                     format(currentTime, "HH 'h:' mm 'm:' ss 's'")
                   )}
-                  <ClockIcon className="ml-auto h-4 w-4 opacity-50" />
+                  <ClockIcon className="ml-auto h-4 w-4 animate-spin opacity-50" />
                 </div>
               </div>
             </SidebarMenuButton>
