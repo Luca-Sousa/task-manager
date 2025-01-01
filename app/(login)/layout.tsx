@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { ptBR } from "@clerk/localizations";
 import { Mulish } from "next/font/google";
+import Navbar from "./_components/navbar";
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -30,6 +31,7 @@ export default function RootLayout({
           }}
           localization={ptBR}
         >
+          <Navbar />
           {children}
         </ClerkProvider>
       </body>

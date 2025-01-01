@@ -1,8 +1,13 @@
 import BreadcrumbPages from "@/app/_components/breadcrumbPages";
 import { Separator } from "@/app/_components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/app/_components/ui/sidebar";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-const Faq = () => {
+const Faq = async () => {
+  const { userId } = await auth();
+  if (!userId) return redirect("/login");
+
   return (
     <SidebarInset>
       <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
