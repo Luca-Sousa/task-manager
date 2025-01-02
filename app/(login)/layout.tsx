@@ -31,8 +31,10 @@ export default function RootLayout({
           }}
           localization={ptBR}
         >
+          <div className="h-screen">
           <Navbar />
           {children}
+          </div>
         </ClerkProvider>
       </body>
     </html>
