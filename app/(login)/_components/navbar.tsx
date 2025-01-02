@@ -1,12 +1,20 @@
 import { Button } from "@/app/_components/ui/button";
 import { SignInButton, SignUpButton } from "@clerk/nextjs";
-import { LogInIcon, UserRoundPlusIcon } from "lucide-react";
+import { auth } from "@clerk/nextjs/server";
+import {
+  LayoutDashboardIcon,
+  LogInIcon,
+  UserRoundPlusIcon,
+} from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
-const Navbar = () => {
+const Navbar = async () => {
+  const { userId } = await auth();
+
   return (
     <nav className="border-b border-solid py-4">
-      <div className="mx-auto flex max-w-[1440px] justify-between">
+      <div className="mx-auto flex max-w-[1440px] items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="relative size-12">
             <Image
@@ -21,19 +29,30 @@ const Navbar = () => {
         </div>
 
         <div className="space-x-3">
-          <SignInButton>
-            <Button variant={"ghost"} className="gap-2">
-              <LogInIcon />
-              Fazer login
+          {userId ? (
+            <Button className="gap-2" asChild>
+              <Link href="/">
+                <LayoutDashboardIcon />
+                Acessar Dashboard
+              </Link>
             </Button>
-          </SignInButton>
+          ) : (
+            <>
+              <SignInButton mode="modal" fallbackRedirectUrl="/dashboard">
+                <Button variant={"ghost"} className="gap-2">
+                  <LogInIcon />
+                  Fazer login
+                </Button>
+              </SignInButton>
 
-          <SignUpButton>
-            <Button className="gap-2">
-              <UserRoundPlusIcon />
-              Criar Conta
-            </Button>
-          </SignUpButton>
+              <SignUpButton mode="modal" fallbackRedirectUrl="/dashboard">
+                <Button className="gap-2">
+                  <UserRoundPlusIcon />
+                  Criar Conta
+                </Button>
+              </SignUpButton>
+            </>
+          )}
         </div>
       </div>
     </nav>

@@ -42,7 +42,7 @@ export function NavMain({
   return (
     <SidebarGroup>
       <SidebarGroupLabel>
-        {isLoaded && `Bem Vindo, ${user?.fullName}!`}
+        {isLoaded && `Bem Vindo, ${user?.fullName || user?.username}!`}
       </SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (

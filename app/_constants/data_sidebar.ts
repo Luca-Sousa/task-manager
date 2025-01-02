@@ -11,21 +11,21 @@ export const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "/",
+      url: "/dashboard",
       icon: LayoutDashboardIcon,
       isActive: true,
       items: [
         {
           title: "Informações Gerais",
-          url: "/",
+          url: "dashboard",
         },
         {
           title: "Starred",
-          url: "/",
+          url: "dashboard",
         },
         {
           title: "Settings",
-          url: "/",
+          url: "dashboard",
         },
       ],
     },

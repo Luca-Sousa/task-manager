@@ -1,12 +1,12 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { Separator } from "../_components/ui/separator";
-import { SidebarInset, SidebarTrigger } from "../_components/ui/sidebar";
-import BreadcrumbPages from "../_components/breadcrumbPages";
+import { Separator } from "../../_components/ui/separator";
+import { SidebarInset, SidebarTrigger } from "../../_components/ui/sidebar";
+import BreadcrumbPages from "../../_components/breadcrumbPages";
 
 const Dashboard = async () => {
   const { userId } = await auth();
-  if (!userId) return redirect("/login");
+  if (!userId) return redirect("/");
 
   return (
     <SidebarInset>

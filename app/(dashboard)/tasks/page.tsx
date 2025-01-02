@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 
 const Tasks = async () => {
   const { userId } = await auth();
-  if (!userId) return redirect("/login");
+  if (!userId) return redirect("/");
 
   return (
     <SidebarInset>

@@ -61,7 +61,7 @@ export function NavUser() {
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
                       <span className="truncate font-semibold">
-                        {user.fullName}
+                        {user.fullName || user.username}
                       </span>
                       <span className="truncate text-xs">
                         {user.emailAddresses[0].emailAddress}
@@ -101,7 +101,7 @@ export function NavUser() {
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">
-                      {user?.fullName}
+                      {user?.fullName || user?.username}
                     </span>
                     <span className="truncate text-xs">
                       {user?.emailAddresses[0].emailAddress}
@@ -131,7 +131,7 @@ export function NavUser() {
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
 
-              <SignOutButton>
+              <SignOutButton redirectUrl="/">
                 <DropdownMenuItem asChild>
                   <Button
                     className="w-full cursor-pointer justify-start bg-destructive/70 focus:bg-destructive focus-visible:ring-0"

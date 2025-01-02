@@ -1,10 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
-
-const LoginPage = async () => {
-  const { userId } = await auth();
-  if (userId) return redirect("/");
-
+const LoginPage = () => {
   return (
     <div className="mx-auto flex max-w-[1440px]">
       {/* <div className="flex h-full w-2/5 flex-col justify-center gap-4 px-32">
