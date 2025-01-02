@@ -4,10 +4,9 @@ import {
   createContext,
   useContext,
   useState,
-  ReactNode,
   useEffect,
+  ReactNode,
 } from "react";
-import { data } from "../_constants/data_sidebar";
 
 interface SelectedItemContextType {
   selectedItem: string | null;
@@ -21,29 +20,30 @@ const SelectedItemContext = createContext<SelectedItemContextType | undefined>(
 );
 
 export const SelectedItemProvider = ({ children }: { children: ReactNode }) => {
-  const [selectedItem, setSelectedItem] = useState<string | null>("Dashboard");
-  const [selectedSubItem, setSelectedSubItem] = useState<string | null>(
-    "Informações Gerais",
-  );
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [selectedSubItem, setSelectedSubItem] = useState<string | null>(null);
+
+  // Load initial state from sessionStorage or set defaults
+  useEffect(() => {
+    const storedSelectedItem = sessionStorage.getItem("selectedItem");
+    const storedSelectedSubItem = sessionStorage.getItem("selectedSubItem");
+
+    setSelectedItem(storedSelectedItem || "Dashboard");
+    setSelectedSubItem(storedSelectedSubItem || "Informações Gerais");
+  }, []);
+
+  // Save to sessionStorage whenever the state changes
+  useEffect(() => {
+    if (selectedItem !== null) {
+      sessionStorage.setItem("selectedItem", selectedItem);
+    }
+  }, [selectedItem]);
 
   useEffect(() => {
-    // Atualiza o selectedSubItem para o primeiro subitem do selectedItem, mas somente se
-    // não houver um subitem selecionado pelo usuário
-    if (selectedItem) {
-      const item = data.navMain.find(
-        (navItem) => navItem.title === selectedItem,
-      );
-      if (item && item.items.length > 0) {
-        // Só atualiza o subitem se não houver um subitem selecionado
-        if (
-          !selectedSubItem ||
-          !item.items.some((subItem) => subItem.title === selectedSubItem)
-        ) {
-          setSelectedSubItem(item.items[0].title); // Define o primeiro subitem
-        }
-      }
+    if (selectedSubItem !== null) {
+      sessionStorage.setItem("selectedSubItem", selectedSubItem);
     }
-  }, [selectedItem, selectedSubItem]);
+  }, [selectedSubItem]);
 
   return (
     <SelectedItemContext.Provider

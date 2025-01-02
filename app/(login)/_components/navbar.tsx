@@ -31,7 +31,7 @@ const Navbar = async () => {
         <div className="space-x-3">
           {userId ? (
             <Button className="gap-2" asChild>
-              <Link href="/">
+              <Link href="/dashboard">
                 <LayoutDashboardIcon />
                 Acessar Dashboard
               </Link>

@@ -17,15 +17,30 @@ export const data = {
       items: [
         {
           title: "Informações Gerais",
-          url: "dashboard",
+          url: "/dashboard",
         },
         {
           title: "Starred",
-          url: "dashboard",
+          url: "/dashboard",
         },
         {
           title: "Settings",
-          url: "dashboard",
+          url: "/dashboard",
+        },
+      ],
+    },
+    {
+      title: "Tarefas",
+      url: "/tasks",
+      icon: CircleHelpIcon,
+      items: [
+        {
+          title: "Ver Tarefas",
+          url: "/tasks",
+        },
+        {
+          title: "Configurar Tarefas",
+          url: "/tasks",
         },
       ],
     },
@@ -60,6 +75,7 @@ export const data = {
       ],
     },
   ],
+
   tasks: [
     {
       name: "Tarefa 01",

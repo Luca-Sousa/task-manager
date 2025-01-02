@@ -56,7 +56,6 @@ export function NavMain({
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton
                   tooltip={item.title}
-                  onClick={() => setSelectedItem(item.title)}
                 >
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>

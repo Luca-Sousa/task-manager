@@ -57,7 +57,7 @@ const CurrentTime = () => {
                 <div className="flex items-center">
                   {!isClient ? (
                     <div className="flex h-5 items-center">
-                      <Skeleton className="h-2 w-32 bg-gray-400" />
+                      <Skeleton className="h-2 w-32 bg-sidebar-accent" />
                     </div>
                   ) : (
                     format(currentTime, "HH 'h:' mm 'm:' ss 's'")

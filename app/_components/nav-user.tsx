@@ -72,11 +72,11 @@ export function NavUser() {
                 ) : (
                   <>
                     <Avatar className="h-8 w-8 rounded-lg">
-                      <Skeleton className="h-full w-full rounded-full bg-gray-400" />
+                      <Skeleton className="h-full w-full rounded-full bg-accent" />
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
-                      <Skeleton className="h-3 w-1/2 rounded bg-gray-400" />
-                      <Skeleton className="mt-1 h-3 w-4/5 rounded bg-gray-400" />
+                      <Skeleton className="h-3 w-1/2 rounded bg-accent" />
+                      <Skeleton className="mt-1 h-3 w-4/5 rounded bg-accent" />
                     </div>
                     <ChevronsUpDown className="ml-auto size-4" />
                   </>
