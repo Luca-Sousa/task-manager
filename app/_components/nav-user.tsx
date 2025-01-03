@@ -28,12 +28,13 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { Skeleton } from "./ui/skeleton";
+import { ScrollArea } from "./ui/scroll-area";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -48,6 +49,7 @@ export function NavUser() {
               <SidebarMenuButton
                 size="lg"
                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                tooltip={user?.fullName || user?.username || "Usuário"}
               >
                 {user ? (
                   <>
@@ -144,12 +146,21 @@ export function NavUser() {
               </SignOutButton>
             </DropdownMenuContent>
 
-            <DialogContent className="max-w-fit">
-              <DialogHeader>
-                <DialogTitle></DialogTitle>
-                <DialogDescription></DialogDescription>
-              </DialogHeader>
-              <UserProfile routing="hash" />
+            <DialogContent className="flex h-[95%] max-w-fit flex-col overflow-hidden rounded-3xl border-0 p-0 md:h-auto">
+              <DialogTitle hidden>
+                <VisuallyHidden>
+                  Configuração da Conta do Usuário
+                </VisuallyHidden>
+              </DialogTitle>
+              <DialogDescription hidden>
+                <VisuallyHidden>
+                  Selecione as configurações que desejar!
+                </VisuallyHidden>
+              </DialogDescription>
+
+              <ScrollArea>
+                <UserProfile routing="hash" />
+              </ScrollArea>
             </DialogContent>
           </DropdownMenu>
         </Dialog>

@@ -2,7 +2,14 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { Separator } from "../../_components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "../../_components/ui/sidebar";
-import BreadcrumbPages from "../../_components/breadcrumbPages";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbSeparator,
+  BreadcrumbLink,
+  BreadcrumbPage,
+} from "@/app/_components/ui/breadcrumb";
 
 const Dashboard = async () => {
   const { userId } = await auth();
@@ -14,7 +21,17 @@ const Dashboard = async () => {
         <div className="flex items-center gap-2 px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
-          <BreadcrumbPages />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="/">Task Manager</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Dashboard</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
         </div>
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">

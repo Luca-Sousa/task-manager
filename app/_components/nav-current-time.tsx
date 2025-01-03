@@ -2,9 +2,8 @@
 
 import { format } from "date-fns";
 import { CalendarIcon, ClockIcon } from "lucide-react";
-
 import { Calendar } from "@/app/_components/ui/calendar";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { ptBR } from "date-fns/locale";
 import {
   SidebarGroup,
@@ -29,7 +28,7 @@ const CurrentTime = () => {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="cursor-pointer data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className="cursor-pointer data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground ring-offset-2 ring-offset-sidebar-accent"
             >
               <div className="w-full">
                 <div className="flex items-center">

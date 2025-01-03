@@ -42,7 +42,7 @@ export function NavTasks({ tasks }: NavTasksProps) {
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel className="text-sm">
-        <span className="mr-auto">Tarefas do Dia</span>
+        <span className="mr-auto">Tarefas de Hoje</span>
         <div className="rounded-full bg-primary px-1 py-0.5 font-bold -mr-1.5 text-xs">
           {format(new Date(), "dd", {
             locale: ptBR,

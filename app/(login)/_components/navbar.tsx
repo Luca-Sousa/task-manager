@@ -46,7 +46,7 @@ const Navbar = async () => {
           </div>
         </div>
 
-        <Sheet modal>
+        <Sheet>
           <SheetTrigger title="Menu" asChild className="md:hidden">
             <Button variant={"ghost"} className="gap-2">
               <AlignCenterIcon />

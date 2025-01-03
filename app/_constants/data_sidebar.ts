@@ -14,65 +14,22 @@ export const data = {
       url: "/dashboard",
       icon: LayoutDashboardIcon,
       isActive: true,
-      items: [
-        {
-          title: "Informações Gerais",
-          url: "/dashboard",
-        },
-        {
-          title: "Starred",
-          url: "/dashboard",
-        },
-        {
-          title: "Settings",
-          url: "/dashboard",
-        },
-      ],
     },
     {
       title: "Tarefas",
       url: "/tasks",
       icon: CircleHelpIcon,
-      items: [
-        {
-          title: "Ver Tarefas",
-          url: "/tasks",
-        },
-        {
-          title: "Configurar Tarefas",
-          url: "/tasks",
-        },
-      ],
     },
     {
       title: "Assinatura",
       url: "/subscription",
       icon: SignatureIcon,
-      items: [
-        {
-          title: "Ver Planos",
-          url: "/subscription",
-        },
-        {
-          title: "Adquirir Premium",
-          url: "/subscription",
-        },
-      ],
+
     },
     {
       title: "FAQs",
       url: "/faq",
       icon: CircleHelpIcon,
-      items: [
-        {
-          title: "Introduction",
-          url: "/faq",
-        },
-        {
-          title: "Get Started",
-          url: "/faq",
-        },
-      ],
     },
   ],
 
