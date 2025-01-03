@@ -18,24 +18,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Skeleton } from "./ui/skeleton";
 
 const CurrentTime = () => {
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [isClient, setIsClient] = useState(false);
   const { isMobile } = useSidebar();
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(interval); // Limpa o intervalo ao desmontar
-  }, []);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -53,15 +38,8 @@ const CurrentTime = () => {
                   })}
                   <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                 </div>
-
-                <div className="flex items-center">
-                  {!isClient ? (
-                    <div className="flex h-5 items-center">
-                      <Skeleton className="h-2 w-32 bg-sidebar-accent" />
-                    </div>
-                  ) : (
-                    format(currentTime, "HH 'h:' mm 'm:' ss 's'")
-                  )}
+                <div className="flex items-center text-2xl">
+                  {format(new Date(), "HH:mm")}
                   <ClockIcon className="ml-auto h-4 w-4 animate-spin opacity-50" />
                 </div>
               </div>
