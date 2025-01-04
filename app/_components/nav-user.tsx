@@ -37,7 +37,7 @@ import { ScrollArea } from "./ui/scroll-area";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 export function NavUser() {
-  const { isMobile } = useSidebar();
+  const { isMobile, setOpenMobile } = useSidebar();
   const { user } = useUser();
 
   return (
@@ -49,7 +49,7 @@ export function NavUser() {
               <SidebarMenuButton
                 size="lg"
                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                tooltip={user?.fullName || user?.username || "Usuário"}
+                tooltip={user?.fullName || "Perfil"}
               >
                 {user ? (
                   <>
@@ -63,7 +63,7 @@ export function NavUser() {
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
                       <span className="truncate font-semibold">
-                        {user.fullName || user.username}
+                        {user.fullName}
                       </span>
                       <span className="truncate text-xs">
                         {user.emailAddresses[0].emailAddress}
@@ -103,7 +103,7 @@ export function NavUser() {
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">
-                      {user?.fullName || user?.username}
+                      {user?.fullName}
                     </span>
                     <span className="truncate text-xs">
                       {user?.emailAddresses[0].emailAddress}
@@ -114,12 +114,16 @@ export function NavUser() {
               <DropdownMenuSeparator />
 
               <DropdownMenuGroup>
-                <Link href={"/subscription"}>
-                  <DropdownMenuItem className="cursor-pointer">
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => setOpenMobile(false)}
+                  asChild
+                >
+                  <Link href={"/subscription"}>
                     <Sparkles />
                     Atualize pro Premium
-                  </DropdownMenuItem>
-                </Link>
+                  </Link>
+                </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
 

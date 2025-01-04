@@ -28,7 +28,7 @@ const CurrentTime = () => {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="cursor-pointer data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground ring-offset-2 ring-offset-sidebar-accent"
+              className="cursor-pointer data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground ring-offset-2 ring-offset-sidebar-accent h-14"
             >
               <div className="w-full">
                 <div className="flex items-center">

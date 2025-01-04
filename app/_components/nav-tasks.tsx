@@ -37,13 +37,13 @@ interface NavTasksProps {
 }
 
 export function NavTasks({ tasks }: NavTasksProps) {
-  const { isMobile } = useSidebar();
+  const { isMobile, setOpenMobile } = useSidebar();
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel className="text-sm">
         <span className="mr-auto">Tarefas de Hoje</span>
-        <div className="rounded-full bg-primary px-1 py-0.5 font-bold -mr-1.5 text-xs">
+        <div className="-mr-1.5 rounded-full bg-primary px-1 py-0.5 text-xs font-bold">
           {format(new Date(), "dd", {
             locale: ptBR,
           })}
@@ -53,7 +53,7 @@ export function NavTasks({ tasks }: NavTasksProps) {
       <SidebarMenu>
         {tasks.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton onClick={() => setOpenMobile(false)} asChild>
               <Link href={item.url}>
                 <item.icon />
                 <span>{item.name}</span>
@@ -89,9 +89,15 @@ export function NavTasks({ tasks }: NavTasksProps) {
           </SidebarMenuItem>
         ))}
         <SidebarMenuItem>
-          <SidebarMenuButton className="text-sidebar-foreground/70">
-            <MoreHorizontal className="text-sidebar-foreground/70" />
-            <span>Ver Tarefas</span>
+          <SidebarMenuButton
+            className="text-sidebar-foreground/70"
+            onClick={() => setOpenMobile(false)}
+            asChild
+          >
+            <Link href="/tasks">
+              <MoreHorizontal className="text-sidebar-foreground/70" />
+              <span>Ver Tarefas</span>
+            </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>

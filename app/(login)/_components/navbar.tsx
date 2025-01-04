@@ -80,7 +80,7 @@ const Navbar = async () => {
                   </Button>
                 ) : (
                   <div className="flex flex-col gap-3">
-                    <SignInButton mode="modal" fallbackRedirectUrl="/dashboard">
+                    <SignInButton mode="modal" forceRedirectUrl={"/dashboard"} fallbackRedirectUrl="/dashboard">
                       <Button variant={"ghost"} className="gap-2">
                         <LogInIcon />
                         Fazer login

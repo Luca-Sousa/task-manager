@@ -8,6 +8,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/app/_components/ui/sidebar";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
@@ -25,6 +26,7 @@ export function NavMain({
 }) {
   const { user, isLoaded } = useUser();
   const pathname = usePathname();
+  const { setOpenMobile } = useSidebar();
 
   const isItemActive = (url: string): boolean => {
     return pathname.startsWith(url);
@@ -42,7 +44,12 @@ export function NavMain({
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.title}>
-            <SidebarMenuButton asChild isActive={isItemActive(item.url)} tooltip={item.title}>
+            <SidebarMenuButton
+              asChild
+              isActive={isItemActive(item.url)}
+              tooltip={item.title}
+              onClick={() => setOpenMobile(false)}
+            >
               <Link href={item.url}>
                 {item.icon && <item.icon />}
                 <span>{item.title}</span>
