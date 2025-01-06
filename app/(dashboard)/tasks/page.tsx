@@ -8,20 +8,21 @@ import {
 } from "@/app/_components/ui/breadcrumb";
 import { Button } from "@/app/_components/ui/button";
 import { Card } from "@/app/_components/ui/card";
-import { DataTable } from "@/app/_components/ui/data-table";
 import { Separator } from "@/app/_components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/app/_components/ui/sidebar";
 import { db } from "@/app/_lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { PlusIcon } from "lucide-react";
 import { redirect } from "next/navigation";
-import { tasksColumns } from "./_columns";
+import DataItemsTasks from "./_components/data-items";
 
 const Tasks = async () => {
   const { userId } = await auth();
   if (!userId) return redirect("/");
 
-  const tasks = await db.tasks.findMany({});
+  const tasks = await db.tasks.findMany({
+    orderBy: { startTime: "asc" },
+  });
 
   return (
     <SidebarInset>
@@ -51,15 +52,15 @@ const Tasks = async () => {
               <PlusIcon />
             </Button>
 
-            <Button className="hidden rounded-full sm:flex">
+            <Button className="hidden rounded-full font-bold sm:flex">
               Nova Tarefa
               <PlusIcon />
             </Button>
           </div>
 
-          <div className="flex flex-1 flex-col">
-            <DataTable columns={tasksColumns} data={tasks} />
-          </div>
+          <DataItemsTasks tasks={tasks} />
+
+          {/* <DataTable columns={tasksColumns} data={tasks} /> */}
         </Card>
       </div>
     </SidebarInset>
