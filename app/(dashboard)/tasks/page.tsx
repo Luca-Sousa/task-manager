@@ -1,12 +1,27 @@
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/app/_components/ui/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+  BreadcrumbPage,
+} from "@/app/_components/ui/breadcrumb";
+import { Button } from "@/app/_components/ui/button";
+import { Card } from "@/app/_components/ui/card";
+import { DataTable } from "@/app/_components/ui/data-table";
 import { Separator } from "@/app/_components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/app/_components/ui/sidebar";
+import { db } from "@/app/_lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { PlusIcon } from "lucide-react";
 import { redirect } from "next/navigation";
+import { tasksColumns } from "./_columns";
 
 const Tasks = async () => {
   const { userId } = await auth();
   if (!userId) return redirect("/");
+
+  const tasks = await db.tasks.findMany({});
 
   return (
     <SidebarInset>
@@ -27,13 +42,25 @@ const Tasks = async () => {
           </Breadcrumb>
         </div>
       </header>
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-          <div className="aspect-video rounded-xl bg-muted/50"></div>
-          <div className="aspect-video rounded-xl bg-muted/50" />
-          <div className="aspect-video rounded-xl bg-muted/50" />
-        </div>
-        <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+
+      <div className="flex flex-1 p-4 pt-0">
+        <Card className="min-h-[100vh] flex-1 space-y-8 p-4 md:min-h-min">
+          <div className="flex items-center justify-between">
+            <h1 className="text-xl font-bold">Minhas Tarefas</h1>
+            <Button size="icon" className="rounded-full sm:hidden">
+              <PlusIcon />
+            </Button>
+
+            <Button className="hidden rounded-full sm:flex">
+              Nova Tarefa
+              <PlusIcon />
+            </Button>
+          </div>
+
+          <div className="flex flex-1 flex-col">
+            <DataTable columns={tasksColumns} data={tasks} />
+          </div>
+        </Card>
       </div>
     </SidebarInset>
   );
