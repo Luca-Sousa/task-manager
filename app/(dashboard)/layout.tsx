@@ -7,6 +7,7 @@ import { SidebarProvider } from "../_components/ui/sidebar";
 import { AppSidebar } from "../_components/app-sidebar";
 import { ptBR } from "@clerk/localizations";
 import { SelectedItemProvider } from "../_contexts/SelectedItemContext";
+import { Toaster } from "../_components/ui/sonner";
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -38,6 +39,7 @@ export default function RootLayout({
             </SelectedItemProvider>
           </SidebarProvider>
         </ClerkProvider>
+        <Toaster />
       </body>
     </html>
   );
