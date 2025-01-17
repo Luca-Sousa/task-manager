@@ -9,7 +9,6 @@ import {
   MoonIcon,
   ClockIcon,
   ExternalLinkIcon,
-  PencilIcon,
 } from "lucide-react";
 import TasksTypeBadge from "./type-badge";
 import { Separator } from "@/app/_components/ui/separator";
@@ -25,14 +24,14 @@ import {
   SelectValue,
 } from "@/app/_components/ui/select";
 import DeleteTaskButton from "./delete-task-button";
+import { TASK_STATUS_OPTIONS } from "@/app/_constants/data_tasks";
+import EditButtonTask from "./edit-button-task";
 
 interface DataItemsTasksProps {
   tasks: Tasks[];
 }
 
 const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
-  const statuses = Object.values(TasksStatus);
-
   const formatTime = (date: Date) =>
     `${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`;
 
@@ -140,16 +139,12 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
                                 </SelectTrigger>
 
                                 <SelectContent>
-                                  {statuses.map((status) => (
-                                    <SelectItem key={status} value={status}>
-                                      {status === TasksStatus.NOT_STARTED &&
-                                        "Não Iniciado"}
-                                      {status === TasksStatus.IN_PROGRESS &&
-                                        "Em Andamento"}
-                                      {status === TasksStatus.COMPLETED &&
-                                        "Concluído"}
-                                      {status === TasksStatus.UNREALIZED &&
-                                        "Não Realizado"}
+                                  {TASK_STATUS_OPTIONS.map((option) => (
+                                    <SelectItem
+                                      key={option.value}
+                                      value={option.value}
+                                    >
+                                      {option.label}
                                     </SelectItem>
                                   ))}
                                 </SelectContent>
@@ -163,14 +158,7 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
                                 <ExternalLinkIcon />
                               </Button>
 
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="text-muted-foreground"
-                              >
-                                <PencilIcon />
-                              </Button>
-
+                              <EditButtonTask task={task} />
                               <DeleteTaskButton />
                             </div>
                           </div>

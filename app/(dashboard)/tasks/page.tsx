@@ -15,12 +15,14 @@ import { auth } from "@clerk/nextjs/server";
 import { PlusIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 import DataItemsTasks from "./_components/data-items";
+import CreateTaskButton from "./_components/upsert-button-task";
 
 const Tasks = async () => {
   const { userId } = await auth();
   if (!userId) return redirect("/");
 
   const tasks = await db.tasks.findMany({
+    where: { userId: userId },
     orderBy: { startTime: "asc" },
   });
 
@@ -52,10 +54,7 @@ const Tasks = async () => {
               <PlusIcon />
             </Button>
 
-            <Button className="hidden rounded-full font-bold sm:flex">
-              Nova Tarefa
-              <PlusIcon />
-            </Button>
+            <CreateTaskButton />
           </div>
 
           <DataItemsTasks tasks={tasks} />

@@ -5,7 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import TasksTypeBadge from "../_components/type-badge";
 import { Button } from "@/app/_components/ui/button";
 import { ExternalLinkIcon, PencilIcon, Trash2Icon } from "lucide-react";
-import { TASK_CATEGORY_LABELS } from "@/app/_constantes";
+import { TASK_CATEGORY_LABELS } from "@/app/_constants/data_tasks";
 
 export const tasksColumns: ColumnDef<Tasks>[] = [
   {

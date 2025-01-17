@@ -112,4 +112,11 @@ body {
   ::-webkit-scrollbar-thumb {
     @apply bg-primary rounded-md;
   }
+
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    color: white !important;
+    background-color: hsl(263.4 70% 50.4%);
+    border-radius: 50%;
+  }
 }
