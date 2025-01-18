@@ -19,12 +19,12 @@ interface upsertTasksProps {
 export const upsertTasks = async (data: upsertTasksProps) => {
   upsertTasksSchema.parse(data);
 
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
   await db.tasks.upsert({
-    create: { ...data, userId },
     update: { ...data, userId },
+    create: { ...data, userId },
     where: {
       id: data?.id ?? "",
     },

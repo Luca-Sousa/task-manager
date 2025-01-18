@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { db } from "../_lib/prisma";
 
 export const tasksDayByUser = async () => {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
   return await db.tasks.findMany({
@@ -16,5 +16,5 @@ export const tasksDayByUser = async () => {
       userId: userId,
     },
     orderBy: { startTime: "asc" },
-  })
+  });
 };

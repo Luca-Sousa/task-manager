@@ -15,7 +15,7 @@ export const updateTaskStatus = async ({
   id,
   status,
 }: UpdateTaskStatusParams) => {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) throw new Error("Você não está logado.");
 
   if (!id && !status) {
