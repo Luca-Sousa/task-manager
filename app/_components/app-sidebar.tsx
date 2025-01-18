@@ -29,7 +29,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <div>
           <NavMain items={data.navMain} />
           <Separator className="group-data-[collapsible=icon]:hidden" />
-          <NavTasks tasks={data.tasks} />
+          <NavTasks />
         </div>
 
         <CurrentTime />
