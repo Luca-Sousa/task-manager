@@ -40,8 +40,8 @@ import { Separator } from "@/app/_components/ui/separator";
 import { ScrollArea } from "@/app/_components/ui/scroll-area";
 import { DialogClose, DialogFooter } from "@/app/_components/ui/dialog";
 import { toast } from "sonner";
-import { upsertTasksSchema } from "../_actions/create-task/schema";
-import { upsertTasks } from "../_actions/create-task";
+import { upsertTasksSchema } from "../_actions/upsert-task/schema";
+import { upsertTasks } from "../_actions/upsert-task";
 
 interface CreateTaskDialogContentProps {
   onSuccess?: () => void;

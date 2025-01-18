@@ -50,7 +50,7 @@ const EditButtonTask = ({ task }: EditButtonTaskProps) => {
             <p className="font-bold">Atualizar Tarefa</p>
           </TooltipContent>
 
-          <DialogContent>
+          <DialogContent className="flex h-full max-h-[80%] flex-col overflow-hidden">
             <DialogHeader>
               <DialogTitle>Atualizar Tarefa</DialogTitle>
               <DialogDescription>
