@@ -22,9 +22,17 @@ const Tasks = async () => {
   if (!userId) return redirect("/");
 
   const tasks = await db.tasks.findMany({
-    where: { userId: userId },
+    where: {
+      startTime: {
+        gte: new Date(new Date().setHours(0, 0, 0, 0)),
+        lte: new Date(new Date().setHours(23, 59, 59, 999)),
+      },
+      userId: userId,
+    },
     orderBy: { startTime: "asc" },
   });
+
+  // const tasks = tasksDayByUser()
 
   return (
     <SidebarInset>

@@ -1,11 +1,11 @@
 "use client";
 
 import {
+  ClockIcon,
   FilePenLineIcon,
   MoreHorizontal,
   Trash2Icon,
   ViewIcon,
-  type LucideIcon,
 } from "lucide-react";
 
 import {
@@ -24,40 +24,61 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/app/_components/ui/sidebar";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { tasksDayByUser } from "../data-access/tasks-day-by-user";
+import { Tasks } from "@prisma/client";
 
-interface NavTasksProps {
-  tasks: {
-    name: string;
-    url: string;
-    icon: LucideIcon;
-  }[];
-}
+const formatTime = (date: Date) =>
+  `${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
 
-export function NavTasks({ tasks }: NavTasksProps) {
+export function NavTasks() {
   const { isMobile, setOpenMobile } = useSidebar();
+  const [currentTasks, setCurrentTasks] = useState<Tasks[]>([]);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const result = await tasksDayByUser(); // Chama a server action.
+        const formattedTasks = result.map((task: Tasks) => ({
+          ...task,
+        }));
+        setCurrentTasks(formattedTasks);
+      } catch (error) {
+        console.error("Erro ao carregar as tarefas:", error);
+      }
+    };
+
+    fetchTasks();
+  }, []);
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel className="text-sm">
         <span className="mr-auto">Tarefas de Hoje</span>
-        <div className="-mr-1.5 rounded-full bg-primary px-1 py-0.5 text-xs font-bold">
-          {format(new Date(), "dd", {
-            locale: ptBR,
-          })}
+        <div className="-mr-1.5 rounded-full bg-primary px-2 py-1 text-xs font-bold">
+          {currentTasks.length}
         </div>
       </SidebarGroupLabel>
 
       <SidebarMenu>
-        {tasks.map((item) => (
-          <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton onClick={() => setOpenMobile(false)} asChild>
-              <Link href={item.url}>
-                <item.icon />
-                <span>{item.name}</span>
-              </Link>
+        {currentTasks.map((task) => (
+          <SidebarMenuItem key={task.id}>
+            <SidebarMenuButton
+              onClick={() => setOpenMobile(false)}
+              asChild
+              className="justify-between"
+            >
+              <div className="flex justify-between">
+                <div className="flex items-center gap-1.5">
+                  <FilePenLineIcon size={14} />
+                  <span>{task.name}</span>
+                </div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <ClockIcon size={12} />
+                  {formatTime(new Date(task.startTime))}
+                </div>
+              </div>
             </SidebarMenuButton>
 
             <DropdownMenu>
