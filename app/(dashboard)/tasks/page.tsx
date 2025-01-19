@@ -6,33 +6,41 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/app/_components/ui/breadcrumb";
-import { Button } from "@/app/_components/ui/button";
 import { Card } from "@/app/_components/ui/card";
 import { Separator } from "@/app/_components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/app/_components/ui/sidebar";
-import { db } from "@/app/_lib/prisma";
 import { auth } from "@clerk/nextjs/server";
-import { PlusIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 import DataItemsTasks from "./_components/data-items";
 import CreateTaskButton from "./_components/upsert-button-task";
+import { isMatch } from "date-fns";
+import { tasksCurrentTimeUser } from "@/app/data-access/tasks-current-time-user";
 
-const Tasks = async () => {
+interface TasksProps {
+  searchParams: {
+    year: string;
+    month: string;
+    day: string;
+  };
+}
+
+const Tasks = async ({ searchParams: { year, month, day } }: TasksProps) => {
   const { userId } = await auth();
   if (!userId) return redirect("/");
 
-  const tasks = await db.tasks.findMany({
-    where: {
-      startTime: {
-        gte: new Date(new Date().setHours(0, 0, 0, 0)),
-        lte: new Date(new Date().setHours(23, 59, 59, 999)),
-      },
-      userId: userId,
-    },
-    orderBy: { startTime: "asc" },
-  });
+  const dateIsInvalid =
+    !year ||
+    !month ||
+    !day ||
+    !isMatch(`${year}-${month}-${day}`, "yyyy-MM-dd");
 
-  // const tasks = tasksDayByUser()
+  if (dateIsInvalid) {
+    redirect(
+      `/tasks/?year=${String(new Date().getFullYear()).padStart(2, "0")}&month=${new Date().getMonth() + 1}&day=${new Date().getDate()}`,
+    );
+  }
+
+  const tasks = await tasksCurrentTimeUser({ year, month, day });
 
   return (
     <SidebarInset>
@@ -58,16 +66,11 @@ const Tasks = async () => {
         <Card className="min-h-[100vh] flex-1 space-y-8 p-4 md:min-h-min">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-bold">Minhas Tarefas</h1>
-            <Button size="icon" className="rounded-full sm:hidden">
-              <PlusIcon />
-            </Button>
 
             <CreateTaskButton />
           </div>
 
           <DataItemsTasks tasks={tasks} />
-
-          {/* <DataTable columns={tasksColumns} data={tasks} /> */}
         </Card>
       </div>
     </SidebarInset>

@@ -19,8 +19,8 @@ const CreateTaskButton = () => {
   return (
     <Dialog open={dialogIsOpen} onOpenChange={(open) => setDialogIsOpen(open)}>
       <DialogTrigger asChild>
-        <Button className="hidden rounded-full font-bold sm:flex">
-          Nova Tarefa
+        <Button className="flex h-9 w-9 rounded-full font-bold sm:h-9 sm:w-fit sm:px-4 sm:py-2">
+          <span className="hidden sm:block">Nova Tarefa</span>
           <PlusIcon />
         </Button>
       </DialogTrigger>

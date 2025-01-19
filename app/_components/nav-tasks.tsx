@@ -26,7 +26,7 @@ import {
 } from "@/app/_components/ui/sidebar";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { tasksDayByUser } from "../data-access/tasks-day-by-user";
+import { tasksDayByUser } from "../data-access/tasks-current-time-user-sidebar";
 import { Tasks } from "@prisma/client";
 
 const formatTime = (date: Date) =>

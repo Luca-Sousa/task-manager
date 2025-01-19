@@ -26,6 +26,7 @@ import {
 import DeleteTaskButton from "./delete-task-button";
 import { TASK_STATUS_OPTIONS } from "@/app/_constants/data_tasks";
 import EditButtonTask from "./edit-button-task";
+import TimeSelect from "@/app/_components/time-select";
 
 interface DataItemsTasksProps {
   tasks: Tasks[];
@@ -79,6 +80,10 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
       <Separator className="my-4" />
 
       <div className="flex flex-1 flex-col gap-3">
+        <div className="flex items-center justify-end">
+          <TimeSelect />
+        </div>
+
         <div className="space-y-5">
           {Object.entries(tasksByPeriod).map(
             ([period, tasks]) =>
