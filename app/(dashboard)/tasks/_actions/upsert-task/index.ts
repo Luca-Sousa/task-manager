@@ -17,7 +17,8 @@ interface upsertTasksProps {
 }
 
 export const upsertTasks = async (data: upsertTasksProps) => {
-  upsertTasksSchema.parse(data);
+  // Validação assíncrona com o parseAsync
+  await upsertTasksSchema.parseAsync(data);
 
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
@@ -26,7 +27,7 @@ export const upsertTasks = async (data: upsertTasksProps) => {
     update: { ...data, userId },
     create: { ...data, userId },
     where: {
-      id: data?.id ?? "",
+      id: data.id ?? "",
     },
   });
 

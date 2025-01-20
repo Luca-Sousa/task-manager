@@ -195,7 +195,12 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
                               <div className="flex flex-1 items-center space-x-2">
                                 <Checkbox
                                   id={task.id}
-                                  disabled={isDisabledCheckbox}
+                                  disabled={
+                                    task.status === TasksStatus.IN_PROGRESS ||
+                                    task.status === TasksStatus.COMPLETED ||
+                                    task.status === TasksStatus.UNREALIZED ||
+                                    isDisabledCheckbox
+                                  }
                                   checked={
                                     task.status === TasksStatus.IN_PROGRESS ||
                                     task.status === TasksStatus.COMPLETED ||

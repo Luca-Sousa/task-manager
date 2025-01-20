@@ -1,6 +1,8 @@
-import { TasksCategory, TasksStatus } from "@prisma/client";
 import { z } from "zod";
+import { TasksCategory, TasksStatus } from "@prisma/client";
+import { tasksTimeIguais } from "@/app/data-access/tasks-time-iguais";
 
+// Definindo o esquema de validação para tarefas
 export const upsertTasksSchema = z
   .object({
     name: z.string().trim().min(1, "O nome é obrigatório!"),
@@ -23,16 +25,8 @@ export const upsertTasksSchema = z
         required_error: "A data de término é obrigatória!",
       })
       .refine((date) => date > new Date(), {
-        message: "A data de início não pode ser no passado.",
+        message: "A data de término não pode ser no passado.",
       }),
-    existingTasks: z
-      .array(
-        z.object({
-          startTime: z.date(),
-          endTime: z.date(),
-        }),
-      )
-      .optional(),
   })
   .refine(
     (data) => data.startTime.toDateString() === data.endTime.toDateString(),
@@ -41,27 +35,24 @@ export const upsertTasksSchema = z
       path: ["endTime"],
     },
   )
-  .refine((data) => data.startTime >= new Date(), {
-    message: "A data de início não pode estar no passado.",
-    path: ["startTime"],
-  })
   .refine((data) => data.endTime > data.startTime, {
     message: "A data de término deve ser posterior à data de início.",
     path: ["endTime"],
   })
   .refine(
-    (data) => {
-      if (!data.existingTasks) return true;
-      return !data.existingTasks.some(
-        (task) =>
-          (data.startTime >= task.startTime && data.startTime < task.endTime) ||
-          (data.endTime > task.startTime && data.endTime <= task.endTime) ||
-          (data.startTime <= task.startTime && data.endTime >= task.endTime),
-      );
+    async (data) => {
+      const tasks = await tasksTimeIguais({
+        startTime: data.startTime,
+        endTime: data.endTime,
+      });
+      console.log(tasks);
+
+      // Verifica se há tarefas que se sobrepõem
+      return tasks.length === 0; // Retorna `true` se não houver sobreposição
     },
     {
-      message: "O horário selecionado conflita com outra tarefa existente.",
-      path: ["startTime", "endTime"],
+      message: "Já existe uma tarefa no mesmo intervalo de tempo.",
+      path: ["startTime"],
     },
   );
 

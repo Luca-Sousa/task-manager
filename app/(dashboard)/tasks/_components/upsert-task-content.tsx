@@ -69,7 +69,6 @@ const UpsertTaskDialogContent = ({
       form.setValue("status", TasksStatus.NOT_STARTED);
       data.status = TasksStatus.NOT_STARTED;
       await upsertTasks({ ...data, id: taskId });
-      console.log(data);
 
       onSuccess?.();
       toast.success(
@@ -84,7 +83,8 @@ const UpsertTaskDialogContent = ({
           ),
         },
       );
-    } catch {
+    } catch (error) {
+      console.log(error);
       toast.error(
         `Ocorreu um erro ao tentar ${taskId ? "atualizar" : "adicionar"} a tarefa!`,
       );
