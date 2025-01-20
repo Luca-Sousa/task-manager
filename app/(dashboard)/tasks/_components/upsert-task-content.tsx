@@ -21,10 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/_components/ui/select";
-import {
-  TASK_CATEGORY_OPTIONS,
-  TASK_STATUS_OPTIONS,
-} from "@/app/_constants/data_tasks";
+import { TASK_CATEGORY_OPTIONS } from "@/app/_constants/data_tasks";
 import {
   Popover,
   PopoverContent,
@@ -69,6 +66,8 @@ const UpsertTaskDialogContent = ({
 
   const onSubmit = async (data: upsertTasksSchema) => {
     try {
+      form.setValue("status", TasksStatus.NOT_STARTED);
+      data.status = TasksStatus.NOT_STARTED;
       await upsertTasks({ ...data, id: taskId });
       console.log(data);
 
@@ -121,25 +120,9 @@ const UpsertTaskDialogContent = ({
                 control={form.control}
                 name="status"
                 render={({ field }) => (
-                  <FormItem className="w-40">
+                  <FormItem className="hidden w-40">
                     <FormLabel>Status</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione um status de tarefa..." />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {TASK_STATUS_OPTIONS.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormControl defaultValue={field.value}></FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
