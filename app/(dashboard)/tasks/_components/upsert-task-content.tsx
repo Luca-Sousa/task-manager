@@ -13,7 +13,6 @@ import { Input } from "@/app/_components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TasksCategory, TasksStatus } from "@prisma/client";
-import { Textarea } from "@/app/_components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -39,6 +38,7 @@ import { DialogClose, DialogFooter } from "@/app/_components/ui/dialog";
 import { toast } from "sonner";
 import { upsertTasksSchema } from "../_actions/upsert-task/schema";
 import { upsertTasks } from "../_actions/upsert-task";
+import Editor from "@/app/_components/rich-text/editor";
 
 interface CreateTaskDialogContentProps {
   onSuccess?: () => void;
@@ -143,10 +143,10 @@ const UpsertTaskDialogContent = ({
             <FormItem>
               <FormLabel>Descrição</FormLabel>
               <FormControl>
-                <Textarea
+                <Editor
+                  content={field.value}
+                  onChange={(value) => field.onChange(value)}
                   placeholder="Descrição da tarefa"
-                  className="min-h-36 resize-none"
-                  {...field}
                 />
               </FormControl>
               <FormMessage />

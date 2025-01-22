@@ -25,7 +25,7 @@ const CreateTaskButton = () => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-h-[90%] overflow-auto">
+      <DialogContent className="max-h-[90%] overflow-y-auto overflow-x-hidden">
         <DialogHeader>
           <DialogTitle>Adicionar Tarefa</DialogTitle>
           <DialogDescription>
