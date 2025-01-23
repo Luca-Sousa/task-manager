@@ -45,7 +45,6 @@ export const upsertTasksSchema = z
         startTime: data.startTime,
         endTime: data.endTime,
       });
-      console.log(tasks);
 
       // Verifica se há tarefas que se sobrepõem
       return tasks.length === 0; // Retorna `true` se não houver sobreposição

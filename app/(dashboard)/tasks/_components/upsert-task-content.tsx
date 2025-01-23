@@ -83,8 +83,8 @@ const UpsertTaskDialogContent = ({
           ),
         },
       );
-    } catch (error) {
-      console.log(error);
+      console.log(data);
+    } catch {
       toast.error(
         `Ocorreu um erro ao tentar ${taskId ? "atualizar" : "adicionar"} a tarefa!`,
       );
