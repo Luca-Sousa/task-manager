@@ -72,7 +72,7 @@ export function NavTasks() {
               <div className="flex justify-between">
                 <div className="flex items-center gap-1.5">
                   <FilePenLineIcon size={14} />
-                  <span>{task.name}</span>
+                  <span className="w-28 truncate">{task.name}</span>
                 </div>
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
                   <ClockIcon size={12} />

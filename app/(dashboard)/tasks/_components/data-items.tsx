@@ -14,7 +14,7 @@ import TasksTypeBadge from "./type-badge";
 import { Separator } from "@/app/_components/ui/separator";
 import { Button } from "@/app/_components/ui/button";
 import { Badge } from "@/app/_components/ui/badge";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { updateTaskStatus } from "../_actions/update-task-status";
 import DeleteTaskButton from "./delete-task-button";
 import EditButtonTask from "./edit-button-task";
@@ -30,7 +30,6 @@ interface DataItemsTasksProps {
 }
 
 const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
-  const [isDisabledCheckbox, setIsDisabledCheckbox] = useState(false);
   const formatTime = (date: Date) =>
     `${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`;
 
@@ -94,7 +93,6 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
   const checkTaskStatus = useCallback(async (task: Tasks) => {
     const currentTime = new Date().getTime();
     const endDate = new Date(task.endTime).getTime();
-    const startTime = new Date(task.startTime).getTime();
 
     if (task.status === TasksStatus.NOT_STARTED && currentTime > endDate) {
       await handleUpdateTaskStatus(task.id, TasksStatus.UNREALIZED);
@@ -103,24 +101,13 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
     if (task.status === TasksStatus.IN_PROGRESS && currentTime > endDate) {
       await handleUpdateTaskStatus(task.id, TasksStatus.COMPLETED);
     }
-
-    if (task.status === TasksStatus.NOT_STARTED && currentTime >= startTime) {
-      setIsDisabledCheckbox(false); // Habilita o botão
-    } else {
-      setIsDisabledCheckbox(true); // Desabilita o botão
-    }
   }, []);
 
   useEffect(() => {
-    const checkStatuses = async () => {
-      for (const task of tasks) {
-        await checkTaskStatus(task);
-      }
-    };
-
     const interval = setInterval(() => {
-      checkStatuses();
+      tasks.forEach((task) => checkTaskStatus(task));
     }, 1000);
+
     return () => clearInterval(interval);
   }, [tasks, checkTaskStatus]);
 
@@ -145,7 +132,7 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
                     {period.charAt(0).toUpperCase() + period.slice(1)}
                   </div>
 
-                  <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
+                  <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                     {tasks.map((task, index) => (
                       <Card
                         key={task.id}
@@ -164,9 +151,9 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
                             </div>
 
                             <div>
-                              <span className="truncate font-bold">
+                              <div className="w-64 truncate font-bold sm:w-full">
                                 {task.name}
-                              </span>
+                              </div>
 
                               <div className="flex items-center justify-between">
                                 <div className="text-xs text-muted-foreground">
@@ -199,7 +186,8 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
                                     task.status === TasksStatus.IN_PROGRESS ||
                                     task.status === TasksStatus.COMPLETED ||
                                     task.status === TasksStatus.UNREALIZED ||
-                                    isDisabledCheckbox
+                                    new Date(task.startTime).getTime() >
+                                      Date.now()
                                   }
                                   checked={
                                     task.status === TasksStatus.IN_PROGRESS ||

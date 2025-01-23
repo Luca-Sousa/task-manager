@@ -34,7 +34,7 @@ const Editor = ({ content, placeholder, onChange }: EditorProps) => {
         <EditorContent
           editor={editor}
           placeholder={placeholder}
-          className="prose-sm overflow-hidden px-3 text-foreground prose-headings:text-foreground prose-h1:mt-2 prose-a:text-primary prose-ul:py-px prose-li:leading-3"
+          className="prose-sm overflow-hidden px-3 text-foreground prose-headings:text-foreground prose-h1:mt-2 prose-a:text-primary prose-ul:py-0 prose-li:leading-3"
         />
       </div>
     </div>

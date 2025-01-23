@@ -17,15 +17,31 @@ export const tasksCurrentTimeUser = async ({
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
+  const startOfDay = new Date(
+    `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T00:00:00`,
+  );
+  const endOfDay = new Date(
+    `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T23:59:59`,
+  );
+
+  const startOfDayUTC = new Date(
+    startOfDay.toLocaleString("en-US", { timeZone: "UTC" }),
+  );
+  const endOfDayUTC = new Date(
+    endOfDay.toLocaleString("en-US", { timeZone: "UTC" }),
+  );
+
+  // Buscar tarefas no intervalo UTC calculado
   const tasks = await db.tasks.findMany({
     where: {
       startTime: {
-        gte: `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T00:00:00Z`,
-        lte: `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T23:59:59Z`,
+        gte: startOfDayUTC,
+        lte: endOfDayUTC,
       },
       userId: userId,
     },
     orderBy: { startTime: "asc" },
   });
+
   return tasks;
 };

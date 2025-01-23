@@ -13,7 +13,7 @@ const Viewer = ({ content, style }: ViewerProps) => {
     editable: false,
   });
 
-  if (!editor) return <></>;
+  if (!editor) return null;
 
   const className: string =
     style === "prose" ? "prose-mt-0 prose max-w-none dark:prose-invert" : "";
