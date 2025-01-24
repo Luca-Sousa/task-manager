@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { TasksCategory, TasksStatus } from "@prisma/client";
-import { tasksTimeIguais } from "@/app/data-access/tasks-time-iguais";
+import { tasksTimeIguais } from "@/app/_data-access/tasks/tasks-time-iguais";
 
 // Definindo o esquema de validação para tarefas
 export const upsertTasksSchema = z
