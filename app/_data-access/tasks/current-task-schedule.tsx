@@ -18,8 +18,9 @@ export const currentTasksSchedule = async ({
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  const timeZone = "America/Sao_Paulo";
+  const timeZone = "America/Sao_Paulo"; // O fuso horário é especificado aqui
 
+  // Ajustando o início e o fim do dia para o fuso horário de São Paulo
   const startOfDay = DateTime.fromObject(
     {
       year: parseInt(year),
@@ -31,8 +32,8 @@ export const currentTasksSchedule = async ({
     },
     { zone: timeZone },
   )
-    .toUTC()
-    .toISO();
+    .toUTC() // Converte para UTC
+    .toISO(); // Retorna como string no formato ISO
 
   const endOfDay = DateTime.fromObject(
     {
@@ -45,8 +46,8 @@ export const currentTasksSchedule = async ({
     },
     { zone: timeZone },
   )
-    .toUTC()
-    .toISO();
+    .toUTC() // Converte para UTC
+    .toISO(); // Retorna como string no formato ISO
 
   if (!startOfDay || !endOfDay) {
     throw new Error("Invalid date range");

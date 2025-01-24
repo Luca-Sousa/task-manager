@@ -158,12 +158,14 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
                               <div className="flex items-center justify-between">
                                 <div className="text-xs text-muted-foreground">
                                   <span>
-                                    {TASK_CATEGORY_OPTIONS.map(
-                                      (category) =>
-                                        category.value === task.category &&
-                                        category.label,
-                                    )}
+                                    {
+                                      TASK_CATEGORY_OPTIONS.find(
+                                        (category) =>
+                                          category.value === task.category,
+                                      )?.label
+                                    }
                                   </span>
+
                                   <div className="flex items-center gap-1.5">
                                     <ClockIcon size={12} />
                                     {formatTime(
@@ -230,27 +232,6 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
                                     : "Finalizar Tarefa"}
                                 </Label>
                               </div>
-                              {/* <Select
-                                value={task.status}
-                                onValueChange={(newStatus: TasksStatus) =>
-                                  handleUpdateTaskStatus(task.id, newStatus)
-                                }
-                              >
-                                <SelectTrigger className="w-fit gap-0.5 focus:ring-muted-foreground">
-                                  <SelectValue />
-                                </SelectTrigger>
-
-                                <SelectContent>
-                                  {TASK_STATUS_OPTIONS.map((option) => (
-                                    <SelectItem
-                                      key={option.value}
-                                      value={option.value}
-                                    >
-                                      {option.label}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select> */}
 
                               <Button
                                 variant="ghost"

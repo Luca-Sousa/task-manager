@@ -15,6 +15,7 @@ import DataItemsTasks from "./_components/data-items";
 import CreateTaskButton from "./_components/upsert-button-task";
 import { isMatch } from "date-fns";
 import { currentTasksSchedule } from "@/app/_data-access/tasks/current-task-schedule";
+import { DateTime } from "luxon";
 
 interface TasksProps {
   searchParams: {
@@ -41,6 +42,27 @@ const Tasks = async ({ searchParams: { year, month, day } }: TasksProps) => {
   }
 
   const tasks = await currentTasksSchedule({ year, month, day });
+
+  const adjustedTasks = tasks.map((task) => {
+    // Verifica se startTime é um objeto Date, caso contrário, trata como string
+    const startTimeString =
+      task.startTime instanceof Date
+        ? task.startTime.toISOString()
+        : task.startTime;
+
+    const endTimeString =
+      task.endTime instanceof Date ? task.endTime.toISOString() : task.endTime;
+
+    return {
+      ...task,
+      startTime: DateTime.fromISO(startTimeString)
+        .setZone("America/Sao_Paulo")
+        .toJSDate(), // Convertendo para Date
+      endTime: DateTime.fromISO(endTimeString)
+        .setZone("America/Sao_Paulo")
+        .toJSDate(), // Convertendo para Date
+    };
+  });
 
   return (
     <SidebarInset>
@@ -70,7 +92,7 @@ const Tasks = async ({ searchParams: { year, month, day } }: TasksProps) => {
             <CreateTaskButton />
           </div>
 
-          <DataItemsTasks tasks={tasks} />
+          <DataItemsTasks tasks={adjustedTasks} />
         </Card>
       </div>
     </SidebarInset>

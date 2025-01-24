@@ -20,7 +20,7 @@ import {
 
 const CurrentTime = () => {
   const { isMobile } = useSidebar();
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentTime, setCurrentTime] = useState<Date>(new Date());
 
   useEffect(() => {
     const interval = setInterval(() => {

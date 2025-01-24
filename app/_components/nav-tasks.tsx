@@ -28,6 +28,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Tasks } from "@prisma/client";
 import { currentTasksSchedule } from "../_data-access/tasks/current-task-schedule";
+import { DateTime } from "luxon"; // Certifique-se de importar o Luxon
 
 const formatTime = (date: Date) =>
   `${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
@@ -43,10 +44,31 @@ export function NavTasks() {
         const month = (new Date().getMonth() + 1).toString();
         const day = new Date().getDate().toString();
         const result = await currentTasksSchedule({ year, month, day });
-        const formattedTasks = result.map((task: Tasks) => ({
-          ...task,
-        }));
-        setCurrentTasks(formattedTasks);
+
+        // Ajuste de fuso horário e conversão para Date
+        const adjustedTasks = result.map((task: Tasks) => {
+          const startTimeString =
+            task.startTime instanceof Date
+              ? task.startTime.toISOString()
+              : task.startTime;
+
+          const endTimeString =
+            task.endTime instanceof Date
+              ? task.endTime.toISOString()
+              : task.endTime;
+
+          return {
+            ...task,
+            startTime: DateTime.fromISO(startTimeString)
+              .setZone("America/Sao_Paulo")
+              .toJSDate(),
+            endTime: DateTime.fromISO(endTimeString)
+              .setZone("America/Sao_Paulo")
+              .toJSDate(),
+          };
+        });
+
+        setCurrentTasks(adjustedTasks);
       } catch (error) {
         console.error("Erro ao carregar as tarefas:", error);
       }
