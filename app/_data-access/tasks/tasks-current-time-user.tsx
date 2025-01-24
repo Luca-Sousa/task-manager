@@ -2,6 +2,7 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { db } from "../../_lib/prisma";
+import { DateTime } from "luxon";
 
 interface tasksCurrentTimeUserProps {
   year: string;
@@ -17,11 +18,46 @@ export const tasksCurrentTimeUser = async ({
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
+  const timeZone = "America/Sao_Paulo"; // Defina o fuso horário
+
+  // Criar o início e o fim do dia no fuso horário local
+  const startOfDay = DateTime.fromObject(
+    {
+      year: parseInt(year),
+      month: parseInt(month),
+      day: parseInt(day),
+      hour: 0,
+      minute: 0,
+      second: 0,
+    },
+    { zone: timeZone },
+  )
+    .toUTC()
+    .toISO();
+
+  const endOfDay = DateTime.fromObject(
+    {
+      year: parseInt(year),
+      month: parseInt(month),
+      day: parseInt(day),
+      hour: 23,
+      minute: 59,
+      second: 59,
+    },
+    { zone: timeZone },
+  )
+    .toUTC()
+    .toISO();
+
+  if (!startOfDay || !endOfDay) {
+    throw new Error("Invalid date range");
+  }
+
   const tasks = await db.tasks.findMany({
     where: {
       startTime: {
-        gte: `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T00:00:00`,
-        lte: `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T23:59:59`,
+        gte: startOfDay,
+        lte: endOfDay,
       },
       userId: userId,
     },
