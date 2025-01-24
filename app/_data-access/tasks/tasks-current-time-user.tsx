@@ -17,18 +17,11 @@ export const tasksCurrentTimeUser = async ({
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  const startOfDay = new Date(
-    `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T00:00:00`,
-  );
-  const endOfDay = new Date(
-    `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T23:59:59`,
-  );
-
   const tasks = await db.tasks.findMany({
     where: {
       startTime: {
-        gte: startOfDay,
-        lte: endOfDay,
+        gte: `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T00:00:00`,
+        lte: `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T23:59:59`,
       },
       userId: userId,
     },
