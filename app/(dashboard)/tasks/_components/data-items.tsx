@@ -15,7 +15,7 @@ import { Separator } from "@/app/_components/ui/separator";
 import { Button } from "@/app/_components/ui/button";
 import { Badge } from "@/app/_components/ui/badge";
 import { useCallback, useEffect, useMemo } from "react";
-import { updateTaskStatus } from "../_actions/update-task-status";
+import { updateTaskStatus } from "../../../_actions/tasks/update-task-status";
 import DeleteTaskButton from "./delete-task-button";
 import EditButtonTask from "./edit-button-task";
 import TimeSelect from "@/app/_components/time-select";

@@ -14,7 +14,7 @@ import { redirect } from "next/navigation";
 import DataItemsTasks from "./_components/data-items";
 import CreateTaskButton from "./_components/upsert-button-task";
 import { isMatch } from "date-fns";
-import { tasksCurrentTimeUser } from "@/app/data-access/tasks-current-time-user";
+import { tasksCurrentTimeUser } from "@/app/_data-access/tasks/tasks-current-time-user";
 
 interface TasksProps {
   searchParams: {
