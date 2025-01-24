@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
-import { db } from "../_lib/prisma";
+import { db } from "../../_lib/prisma";
 
 export const tasksDayByUser = async () => {
   const { userId } = await auth();

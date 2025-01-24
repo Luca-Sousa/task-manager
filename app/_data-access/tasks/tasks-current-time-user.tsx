@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
-import { db } from "../_lib/prisma";
+import { db } from "../../_lib/prisma";
 
 interface tasksCurrentTimeUserProps {
   year: string;
@@ -24,19 +24,11 @@ export const tasksCurrentTimeUser = async ({
     `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T23:59:59`,
   );
 
-  const startOfDayUTC = new Date(
-    startOfDay.toLocaleString("en-US", { timeZone: "UTC" }),
-  );
-  const endOfDayUTC = new Date(
-    endOfDay.toLocaleString("en-US", { timeZone: "UTC" }),
-  );
-
-  // Buscar tarefas no intervalo UTC calculado
   const tasks = await db.tasks.findMany({
     where: {
       startTime: {
-        gte: startOfDayUTC,
-        lte: endOfDayUTC,
+        gte: startOfDay,
+        lte: endOfDay,
       },
       userId: userId,
     },
