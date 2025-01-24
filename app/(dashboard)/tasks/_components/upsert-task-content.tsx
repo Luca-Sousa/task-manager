@@ -27,7 +27,7 @@ import {
   PopoverTrigger,
 } from "@/app/_components/ui/popover";
 import { cn } from "@/app/_lib/utils";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader2Icon } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "@/app/_components/ui/calendar";
 import { ptBR } from "date-fns/locale";
@@ -36,8 +36,8 @@ import { Separator } from "@/app/_components/ui/separator";
 import { ScrollArea, ScrollBar } from "@/app/_components/ui/scroll-area";
 import { DialogClose, DialogFooter } from "@/app/_components/ui/dialog";
 import { toast } from "sonner";
-import { upsertTasksSchema } from "../_actions/upsert-task/schema";
-import { upsertTasks } from "../_actions/upsert-task";
+import { upsertTasksSchema } from "../../../_actions/tasks/upsert-task/schema";
+import { upsertTasks } from "../../../_actions/tasks/upsert-task";
 import Editor from "@/app/_components/rich-text/editor";
 
 interface CreateTaskDialogContentProps {
@@ -83,7 +83,6 @@ const UpsertTaskDialogContent = ({
           ),
         },
       );
-      console.log(data);
     } catch {
       toast.error(
         `Ocorreu um erro ao tentar ${taskId ? "atualizar" : "adicionar"} a tarefa!`,
@@ -372,13 +371,16 @@ const UpsertTaskDialogContent = ({
         />
 
         <DialogFooter className="gap-3">
-          <DialogClose asChild>
+          <DialogClose asChild disabled={form.formState.isSubmitting}>
             <Button type="reset" variant="destructive">
               Cancelar
             </Button>
           </DialogClose>
 
-          <Button type="submit">
+          <Button type="submit" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting && (
+              <Loader2Icon size={16} className="animate-spin" />
+            )}
             {isUpdate ? "Atualizar" : "Adicionar"} Tarefa
           </Button>
         </DialogFooter>
