@@ -26,8 +26,8 @@ import {
 } from "@/app/_components/ui/sidebar";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { tasksDayByUser } from "../_data-access/tasks/tasks-current-time-user-sidebar";
 import { Tasks } from "@prisma/client";
+import { currentTasksSchedule } from "../_data-access/tasks/current-task-schedule";
 
 const formatTime = (date: Date) =>
   `${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
@@ -39,7 +39,10 @@ export function NavTasks() {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const result = await tasksDayByUser();
+        const year = new Date().getFullYear().toString();
+        const month = (new Date().getMonth() + 1).toString();
+        const day = new Date().getDate().toString();
+        const result = await currentTasksSchedule({ year, month, day });
         const formattedTasks = result.map((task: Tasks) => ({
           ...task,
         }));

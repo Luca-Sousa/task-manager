@@ -14,7 +14,7 @@ import { redirect } from "next/navigation";
 import DataItemsTasks from "./_components/data-items";
 import CreateTaskButton from "./_components/upsert-button-task";
 import { isMatch } from "date-fns";
-import { tasksCurrentTimeUser } from "@/app/_data-access/tasks/tasks-current-time-user";
+import { currentTasksSchedule } from "@/app/_data-access/tasks/current-task-schedule";
 
 interface TasksProps {
   searchParams: {
@@ -40,7 +40,7 @@ const Tasks = async ({ searchParams: { year, month, day } }: TasksProps) => {
     );
   }
 
-  const tasks = await tasksCurrentTimeUser({ year, month, day });
+  const tasks = await currentTasksSchedule({ year, month, day });
 
   return (
     <SidebarInset>

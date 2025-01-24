@@ -1,9 +1,9 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { CalendarIcon, ClockIcon } from "lucide-react";
 import { Calendar } from "@/app/_components/ui/calendar";
-import React from "react";
 import { ptBR } from "date-fns/locale";
 import {
   SidebarGroup,
@@ -20,6 +20,15 @@ import {
 
 const CurrentTime = () => {
   const { isMobile } = useSidebar();
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -28,17 +37,15 @@ const CurrentTime = () => {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="cursor-pointer data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground ring-offset-2 ring-offset-sidebar-accent h-14"
+              className="h-14 cursor-pointer ring-offset-2 ring-offset-sidebar-accent data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="w-full">
                 <div className="flex items-center">
-                  {format(new Date(), "PPP", {
-                    locale: ptBR,
-                  })}
+                  {format(currentTime, "PPP", { locale: ptBR })}
                   <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                 </div>
                 <div className="flex items-center text-2xl">
-                  {format(new Date(), "HH:mm")}
+                  {format(currentTime, "HH:mm")}
                   <ClockIcon className="ml-auto h-4 w-4 animate-spin opacity-50" />
                 </div>
               </div>
@@ -54,7 +61,7 @@ const CurrentTime = () => {
             <DropdownMenuLabel className="p-0">
               <Calendar
                 mode="single"
-                selected={new Date()}
+                selected={currentTime}
                 initialFocus
                 locale={ptBR}
                 className="p-2"

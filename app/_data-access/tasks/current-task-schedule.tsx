@@ -4,23 +4,22 @@ import { auth } from "@clerk/nextjs/server";
 import { db } from "../../_lib/prisma";
 import { DateTime } from "luxon";
 
-interface tasksCurrentTimeUserProps {
+interface currentTasksScheduleProps {
   year: string;
   month: string;
   day: string;
 }
 
-export const tasksCurrentTimeUser = async ({
+export const currentTasksSchedule = async ({
   year,
   month,
   day,
-}: tasksCurrentTimeUserProps) => {
+}: currentTasksScheduleProps) => {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  const timeZone = "America/Sao_Paulo"; // Defina o fuso horário
+  const timeZone = "America/Sao_Paulo";
 
-  // Criar o início e o fim do dia no fuso horário local
   const startOfDay = DateTime.fromObject(
     {
       year: parseInt(year),
