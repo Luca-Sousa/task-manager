@@ -1,3 +1,4 @@
+import { deleteTasks } from "@/app/_actions/tasks/delete-task";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,48 +11,54 @@ import {
   AlertDialogTrigger,
 } from "@/app/_components/ui/alert-dialog";
 import { Button } from "@/app/_components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/app/_components/ui/tooltip";
+import { TasksStatus } from "@prisma/client";
 import { Trash2Icon } from "lucide-react";
+import { toast } from "sonner";
 
-const DeleteTaskButton = () => {
-  //TODO: ATUALIZAR AS INFORMAÇÕES (LUCIVÂNIA)
+interface DeleteTaskButtonProps {
+  taskId: string;
+  status: TasksStatus;
+}
+
+const DeleteTaskButton = ({ taskId, status }: DeleteTaskButtonProps) => {
+  const handleConfirmDeleteClick = async () => {
+    try {
+      await deleteTasks({ taskId });
+
+      toast.success("Tarefa deletada com sucesso!");
+    } catch (error) {
+      console.error("Erro ao deletar a tarefa:", error);
+      toast.error("Ocorreu um erro ao tentar deletar a tarefa!");
+    }
+  };
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <AlertDialog>
-          <TooltipTrigger asChild>
-            <AlertDialogTrigger asChild>
-              <Button size="icon" variant="ghost">
-                <Trash2Icon />
-              </Button>
-            </AlertDialogTrigger>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p className="font-bold">Deletar Tarefa</p>
-          </TooltipContent>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button size="icon" variant="ghost" disabled={status === "IN_PROGRESS"}>
+          <Trash2Icon />
+        </Button>
+      </AlertDialogTrigger>
 
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction>Continue</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </Tooltip>
-    </TooltipProvider>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            Você tem certeza que deseja deletar a tarefa?
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            Esta ação não pode ser desfeita. Isso excluirá permanentemente a
+            tarefa.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+          <AlertDialogAction onClick={handleConfirmDeleteClick}>
+            Continuar
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
 

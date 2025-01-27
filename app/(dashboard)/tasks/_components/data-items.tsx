@@ -116,7 +116,7 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
       <Separator className="my-4" />
 
       <div className="flex flex-1 flex-col gap-3">
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-end lg:hidden">
           <TimeSelect />
         </div>
 
@@ -132,7 +132,7 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
                     {period.charAt(0).toUpperCase() + period.slice(1)}
                   </div>
 
-                  <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  <div className="grid gap-3 xl:grid-cols-2 2xl:grid-cols-3">
                     {tasks.map((task, index) => (
                       <Card
                         key={task.id}
@@ -242,7 +242,10 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
                               </Button>
 
                               <EditButtonTask task={task} />
-                              <DeleteTaskButton />
+                              <DeleteTaskButton
+                                status={task.status}
+                                taskId={task.id}
+                              />
                             </div>
                           </div>
                         </div>
