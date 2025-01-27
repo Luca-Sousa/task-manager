@@ -1,17 +1,12 @@
 import * as React from "react";
-import { FilterIcon, Plus } from "lucide-react";
+import { FilterIcon } from "lucide-react";
 
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   SidebarSeparator,
 } from "@/app/_components/ui/sidebar";
-// import { Calendars } from "./calendars";
 import { DatePickerMenuLateral } from "./date-picker-menu-right";
 
 // This is sample data.
@@ -56,7 +51,8 @@ export function SidebarRight({
         <SidebarSeparator className="mx-0" />
         {/* <Calendars calendars={data.calendars} /> */}
       </SidebarContent>
-      <SidebarFooter>
+
+      {/* <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton>
@@ -65,7 +61,7 @@ export function SidebarRight({
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-      </SidebarFooter>
+      </SidebarFooter> */}
     </Sidebar>
   );
 }
