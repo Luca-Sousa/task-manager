@@ -22,18 +22,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <body
-        className={`${mulish.className} dark h-full antialiased`}
-      >
+      <body className={`${mulish.className} dark h-full antialiased`}>
         <ClerkProvider
           appearance={{
             baseTheme: dark,
           }}
           localization={ptBR}
         >
-          <div className="h-screen">
-          <Navbar />
-          {children}
+          <div className="h-full">
+            <div className="sticky left-0 right-0 top-0 z-50 bg-background">
+              <Navbar />
+            </div>
+            {children}
           </div>
         </ClerkProvider>
       </body>
