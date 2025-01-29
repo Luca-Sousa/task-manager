@@ -17,7 +17,11 @@ import {
   SelectValue,
 } from "./ui/select";
 
-const TimeSelect = () => {
+interface TimeSelectProps {
+  path: string;
+}
+
+const TimeSelect = ({ path }: TimeSelectProps) => {
   const { push } = useRouter();
   const [date, setDate] = useState<Date | undefined>();
 
@@ -34,7 +38,7 @@ const TimeSelect = () => {
     const year = selectedDate.getFullYear();
 
     setDate(selectedDate);
-    push(`tasks/?year=${year}&month=${month}&day=${day}`);
+    push(`${path}/?year=${year}&month=${month}&day=${day}`);
   };
 
   const handleSelectChange = (value: string) => {

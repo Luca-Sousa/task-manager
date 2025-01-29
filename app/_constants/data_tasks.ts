@@ -19,9 +19,9 @@ export const TASK_CATEGORY_LABELS = {
 
 export const TASK_STATUS_LABELS = {
   NOT_STARTED: "Não Iniciado",
-  UNREALIZED: "Não Realizado",
   IN_PROGRESS: "Em Andamento",
   COMPLETED: "Concluído",
+  UNREALIZED: "Não Realizado",
 };
 
 export const TASK_STATUS_OPTIONS = [
@@ -30,16 +30,16 @@ export const TASK_STATUS_OPTIONS = [
     label: TASK_STATUS_LABELS[TasksStatus.NOT_STARTED],
   },
   {
-    value: TasksStatus.UNREALIZED,
-    label: TASK_STATUS_LABELS[TasksStatus.UNREALIZED],
-  },
-  {
     value: TasksStatus.IN_PROGRESS,
     label: TASK_STATUS_LABELS[TasksStatus.IN_PROGRESS],
   },
   {
     value: TasksStatus.COMPLETED,
     label: TASK_STATUS_LABELS[TasksStatus.COMPLETED],
+  },
+  {
+    value: TasksStatus.UNREALIZED,
+    label: TASK_STATUS_LABELS[TasksStatus.UNREALIZED],
   },
 ];
 

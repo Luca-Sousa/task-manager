@@ -117,7 +117,7 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
 
       <div className="flex flex-1 flex-col gap-3">
         <div className="flex items-center justify-end lg:hidden">
-          <TimeSelect />
+          <TimeSelect path="tasks" />
         </div>
 
         <div className="space-y-5">
