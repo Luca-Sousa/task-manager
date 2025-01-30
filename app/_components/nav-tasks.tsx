@@ -28,6 +28,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Tasks } from "@prisma/client";
 import { currentTasksSchedule } from "../_data-access/tasks/current-task-schedule";
+import { DateTime } from "luxon";
 
 const formatTime = (date: Date) =>
   `${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
@@ -42,9 +43,23 @@ export function NavTasks() {
         const year = new Date().getFullYear().toString();
         const month = (new Date().getMonth() + 1).toString();
         const day = new Date().getDate().toString();
+
         const result = await currentTasksSchedule({ year, month, day });
 
-        setCurrentTasks(result);
+        // Captura o timezone do cliente
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        // Converte as datas UTC para o fuso horário local do cliente
+        const convertedTasks = result.map((task) => ({
+          ...task,
+          startTime: DateTime.fromJSDate(task.startTime, {
+            zone: "utc",
+          })
+            .setZone(timezone)
+            .toJSDate(),
+        }));
+
+        setCurrentTasks(convertedTasks);
       } catch (error) {
         console.error("Erro ao carregar as tarefas:", error);
       }
