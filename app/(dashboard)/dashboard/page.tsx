@@ -16,6 +16,7 @@ import { isMatch } from "date-fns";
 import { getDashboard } from "@/app/_data-access/get-dashboard";
 import TimeSelect from "@/app/_components/time-select";
 import CreateTaskButton from "../tasks/_components/upsert-button-task";
+import { LoaderIcon } from "lucide-react";
 
 interface DashboardProps {
   searchParams: {
@@ -39,7 +40,7 @@ const Dashboard = async ({
 
   if (dateIsInvalid) {
     redirect(
-      `?year=${String(new Date().getFullYear()).padStart(2, "0")}&month=${new Date().getMonth() + 1}&day=${new Date().getDate()}`,
+      `?year=${String(new Date().getFullYear())}&month=${new Date().getMonth() + 1}&day=${new Date().getDate()}`,
     );
   }
 
@@ -75,54 +76,83 @@ const Dashboard = async ({
 
           <div className="space-y-3">
             <div className="grid flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <Card className="flex items-end justify-between rounded-xl bg-muted/50 p-4">
+              <Card className="flex justify-between rounded-xl bg-muted/35 p-4 hover:bg-muted/50">
                 <div className="flex flex-col gap-3">
-                  <span className="text-lg font-semibold">
-                    Total de Tarefas
-                  </span>
+                  <div className="flex flex-col gap-1.5">
+                    <LoaderIcon />
+                    <span className="text-xl font-bold text-primary">
+                      Total de Tarefas
+                    </span>
+                  </div>
 
-                  <div className="space-x-1.5 text-sm text-muted-foreground">
-                    <span>{userCanAddTask.tasksTotal}</span>
-                    <span>Tarefas</span>
+                  <div className="flex gap-1.5 text-sm text-muted-foreground">
+                    <span>
+                      {userCanAddTask.tasksTotal > 0 &&
+                        userCanAddTask.tasksTotal}
+                    </span>
+
+                    <span>
+                      {userCanAddTask.tasksTotal > 1
+                        ? "Tarefas"
+                        : userCanAddTask.tasksTotal === 0
+                          ? "Nenhuma Tarefa"
+                          : "Tarefa"}
+                    </span>
                   </div>
                 </div>
 
-                <CreateTaskButton />
+                <div className="flex items-end">
+                  <CreateTaskButton />
+                </div>
               </Card>
 
               {TASK_STATUS_OPTIONS.map((status) => (
                 <Card
                   className={`${
                     status.value === "IN_PROGRESS" && "hidden"
-                  } rounded-xl bg-muted/50 p-4`}
+                  } rounded-xl bg-muted/35 p-4 hover:bg-muted/50`}
                   key={status.label}
                 >
                   <div className="flex flex-col gap-3">
-                    <span className="text-lg font-semibold">
-                      {status.label}
-                    </span>
-                    <div className="space-x-1.5 text-sm text-muted-foreground">
+                    <div className="flex flex-col gap-1.5">
+                      <LoaderIcon />
+                      <span className="text-xl font-bold text-primary">
+                        {status.label}
+                      </span>
+                    </div>
+
+                    <div className="flex gap-1.5 text-sm text-muted-foreground">
                       <span>
                         {status.value === "NOT_STARTED" &&
+                          userCanAddTask.notStartedTotal > 0 &&
                           userCanAddTask.notStartedTotal}
                         {status.value === "COMPLETED" &&
+                          userCanAddTask.completedTotal > 0 &&
                           userCanAddTask.completedTotal}
                         {status.value === "UNREALIZED" &&
+                          userCanAddTask.unrealizedTotal > 0 &&
                           userCanAddTask.unrealizedTotal}
                       </span>
 
                       <span>
-                        {userCanAddTask.completedTotal === 1 ||
-                        userCanAddTask.unrealizedTotal === 1 ||
-                        userCanAddTask.unrealizedTotal === 1 ||
-                        userCanAddTask.unrealizedTotal === 1
-                          ? "Tarefa"
-                          : userCanAddTask.completedTotal === 0 ||
-                              userCanAddTask.unrealizedTotal === 0 ||
-                              userCanAddTask.unrealizedTotal === 0 ||
-                              userCanAddTask.unrealizedTotal === 0
-                            ? "Nenhuma Tarefa"
-                            : "Tarefas"}
+                        {status.value === "NOT_STARTED" &&
+                          (userCanAddTask.notStartedTotal > 1
+                            ? "Tarefas"
+                            : userCanAddTask.notStartedTotal === 0
+                              ? "Nenhuma Tarefa"
+                              : "Tarefa")}
+                        {status.value === "COMPLETED" &&
+                          (userCanAddTask.completedTotal > 1
+                            ? "Tarefas"
+                            : userCanAddTask.completedTotal === 0
+                              ? "Nenhuma Tarefa"
+                              : "Tarefa")}
+                        {status.value === "UNREALIZED" &&
+                          (userCanAddTask.unrealizedTotal > 1
+                            ? "Tarefas"
+                            : userCanAddTask.unrealizedTotal === 0
+                              ? "Nenhuma Tarefa"
+                              : "Tarefa")}
                       </span>
                     </div>
                   </div>
@@ -131,7 +161,7 @@ const Dashboard = async ({
             </div>
           </div>
 
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/35 hover:bg-muted/50 md:min-h-min" />
         </Card>
       </div>
     </SidebarInset>
