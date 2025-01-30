@@ -16,7 +16,6 @@ import CreateTaskButton from "./_components/upsert-button-task";
 import { isMatch } from "date-fns";
 import { currentTasksSchedule } from "@/app/_data-access/tasks/current-task-schedule";
 import { SidebarRight } from "@/app/_components/nav-edit-task";
-import { DateTime } from "luxon";
 
 interface TasksProps {
   searchParams: {
@@ -43,18 +42,6 @@ const Tasks = async ({ searchParams: { year, month, day } }: TasksProps) => {
   }
 
   const tasks = await currentTasksSchedule({ year, month, day });
-  // Captura o timezone do cliente
-  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-  // Converte as datas UTC para o fuso horário local do cliente
-  const convertedTasks = tasks.map((task) => ({
-    ...task,
-    startTime: DateTime.fromJSDate(task.startTime, {
-      zone: "utc",
-    })
-      .setZone(timezone)
-      .toJSDate(),
-  }));
 
   return (
     <>
@@ -85,7 +72,7 @@ const Tasks = async ({ searchParams: { year, month, day } }: TasksProps) => {
               <CreateTaskButton />
             </div>
 
-            <DataItemsTasks tasks={convertedTasks} />
+            <DataItemsTasks tasks={tasks} />
           </Card>
         </div>
       </SidebarInset>
