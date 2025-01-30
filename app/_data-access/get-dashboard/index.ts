@@ -1,8 +1,8 @@
 "use server";
 
+import { DatetimeConversion } from "@/app/_constants/datetime-conversion";
 import { db } from "@/app/_lib/prisma";
 import { auth } from "@clerk/nextjs/server";
-import { endOfDay, startOfDay } from "date-fns";
 
 interface getDashboardParams {
   day: string;
@@ -18,12 +18,15 @@ export const getDashboard = async ({
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
+  const startOfDay = DatetimeConversion({ year, month, day }).startOfDay;
+  const endOfDay = DatetimeConversion({ year, month, day }).endOfDay;
+
   const notStartedTotal = await db.tasks.count({
     where: {
       userId,
       startTime: {
-        gte: startOfDay(`${year}-${month}-${day}`),
-        lt: endOfDay(`${year}-${month}-${day}`),
+        gte: startOfDay,
+        lt: endOfDay,
       },
       status: "NOT_STARTED",
     },
@@ -33,8 +36,8 @@ export const getDashboard = async ({
     where: {
       userId,
       startTime: {
-        gte: startOfDay(`${year}-${month}-${day}`),
-        lt: endOfDay(`${year}-${month}-${day}`),
+        gte: startOfDay,
+        lt: endOfDay,
       },
       status: "IN_PROGRESS",
     },
@@ -44,8 +47,8 @@ export const getDashboard = async ({
     where: {
       userId,
       startTime: {
-        gte: startOfDay(`${year}-${month}-${day}`),
-        lt: endOfDay(`${year}-${month}-${day}`),
+        gte: startOfDay,
+        lt: endOfDay,
       },
       status: "COMPLETED",
     },
@@ -55,8 +58,8 @@ export const getDashboard = async ({
     where: {
       userId,
       startTime: {
-        gte: startOfDay(`${year}-${month}-${day}`),
-        lt: endOfDay(`${year}-${month}-${day}`),
+        gte: startOfDay,
+        lt: endOfDay,
       },
       status: "UNREALIZED",
     },
@@ -66,8 +69,8 @@ export const getDashboard = async ({
     where: {
       userId,
       startTime: {
-        gte: startOfDay(`${year}-${month}-${day}`),
-        lt: endOfDay(`${year}-${month}-${day}`),
+        gte: startOfDay,
+        lt: endOfDay,
       },
     },
   });
