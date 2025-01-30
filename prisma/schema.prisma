@@ -19,8 +19,8 @@ model Tasks {
   description String
   status      TasksStatus
   category    TasksCategory
-  startTime   DateTime      @db.Timestamptz
-  endTime     DateTime      @db.Timestamptz
+  startTime   DateTime
+  endTime     DateTime
   userId      String
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
