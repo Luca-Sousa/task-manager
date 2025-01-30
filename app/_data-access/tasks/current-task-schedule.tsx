@@ -18,24 +18,16 @@ export const currentTasksSchedule = async ({
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  // Criar a data no fuso local
-  const localDate = new Date(Number(year), Number(month) - 1, Number(day));
-
-  // Garantir que startOfDay e endOfDay usem a data local corretamente
-  const start = startOfDay(localDate);
-  const end = endOfDay(localDate);
-
   const tasks = await db.tasks.findMany({
     where: {
       startTime: {
-        gte: start,
-        lt: end,
+        gte: startOfDay(`${year}-${month}-${day}`),
+        lt: endOfDay(`${year}-${month}-${day}`),
       },
       userId: userId,
     },
     orderBy: { startTime: "asc" },
   });
 
-  console.log(tasks);
   return tasks;
 };
