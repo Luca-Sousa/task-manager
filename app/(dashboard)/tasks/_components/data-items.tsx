@@ -136,7 +136,7 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
                     {tasks.map((task, index) => (
                       <Card
                         key={task.id}
-                        className={`flex flex-1 flex-col px-3 py-2 hover:bg-secondary/20`}
+                        className={`flex flex-1 flex-col bg-muted/20 px-3 py-2 hover:bg-muted/30`}
                       >
                         <div className="flex flex-col justify-between">
                           <div className="flex flex-col gap-1">

@@ -25,6 +25,9 @@ export default function RootLayout({
       <body className={`${mulish.className} dark h-full antialiased`}>
         <ClerkProvider
           appearance={{
+            layout: {
+              unsafe_disableDevelopmentModeWarnings: true,
+            },
             baseTheme: dark,
           }}
           localization={ptBR}

@@ -10,13 +10,12 @@ import {
   BreadcrumbLink,
   BreadcrumbPage,
 } from "@/app/_components/ui/breadcrumb";
-import { Card } from "@/app/_components/ui/card";
-import { TASK_STATUS_OPTIONS } from "@/app/_constants/data_tasks";
+import { Card, CardHeader, CardTitle } from "@/app/_components/ui/card";
 import { isMatch } from "date-fns";
 import { getDashboard } from "@/app/_data-access/get-dashboard";
 import TimeSelect from "@/app/_components/time-select";
-import CreateTaskButton from "../tasks/_components/upsert-button-task";
-import { LoaderIcon } from "lucide-react";
+import SummaryCards from "../components/summary-cards";
+import TasksPieChart from "../components/tasks-pie-chart";
 
 interface DashboardProps {
   searchParams: {
@@ -44,6 +43,7 @@ const Dashboard = async ({
     );
   }
 
+  const dateFilter = new Date(Number(year), Number(month) - 1, Number(day));
   const userCanAddTask = await getDashboard({ year, month, day });
 
   return (
@@ -67,101 +67,38 @@ const Dashboard = async ({
       </header>
 
       <div className="flex flex-1 flex-col p-4 pt-0">
-        <Card className="gap flex min-h-[100vh] flex-1 flex-col space-y-8 p-4 md:min-h-min">
+        <Card className="flex min-h-[100vh] flex-1 flex-col space-y-8 p-4 md:min-h-min">
           <div className="flex items-center justify-between">
             <h1 className="mt-1 text-xl font-bold">Dashboard</h1>
 
             <TimeSelect path="dashboard" />
           </div>
 
-          <div className="space-y-3">
-            <div className="grid flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <Card className="flex justify-between rounded-xl bg-muted/35 p-4 hover:bg-muted/50">
-                <div className="flex flex-col gap-3">
-                  <div className="flex flex-col gap-1.5">
-                    <LoaderIcon />
-                    <span className="text-xl font-bold text-primary">
-                      Total de Tarefas
-                    </span>
-                  </div>
+          <div className="flex min-h-[100vh] flex-1 flex-col gap-3 md:min-h-min 2xl:flex-row">
+            <div className="flex min-h-[100vh] flex-1 flex-col space-y-3 md:min-h-min">
+              <SummaryCards {...userCanAddTask} />
 
-                  <div className="flex gap-1.5 text-sm text-muted-foreground">
-                    <span>
-                      {userCanAddTask.tasksTotal > 0 &&
-                        userCanAddTask.tasksTotal}
-                    </span>
+              <div className="grid min-h-min flex-1 grid-cols-1 gap-3 rounded-xl lg:grid-cols-2 min-[1640px]:grid-cols-3">
+                <TasksPieChart {...userCanAddTask} dateFilter={dateFilter} />
 
-                    <span>
-                      {userCanAddTask.tasksTotal > 1
-                        ? "Tarefas"
-                        : userCanAddTask.tasksTotal === 0
-                          ? "Nenhuma Tarefa"
-                          : "Tarefa"}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-end">
-                  <CreateTaskButton />
-                </div>
-              </Card>
-
-              {TASK_STATUS_OPTIONS.map((status) => (
-                <Card
-                  className={`${
-                    status.value === "IN_PROGRESS" && "hidden"
-                  } rounded-xl bg-muted/35 p-4 hover:bg-muted/50`}
-                  key={status.label}
-                >
-                  <div className="flex flex-col gap-3">
-                    <div className="flex flex-col gap-1.5">
-                      <LoaderIcon />
-                      <span className="text-xl font-bold text-primary">
-                        {status.label}
-                      </span>
-                    </div>
-
-                    <div className="flex gap-1.5 text-sm text-muted-foreground">
-                      <span>
-                        {status.value === "NOT_STARTED" &&
-                          userCanAddTask.notStartedTotal > 0 &&
-                          userCanAddTask.notStartedTotal}
-                        {status.value === "COMPLETED" &&
-                          userCanAddTask.completedTotal > 0 &&
-                          userCanAddTask.completedTotal}
-                        {status.value === "UNREALIZED" &&
-                          userCanAddTask.unrealizedTotal > 0 &&
-                          userCanAddTask.unrealizedTotal}
-                      </span>
-
-                      <span>
-                        {status.value === "NOT_STARTED" &&
-                          (userCanAddTask.notStartedTotal > 1
-                            ? "Tarefas"
-                            : userCanAddTask.notStartedTotal === 0
-                              ? "Nenhuma Tarefa"
-                              : "Tarefa")}
-                        {status.value === "COMPLETED" &&
-                          (userCanAddTask.completedTotal > 1
-                            ? "Tarefas"
-                            : userCanAddTask.completedTotal === 0
-                              ? "Nenhuma Tarefa"
-                              : "Tarefa")}
-                        {status.value === "UNREALIZED" &&
-                          (userCanAddTask.unrealizedTotal > 1
-                            ? "Tarefas"
-                            : userCanAddTask.unrealizedTotal === 0
-                              ? "Nenhuma Tarefa"
-                              : "Tarefa")}
-                      </span>
-                    </div>
-                  </div>
+                <Card className="min-h-[100vh] bg-muted/20 hover:bg-muted/30 lg:col-span-1 lg:min-h-min min-[1640px]:col-span-2">
+                  <CardHeader>
+                    <CardTitle className="text-xl font-bold">
+                      Quantidade de Tarefas por Categoria
+                    </CardTitle>
+                  </CardHeader>
                 </Card>
-              ))}
+              </div>
             </div>
-          </div>
 
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/35 hover:bg-muted/50 md:min-h-min" />
+            <Card className="flex min-h-[100vh] w-full flex-col bg-muted/20 hover:bg-muted/30 2xl:min-h-min 2xl:max-w-[400px]">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold">
+                  Últimas Tarefas Cadastradas
+                </CardTitle>
+              </CardHeader>
+            </Card>
+          </div>
         </Card>
       </div>
     </SidebarInset>
