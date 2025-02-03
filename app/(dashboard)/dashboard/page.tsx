@@ -10,13 +10,14 @@ import {
   BreadcrumbLink,
   BreadcrumbPage,
 } from "@/app/_components/ui/breadcrumb";
-import { Card, CardHeader, CardTitle } from "@/app/_components/ui/card";
+import { Card } from "@/app/_components/ui/card";
 import { isMatch } from "date-fns";
 import { getDashboard } from "@/app/_data-access/get-dashboard";
 import TimeSelect from "@/app/_components/time-select";
 import SummaryCards from "../components/summary-cards";
 import TasksPieChart from "../components/tasks-pie-chart";
 import TasksPerCategory from "../components/tasks-per-category";
+import LastTasks from "../components/last-tasks";
 
 interface DashboardProps {
   searchParams: {
@@ -91,11 +92,7 @@ const Dashboard = async ({
             </div>
 
             <Card className="flex min-h-[100vh] w-full flex-col bg-muted/20 hover:bg-muted/30 2xl:min-h-min">
-              <CardHeader>
-                <CardTitle className="text-xl font-bold">
-                  Últimas Tarefas Cadastradas
-                </CardTitle>
-              </CardHeader>
+              <LastTasks lastTasks={userCanAddTask.lastTasks} />
             </Card>
           </div>
         </Card>

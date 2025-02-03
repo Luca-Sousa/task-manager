@@ -98,6 +98,14 @@ export const getDashboard = async ({
       tasksTotal > 0 ? Math.round((category._count / tasksTotal) * 100) : 0,
   }));
 
+  const lastTasks = await db.tasks.findMany({
+    where: {
+      userId,
+    },
+    orderBy: { startTime: "desc" },
+    take: 10,
+  });
+
   return {
     notStartedTotal,
     inProgressTotal,
@@ -106,5 +114,6 @@ export const getDashboard = async ({
     tasksTotal,
     percentageOfTasksCompleted,
     TotalTasksPerCategory,
+    lastTasks,
   };
 };
