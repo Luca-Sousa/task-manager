@@ -16,6 +16,7 @@ import { getDashboard } from "@/app/_data-access/get-dashboard";
 import TimeSelect from "@/app/_components/time-select";
 import SummaryCards from "../components/summary-cards";
 import TasksPieChart from "../components/tasks-pie-chart";
+import TasksPerCategory from "../components/tasks-per-category";
 
 interface DashboardProps {
   searchParams: {
@@ -74,24 +75,22 @@ const Dashboard = async ({
             <TimeSelect path="dashboard" />
           </div>
 
-          <div className="flex min-h-[100vh] flex-1 flex-col gap-3 md:min-h-min 2xl:flex-row">
+          <div className="flex min-h-[100vh] flex-1 flex-col gap-3 md:min-h-min 2xl:grid 2xl:grid-cols-[2fr,1fr]">
             <div className="flex min-h-[100vh] flex-1 flex-col space-y-3 md:min-h-min">
               <SummaryCards {...userCanAddTask} />
 
-              <div className="grid min-h-min flex-1 grid-cols-1 gap-3 rounded-xl lg:grid-cols-2 min-[1640px]:grid-cols-3">
+              <div className="grid min-h-min flex-1 grid-cols-1 gap-3 rounded-xl lg:grid-cols-2">
                 <TasksPieChart {...userCanAddTask} dateFilter={dateFilter} />
 
-                <Card className="min-h-[100vh] bg-muted/20 hover:bg-muted/30 lg:col-span-1 lg:min-h-min min-[1640px]:col-span-2">
-                  <CardHeader>
-                    <CardTitle className="text-xl font-bold">
-                      Quantidade de Tarefas por Categoria
-                    </CardTitle>
-                  </CardHeader>
+                <Card className="min-h-[100vh] bg-muted/20 hover:bg-muted/30 lg:col-span-1 lg:min-h-min">
+                  <TasksPerCategory
+                    tasksPerCategory={userCanAddTask.TotalTasksPerCategory}
+                  />
                 </Card>
               </div>
             </div>
 
-            <Card className="flex min-h-[100vh] w-full flex-col bg-muted/20 hover:bg-muted/30 2xl:min-h-min 2xl:max-w-[400px]">
+            <Card className="flex min-h-[100vh] w-full flex-col bg-muted/20 hover:bg-muted/30 2xl:min-h-min">
               <CardHeader>
                 <CardTitle className="text-xl font-bold">
                   Últimas Tarefas Cadastradas

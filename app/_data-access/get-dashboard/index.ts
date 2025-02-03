@@ -3,6 +3,7 @@
 import { DatetimeConversion } from "@/app/_constants/datetime-conversion";
 import { db } from "@/app/_lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { TotalTasksPerCategory } from "./types";
 
 interface getDashboardParams {
   day: string;
@@ -75,11 +76,35 @@ export const getDashboard = async ({
     },
   });
 
+  const percentageOfTasksCompleted = isNaN(completedTotal / tasksTotal)
+    ? 0
+    : Math.round((completedTotal / tasksTotal) * 100 * 100) / 100;
+
+  const TotalTasksPerCategory: TotalTasksPerCategory[] = (
+    await db.tasks.groupBy({
+      by: ["category"],
+      where: {
+        startTime: {
+          gte: startOfDay,
+          lt: endOfDay,
+        },
+      },
+      _count: true,
+    })
+  ).map((category) => ({
+    category: category.category,
+    TotalAmount: category._count,
+    porcentageOfTotalTasks:
+      tasksTotal > 0 ? Math.round((category._count / tasksTotal) * 100) : 0,
+  }));
+
   return {
     notStartedTotal,
     inProgressTotal,
     completedTotal,
     unrealizedTotal,
     tasksTotal,
+    percentageOfTasksCompleted,
+    TotalTasksPerCategory,
   };
 };

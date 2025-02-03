@@ -29,6 +29,7 @@ interface TasksPieChartProps {
   completedTotal: number;
   unrealizedTotal: number;
   tasksTotal: number;
+  percentageOfTasksCompleted: number;
 }
 
 const chartConfig = {
@@ -57,11 +58,8 @@ const TasksPieChart = ({
   completedTotal,
   unrealizedTotal,
   tasksTotal,
+  percentageOfTasksCompleted,
 }: TasksPieChartProps) => {
-  const percentageOfTasksCompleted = isNaN(completedTotal / tasksTotal)
-    ? 0
-    : Math.round((completedTotal / tasksTotal) * 100 * 100) / 100;
-
   const chartData = [
     {
       type: TasksStatus.NOT_STARTED,
