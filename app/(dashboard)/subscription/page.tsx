@@ -6,7 +6,6 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/app/_components/ui/breadcrumb";
-import { Button } from "@/app/_components/ui/button";
 import {
   Card,
   CardContent,
@@ -18,8 +17,8 @@ import { Separator } from "@/app/_components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/app/_components/ui/sidebar";
 import { auth } from "@clerk/nextjs/server";
 import { CheckIcon } from "lucide-react";
-import Link from "next/link";
 import { redirect } from "next/navigation";
+import AcquirePlanButton from "./_compoments/acquire-plan-button";
 
 const SubscriptionPage = async () => {
   const { userId } = await auth();
@@ -48,30 +47,31 @@ const SubscriptionPage = async () => {
       <div className="flex min-h-[100vh] flex-1 flex-col p-4 lg:min-h-min">
         <Card className="flex h-full flex-col justify-between">
           <CardHeader className="mx-auto max-w-4xl text-center">
-            <CardTitle className="text-balance text-2xl font-semibold tracking-tight sm:text-4xl">
-              Choose the right plan for you
+            <CardTitle className="text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
+              Escolha o plano certo para você
             </CardTitle>
-            <CardDescription className="mx-auto max-w-2xl text-pretty text-center text-lg font-medium sm:text-xl">
-              Choose an affordable plan that’s packed with the best features for
-              engaging your audience, creating customer loyalty, and driving
-              sales.
+            <CardDescription className="mx-auto max-w-2xl text-pretty text-center text-lg font-medium sm:text-xl lg:max-w-4xl xl:max-w-6xl">
+              Otimize sua produtividade com o plano perfeito para suas
+              necessidades! Nosso plano prremium oferece recursos que vão desde
+              a organização básica de tarefas até ferramentas avançadas para sua
+              rotina de tarefas.
             </CardDescription>
           </CardHeader>
 
           <CardContent className="mx-auto grid max-w-lg flex-1 grid-cols-1 items-center gap-y-6 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2">
             <div className="rounded-3xl bg-accent-foreground/90 p-8 sm:mx-8 sm:rounded-b-none sm:p-10 lg:mx-0 lg:rounded-bl-3xl lg:rounded-tr-none">
-              <h1 className="text-base/7 font-bold text-primary">Hobby</h1>
+              <h1 className="text-base/7 font-bold text-primary">Free</h1>
 
               <p className="mt-4 flex items-baseline gap-x-2">
                 <span className="text-3xl font-semibold tracking-tight text-gray-900">
-                  $0
+                  R$ 0
                 </span>
-                <span className="text-base/7 text-gray-500">/month</span>
+                <span className="text-base/7 text-gray-500">/mês</span>
               </p>
 
               <p className="mt-6 text-base/7 text-gray-500">
-                The perfect plan if you&#039;re just getting started with our
-                product.
+                Gerencie suas tarefas de forma simples e eficiente, sem custo!
+                Este plano oferece o essencial para você se manter produtivo.
               </p>
 
               <ul
@@ -80,7 +80,7 @@ const SubscriptionPage = async () => {
               >
                 <li className="flex gap-x-3">
                   <CheckIcon className="stroke-primary" />
-                  25 products
+                  Até 5 Tarefas
                 </li>
                 <li className="flex gap-x-3">
                   <CheckIcon className="stroke-primary" />
@@ -98,17 +98,19 @@ const SubscriptionPage = async () => {
             </div>
 
             <div className="relative rounded-3xl border border-muted-foreground/40 bg-muted-foreground/10 p-8 shadow-2xl sm:p-10">
-              <h1 className="text-base/7 font-bold text-primary">Enterprise</h1>
+              <h1 className="text-xl font-bold text-primary">Premium</h1>
 
               <p className="mt-4 flex items-baseline gap-x-2">
                 <span className="text-5xl font-semibold tracking-tight text-white">
-                  $99
+                  R$ 24,99
                 </span>
-                <span className="text-base text-gray-400">/month</span>
+                <span className="text-base text-gray-400">/mês</span>
               </p>
 
               <p className="mt-6 text-base/7 text-gray-300">
-                Dedicated support and infrastructure for your company.
+                Desbloqueie recursos avançados para otimizar sua gestão de
+                tarefas diárias. Com o plano Premium, você tem mais controle,
+                automação e suporte prioritário.
               </p>
 
               <ul
@@ -117,7 +119,7 @@ const SubscriptionPage = async () => {
               >
                 <li className="flex gap-x-3">
                   <CheckIcon className="stroke-primary" />
-                  Unlimited products
+                  Tarefas Ilimitadas
                 </li>
                 <li className="flex gap-x-3">
                   <CheckIcon className="stroke-primary" />
@@ -129,10 +131,6 @@ const SubscriptionPage = async () => {
                 </li>
                 <li className="flex gap-x-3">
                   <CheckIcon className="stroke-primary" />
-                  Dedicated support representative
-                </li>
-                <li className="flex gap-x-3">
-                  <CheckIcon className="stroke-primary" />
                   Marketing automations
                 </li>
                 <li className="flex gap-x-3">
@@ -141,9 +139,7 @@ const SubscriptionPage = async () => {
                 </li>
               </ul>
 
-              <Button className="shadow-xs mt-8 w-full" asChild>
-                <Link href="#">Get started today</Link>
-              </Button>
+              <AcquirePlanButton />
             </div>
           </CardContent>
         </Card>
