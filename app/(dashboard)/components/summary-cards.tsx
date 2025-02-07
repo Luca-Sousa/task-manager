@@ -7,6 +7,7 @@ import {
   BookXIcon,
 } from "lucide-react";
 import CreateTaskButton from "../tasks/_components/upsert-button-task";
+import { canUserAddtask } from "@/app/_data-access/can-user-add-task";
 
 interface SummaryCardsProps {
   notStartedTotal: number;
@@ -15,12 +16,14 @@ interface SummaryCardsProps {
   tasksTotal: number;
 }
 
-const SummaryCards = ({
+const SummaryCards = async ({
   notStartedTotal,
   completedTotal,
   unrealizedTotal,
   tasksTotal,
 }: SummaryCardsProps) => {
+  const userCanAddtasks = await canUserAddtask();
+
   return (
     <div className="space-y-3">
       <Card className="flex justify-between rounded-xl bg-muted/20 p-4 hover:bg-muted/30">
@@ -50,7 +53,7 @@ const SummaryCards = ({
               </span>
             </div>
 
-            <CreateTaskButton />
+            <CreateTaskButton userCanAddtasks={userCanAddtasks} />
           </div>
         </div>
       </Card>

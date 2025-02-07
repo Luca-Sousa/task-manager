@@ -16,6 +16,7 @@ import CreateTaskButton from "./_components/upsert-button-task";
 import { isMatch } from "date-fns";
 import { currentTasksSchedule } from "@/app/_data-access/tasks/current-task-schedule";
 import { SidebarRight } from "@/app/_components/nav-edit-task";
+import { canUserAddtask } from "@/app/_data-access/can-user-add-task";
 
 interface TasksProps {
   searchParams: {
@@ -43,6 +44,8 @@ const Tasks = async ({ searchParams: { year, month, day } }: TasksProps) => {
 
   const tasks = await currentTasksSchedule({ year, month, day });
 
+  const userCanAddtasks = await canUserAddtask();
+
   return (
     <>
       <SidebarInset>
@@ -69,7 +72,7 @@ const Tasks = async ({ searchParams: { year, month, day } }: TasksProps) => {
             <div className="flex items-center justify-between">
               <h1 className="text-xl font-bold">Minhas Tarefas</h1>
 
-              <CreateTaskButton />
+              <CreateTaskButton userCanAddtasks={userCanAddtasks} />
             </div>
 
             <DataItemsTasks tasks={tasks} />

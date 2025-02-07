@@ -39,6 +39,7 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 export function NavUser() {
   const { isMobile, setOpenMobile } = useSidebar();
   const { user } = useUser();
+  const hasPremiumPlan = user?.publicMetadata.subscriptionPlan === "premium";
 
   return (
     <SidebarMenu>
@@ -121,7 +122,9 @@ export function NavUser() {
                 >
                   <Link href={"/subscription"}>
                     <Sparkles />
-                    Atualize pro Premium
+                    {hasPremiumPlan
+                      ? "Gerenciar Plano Premium"
+                      : "Atualize pro Premium"}
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>

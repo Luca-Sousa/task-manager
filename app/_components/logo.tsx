@@ -9,8 +9,12 @@ import {
 } from "@/app/_components/ui/sidebar";
 import Image from "next/image";
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 
 export function Logo() {
+  const { user } = useUser();
+  const hasPremiumPlan = user?.publicMetadata.subscriptionPlan == "premium";
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -27,7 +31,9 @@ export function Logo() {
 
             <div className="flex flex-col gap-1 leading-none">
               <span className="font-semibold">Task Manager</span>
-              <span className="text-xs">Plano Free</span>
+              <span className="text-xs">
+                Plano {hasPremiumPlan ? "Premium" : "Free"}
+              </span>
             </div>
           </Link>
         </SidebarMenuButton>

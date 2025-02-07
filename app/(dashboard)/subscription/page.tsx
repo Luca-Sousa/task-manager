@@ -20,6 +20,7 @@ import { CheckIcon, CrownIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 import AcquirePlanButton from "./_compoments/acquire-plan-button";
 import { Badge } from "@/app/_components/ui/badge";
+import { getCurrentDayTasks } from "@/app/_data-access/get-current-day-tasks";
 
 const SubscriptionPage = async () => {
   const { userId } = await auth();
@@ -27,6 +28,8 @@ const SubscriptionPage = async () => {
 
   const user = await clerkClient().users.getUser(userId);
   const hasPremiumPlan = user.publicMetadata.subscriptionPlan === "premium";
+
+  const currentDayTasks = await getCurrentDayTasks();
 
   return (
     <SidebarInset>
@@ -84,7 +87,7 @@ const SubscriptionPage = async () => {
               >
                 <li className="flex gap-x-3">
                   <CheckIcon className="stroke-primary" />
-                  Até 5 Tarefas
+                  Até 5 Tarefas Diárias({currentDayTasks}/5)
                 </li>
                 <li className="flex gap-x-3">
                   <CheckIcon className="stroke-primary" />
@@ -111,7 +114,7 @@ const SubscriptionPage = async () => {
               <h1 className="text-xl font-bold text-primary">Premium</h1>
 
               <p className="mt-4 flex items-baseline gap-x-2">
-                <span className="text-5xl font-semibold tracking-tight text-white">
+                <span className="text-4xl font-semibold tracking-tight text-white lg:text-5xl">
                   R$ 24,99
                 </span>
                 <span className="text-base text-gray-400">/mês</span>
