@@ -84,6 +84,7 @@ export const getDashboard = async ({
     await db.tasks.groupBy({
       by: ["category"],
       where: {
+        userId,
         startTime: {
           gte: startOfDay,
           lt: endOfDay,
