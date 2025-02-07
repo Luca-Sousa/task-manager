@@ -15,14 +15,18 @@ import {
 } from "@/app/_components/ui/card";
 import { Separator } from "@/app/_components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/app/_components/ui/sidebar";
-import { auth } from "@clerk/nextjs/server";
-import { CheckIcon } from "lucide-react";
+import { auth, clerkClient } from "@clerk/nextjs/server";
+import { CheckIcon, CrownIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 import AcquirePlanButton from "./_compoments/acquire-plan-button";
+import { Badge } from "@/app/_components/ui/badge";
 
 const SubscriptionPage = async () => {
   const { userId } = await auth();
   if (!userId) return redirect("/");
+
+  const user = await clerkClient().users.getUser(userId);
+  const hasPremiumPlan = user.publicMetadata.subscriptionPlan === "premium";
 
   return (
     <SidebarInset>
@@ -52,14 +56,14 @@ const SubscriptionPage = async () => {
             </CardTitle>
             <CardDescription className="mx-auto max-w-2xl text-pretty text-center text-lg font-medium sm:text-xl lg:max-w-4xl xl:max-w-6xl">
               Otimize sua produtividade com o plano perfeito para suas
-              necessidades! Nosso plano prremium oferece recursos que vão desde
-              a organização básica de tarefas até ferramentas avançadas para sua
+              necessidades! Nosso plano premium oferece recursos que vão desde a
+              organização básica de tarefas até ferramentas avançadas para sua
               rotina de tarefas.
             </CardDescription>
           </CardHeader>
 
           <CardContent className="mx-auto grid max-w-lg flex-1 grid-cols-1 items-center gap-y-6 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2">
-            <div className="rounded-3xl bg-accent-foreground/90 p-8 sm:mx-8 sm:rounded-b-none sm:p-10 lg:mx-0 lg:rounded-bl-3xl lg:rounded-tr-none">
+            <div className="relative rounded-3xl bg-accent-foreground/90 p-8 sm:mx-8 sm:rounded-b-none sm:p-10 lg:mx-0 lg:rounded-bl-3xl lg:rounded-tr-none">
               <h1 className="text-base/7 font-bold text-primary">Free</h1>
 
               <p className="mt-4 flex items-baseline gap-x-2">
@@ -98,6 +102,12 @@ const SubscriptionPage = async () => {
             </div>
 
             <div className="relative rounded-3xl border border-muted-foreground/40 bg-muted-foreground/10 p-8 shadow-2xl sm:p-10">
+              {hasPremiumPlan && (
+                <Badge className="absolute right-6 top-6 space-x-1.5">
+                  <CrownIcon size={14} />
+                  <span>Ativo</span>
+                </Badge>
+              )}
               <h1 className="text-xl font-bold text-primary">Premium</h1>
 
               <p className="mt-4 flex items-baseline gap-x-2">
