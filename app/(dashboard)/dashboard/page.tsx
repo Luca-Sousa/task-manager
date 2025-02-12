@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { Separator } from "../../_components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "../../_components/ui/sidebar";
@@ -23,7 +23,8 @@ interface DashboardProps {
   searchParams: {
     year: string;
     month: string;
-    day: string;
+    day?: string;
+    week?: string;
   };
 }
 
@@ -33,19 +34,50 @@ const Dashboard = async ({
   const { userId } = await auth();
   if (!userId) return redirect("/");
 
-  const dateIsInvalid =
-    !year ||
-    !month ||
-    !day ||
-    !isMatch(`${year}-${month}-${day}`, "yyyy-MM-dd");
+  const user = await clerkClient().users.getUser(userId);
+  const hasPremiumPlan = user.publicMetadata.subscriptionPlan === "premium";
 
-  if (dateIsInvalid) {
-    redirect(
-      `?year=${String(new Date().getFullYear())}&month=${new Date().getMonth() + 1}&day=${new Date().getDate()}`,
-    );
+  const now = new Date();
+
+  let dateFilter = new Date();
+
+  if (hasPremiumPlan) {
+    const dateIsInvalid =
+      !year ||
+      (month && !isMatch(`${year}-${month}`, "yyyy-MM")) ||
+      (day && !isMatch(`${year}-${month}-${day}`, "yyyy-MM-dd"));
+
+    if (dateIsInvalid) {
+      const queryParams = day
+        ? `?year=${now.getFullYear()}&month=${now.getMonth() + 1}&day=${now.getDate()}`
+        : month
+          ? `?year=${now.getFullYear()}&month=${now.getMonth() + 1}`
+          : `?year=${now.getFullYear()}`; // Redireciona para o ano atual, se apenas o ano for passado
+
+      return redirect(queryParams);
+    }
+
+    dateFilter = day
+      ? new Date(Number(year), Number(month) - 1, Number(day))
+      : month
+        ? new Date(Number(year), Number(month) - 1, 1)
+        : new Date(Number(year), 0, 1); // Início do ano, se apenas o ano for passado
+  } else {
+    const dateIsInvalid =
+      !year ||
+      !month ||
+      !day ||
+      !isMatch(`${year}-${month}-${day}`, "yyyy-MM-dd");
+
+    if (dateIsInvalid) {
+      return redirect(
+        `?year=${String(now.getFullYear())}&month=${now.getMonth() + 1}&day=${now.getDate()}`,
+      );
+    }
+
+    dateFilter = new Date(Number(year), Number(month) - 1, Number(day));
   }
 
-  const dateFilter = new Date(Number(year), Number(month) - 1, Number(day));
   const userCanAddTask = await getDashboard({ year, month, day });
 
   return (
