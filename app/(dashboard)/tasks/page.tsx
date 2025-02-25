@@ -17,6 +17,8 @@ import { isMatch } from "date-fns";
 import { currentTasksSchedule } from "@/app/_data-access/tasks/current-task-schedule";
 import { SidebarRight } from "@/app/_components/nav-edit-task";
 import { canUserAddtask } from "@/app/_data-access/can-user-add-task";
+import Image from "next/image";
+import { Badge } from "@/app/_components/ui/badge";
 
 interface TasksProps {
   searchParams: {
@@ -69,13 +71,48 @@ const Tasks = async ({ searchParams: { year, month, day } }: TasksProps) => {
 
         <div className="flex flex-1 p-4 pt-0">
           <Card className="min-h-[100vh] flex-1 space-y-8 p-4 md:min-h-min">
-            <div className="flex items-center justify-between">
-              <h1 className="text-xl font-bold">Minhas Tarefas</h1>
+            <div className="flex size-full flex-col">
+              <div className="flex items-center justify-between">
+                <h1 className="text-xl font-bold">Minhas Tarefas</h1>
 
-              <CreateTaskButton userCanAddtasks={userCanAddtasks} />
+                <CreateTaskButton userCanAddtasks={userCanAddtasks} />
+              </div>
+
+              {tasks.length > 0 ? (
+                <DataItemsTasks tasks={tasks} />
+              ) : (
+                <div className="flex flex-1 flex-col items-center justify-center gap-10">
+                  <div className="mr-auto max-w-3xl space-y-5 pl-16">
+                    <div className="flex flex-wrap gap-2 lg:gap-4">
+                      <Badge className="w-fit rounded-full bg-transparent px-3 ring-2 ring-sky-700 hover:bg-transparent">
+                        Gerencie
+                      </Badge>
+                      <Badge className="w-fit rounded-full bg-transparent px-3 ring-2 ring-violet-700 hover:bg-transparent">
+                        Crie
+                      </Badge>
+                      <Badge className="w-fit rounded-full bg-transparent px-3 ring-2 ring-rose-700 hover:bg-transparent">
+                        Organize-se
+                      </Badge>
+                    </div>
+
+                    <h1 className="text-3xl font-bold sm:text-4xl lg:text-4xl xl:text-5xl 2xl:text-balance">
+                      Crie novas <span className="text-primary">Tarefas</span>{" "}
+                      hoje mesmo, gerencie sua{" "}
+                      <span className="text-primary">Rotina</span>!
+                    </h1>
+                  </div>
+
+                  <div className="relative aspect-video size-1/2">
+                    <Image
+                      alt="Imagem informando que não tem tarefas cadastradas"
+                      src="/checklist.svg"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
-
-            <DataItemsTasks tasks={tasks} />
           </Card>
         </div>
       </SidebarInset>
