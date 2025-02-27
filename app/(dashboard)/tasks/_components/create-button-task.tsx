@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/app/_components/ui/dialog";
 import { PlusIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateTaskDialogContent from "./create-task-content";
 
 interface CreateTaskButtonProps {
@@ -19,6 +19,16 @@ interface CreateTaskButtonProps {
 
 const CreateTaskButton = ({ userCanAddtasks }: CreateTaskButtonProps) => {
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (dialogIsOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    return () => document.body.classList.remove("overflow-hidden");
+  }, [dialogIsOpen]);
 
   return (
     <Dialog
@@ -38,7 +48,7 @@ const CreateTaskButton = ({ userCanAddtasks }: CreateTaskButtonProps) => {
 
       {dialogIsOpen && <div className="fixed inset-0 z-40 bg-black/80" />}
 
-      <DialogContent className="max-h-[90%] overflow-y-auto overflow-x-hidden">
+      <DialogContent className="flex max-h-[90vh] max-w-[95vw] flex-col overflow-auto p-4 md:max-w-[80vw] md:p-6 lg:max-w-[60vw] xl:max-w-[50vw] 2xl:max-w-[40vw]">
         <DialogHeader>
           <DialogTitle>Adicionar Tarefa</DialogTitle>
           <DialogDescription>

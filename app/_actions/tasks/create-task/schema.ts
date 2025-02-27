@@ -1,14 +1,11 @@
 import { z } from "zod";
-import { TasksCategory, TasksStatus } from "@prisma/client";
+import { TasksCategory } from "@prisma/client";
 import { tasksTimeIguais } from "@/app/_data-access/tasks/tasks-time-iguais";
 
 export const createTasksSchema = z
   .object({
     name: z.string().trim().min(1, "O nome é obrigatório!"),
     description: z.string().min(1, "A descrição é obrigatória!"),
-    status: z.nativeEnum(TasksStatus, {
-      required_error: "O status é obrigatório!",
-    }),
     category: z.nativeEnum(TasksCategory, {
       required_error: "A categoria é obrigatória!",
     }),
