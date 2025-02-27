@@ -152,6 +152,13 @@ const ViewDataTask = ({ task }: ViewDataTaskProps) => {
       return;
     }
 
+    if (task.status === TasksStatus.UNREALIZED) {
+      toast.error(
+        "Você não pode alterar a data de início de uma tarefa não realizada.",
+      );
+      return;
+    }
+
     if (startDate < new Date()) {
       toast.error("A data de início não pode ser no passado.");
       return;
@@ -207,6 +214,13 @@ const ViewDataTask = ({ task }: ViewDataTaskProps) => {
     if (task.status === TasksStatus.COMPLETED) {
       toast.error(
         "Você não pode alterar a data de término de uma tarefa finalizada.",
+      );
+      return;
+    }
+
+    if (task.status === TasksStatus.UNREALIZED) {
+      toast.error(
+        "Você não pode alterar a data de término de uma tarefa não realizada.",
       );
       return;
     }
