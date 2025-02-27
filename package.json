@@ -62,7 +62,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/typography": "^0.5.16",
+    "@tailwindcss/typography": "^0.0.0-insiders.0339c42",
     "@types/luxon": "^3.4.2",
     "@types/node": "^20",
     "@types/react": "^19",

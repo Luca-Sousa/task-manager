@@ -3,16 +3,9 @@
 import { Card } from "@/app/_components/ui/card";
 import { Tasks, TasksStatus } from "@prisma/client";
 
-import {
-  SunIcon,
-  SunMoonIcon,
-  MoonIcon,
-  ClockIcon,
-  ExternalLinkIcon,
-} from "lucide-react";
+import { SunIcon, SunMoonIcon, MoonIcon, ClockIcon } from "lucide-react";
 import TasksTypeBadge from "./type-badge";
 import { Separator } from "@/app/_components/ui/separator";
-import { Button } from "@/app/_components/ui/button";
 import { Badge } from "@/app/_components/ui/badge";
 import { useCallback, useEffect, useMemo } from "react";
 import { updateTaskStatus } from "../../../_actions/tasks/update-task-status";
@@ -24,6 +17,7 @@ import { Label } from "@/app/_components/ui/label";
 import { Checkbox } from "@/app/_components/ui/checkbox";
 import { toast } from "sonner";
 import { TASK_CATEGORY_OPTIONS } from "@/app/_constants/data_tasks";
+import ViewDataTask from "./view-data-task";
 
 interface DataItemsTasksProps {
   tasks: Tasks[];
@@ -66,7 +60,7 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
     status: TasksStatus,
   ) => {
     try {
-      await updateTaskStatus({ id: taskId, status });
+      await updateTaskStatus({ taskId: taskId, status });
     } catch (error) {
       console.error("Erro ao atualizar o status da tarefa:", error);
     }
@@ -233,15 +227,10 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
                                 </Label>
                               </div>
 
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="text-muted-foreground"
-                              >
-                                <ExternalLinkIcon />
-                              </Button>
+                              <ViewDataTask task={task} />
 
                               <EditButtonTask task={task} />
+
                               <DeleteTaskButton
                                 status={task.status}
                                 taskId={task.id}

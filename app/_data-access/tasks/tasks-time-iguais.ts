@@ -6,11 +6,13 @@ import { db } from "../../_lib/prisma";
 interface TaskTimeProps {
   startTime: Date;
   endTime: Date;
+  taskId?: string;
 }
 
 export const tasksTimeIguais = async ({
   startTime,
   endTime,
+  taskId,
 }: TaskTimeProps) => {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
@@ -24,6 +26,9 @@ export const tasksTimeIguais = async ({
           endTime: { gt: startTime },
         },
       ],
+      NOT: {
+        id: taskId,
+      },
     },
   });
 
