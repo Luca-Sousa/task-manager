@@ -2,8 +2,7 @@ import { z } from "zod";
 import { TasksCategory, TasksStatus } from "@prisma/client";
 import { tasksTimeIguais } from "@/app/_data-access/tasks/tasks-time-iguais";
 
-// Definindo o esquema de validação para tarefas
-export const upsertTasksSchema = z
+export const createTasksSchema = z
   .object({
     name: z.string().trim().min(1, "O nome é obrigatório!"),
     description: z.string().min(1, "A descrição é obrigatória!"),
@@ -55,4 +54,4 @@ export const upsertTasksSchema = z
     },
   );
 
-export type upsertTasksSchema = z.infer<typeof upsertTasksSchema>;
+export type CreateTasksSchema = z.infer<typeof createTasksSchema>;

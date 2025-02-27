@@ -4,9 +4,9 @@ import { db } from "@/app/_lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { TasksCategory, TasksStatus } from "@prisma/client";
-import { upsertTasksSchema } from "./schema";
+import { createTasksSchema } from "./schema";
 
-interface upsertTasksProps {
+interface createTasksProps {
   id?: string;
   name: string;
   description: string;
@@ -16,19 +16,14 @@ interface upsertTasksProps {
   endTime: Date;
 }
 
-export const upsertTasks = async (data: upsertTasksProps) => {
-  // Validação assíncrona com o parseAsync
-  await upsertTasksSchema.parseAsync(data);
+export const createTasks = async (data: createTasksProps) => {
+  await createTasksSchema.parseAsync(data);
 
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  await db.tasks.upsert({
-    update: { ...data, userId },
-    create: { ...data, userId },
-    where: {
-      id: data.id ?? "",
-    },
+  await db.tasks.create({
+    data: { ...data, userId },
   });
 
   revalidatePath("/tasks");

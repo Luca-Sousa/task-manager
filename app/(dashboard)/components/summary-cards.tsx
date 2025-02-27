@@ -6,7 +6,7 @@ import {
   ListChecksIcon,
   BookXIcon,
 } from "lucide-react";
-import CreateTaskButton from "../tasks/_components/upsert-button-task";
+import CreateTaskButton from "../tasks/_components/create-button-task";
 import { canUserAddtask } from "@/app/_data-access/can-user-add-task";
 
 interface SummaryCardsProps {

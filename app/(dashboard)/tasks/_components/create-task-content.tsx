@@ -36,24 +36,27 @@ import { Separator } from "@/app/_components/ui/separator";
 import { ScrollArea, ScrollBar } from "@/app/_components/ui/scroll-area";
 import { DialogClose, DialogFooter } from "@/app/_components/ui/dialog";
 import { toast } from "sonner";
-import { upsertTasksSchema } from "../../../_actions/tasks/upsert-task/schema";
-import { upsertTasks } from "../../../_actions/tasks/upsert-task";
 import Editor from "@/app/_components/rich-text/editor";
+import {
+  createTasksSchema,
+  CreateTasksSchema,
+} from "@/app/_actions/tasks/create-task/schema";
+import { createTasks } from "@/app/_actions/tasks/create-task";
 
 interface CreateTaskDialogContentProps {
   onSuccess?: () => void;
   taskId?: string;
-  defaultValues?: upsertTasksSchema;
+  defaultValues?: CreateTasksSchema;
 }
 
-const UpsertTaskDialogContent = ({
+const CreateTaskDialogContent = ({
   onSuccess,
   taskId,
   defaultValues,
 }: CreateTaskDialogContentProps) => {
-  const form = useForm<upsertTasksSchema>({
+  const form = useForm<CreateTasksSchema>({
     shouldUnregister: true,
-    resolver: zodResolver(upsertTasksSchema),
+    resolver: zodResolver(createTasksSchema),
     defaultValues: defaultValues ?? {
       name: "",
       description: "",
@@ -64,11 +67,11 @@ const UpsertTaskDialogContent = ({
     },
   });
 
-  const onSubmit = async (data: upsertTasksSchema) => {
+  const onSubmit = async (data: CreateTasksSchema) => {
     try {
       form.setValue("status", TasksStatus.NOT_STARTED);
       data.status = TasksStatus.NOT_STARTED;
-      await upsertTasks({ ...data, id: taskId });
+      await createTasks({ ...data, id: taskId });
 
       onSuccess?.();
       toast.success(
@@ -389,4 +392,4 @@ const UpsertTaskDialogContent = ({
   );
 };
 
-export default UpsertTaskDialogContent;
+export default CreateTaskDialogContent;

@@ -12,7 +12,7 @@ import { SidebarInset, SidebarTrigger } from "@/app/_components/ui/sidebar";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import DataItemsTasks from "./_components/data-items";
-import CreateTaskButton from "./_components/upsert-button-task";
+import CreateTaskButton from "./_components/create-button-task";
 import { isMatch } from "date-fns";
 import { currentTasksSchedule } from "@/app/_data-access/tasks/current-task-schedule";
 import { SidebarRight } from "@/app/_components/nav-edit-task";

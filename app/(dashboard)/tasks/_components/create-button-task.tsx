@@ -11,7 +11,7 @@ import {
 } from "@/app/_components/ui/dialog";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
-import UpsertTaskDialogContent from "./upsert-task-content";
+import CreateTaskDialogContent from "./create-task-content";
 
 interface CreateTaskButtonProps {
   userCanAddtasks: boolean;
@@ -21,7 +21,11 @@ const CreateTaskButton = ({ userCanAddtasks }: CreateTaskButtonProps) => {
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
 
   return (
-    <Dialog open={dialogIsOpen} onOpenChange={(open) => setDialogIsOpen(open)}>
+    <Dialog
+      modal={false}
+      open={dialogIsOpen}
+      onOpenChange={(open) => setDialogIsOpen(open)}
+    >
       <DialogTrigger asChild>
         <Button
           className="flex h-9 w-9 rounded-full font-bold sm:h-9 sm:w-fit sm:px-4 sm:py-2"
@@ -32,6 +36,8 @@ const CreateTaskButton = ({ userCanAddtasks }: CreateTaskButtonProps) => {
         </Button>
       </DialogTrigger>
 
+      {dialogIsOpen && <div className="fixed inset-0 z-40 bg-black/80" />}
+
       <DialogContent className="max-h-[90%] overflow-y-auto overflow-x-hidden">
         <DialogHeader>
           <DialogTitle>Adicionar Tarefa</DialogTitle>
@@ -40,7 +46,7 @@ const CreateTaskButton = ({ userCanAddtasks }: CreateTaskButtonProps) => {
           </DialogDescription>
         </DialogHeader>
 
-        <UpsertTaskDialogContent onSuccess={() => setDialogIsOpen(false)} />
+        <CreateTaskDialogContent onSuccess={() => setDialogIsOpen(false)} />
       </DialogContent>
     </Dialog>
   );
