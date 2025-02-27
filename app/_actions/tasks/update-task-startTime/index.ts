@@ -1,30 +1,28 @@
 "use server";
 
-import { TasksStatus } from "@prisma/client";
-
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { db } from "@/app/_lib/prisma";
 
-interface UpdateTaskStatusProps {
+interface UpdateTaskStartTimeProps {
   taskId: string;
-  status: TasksStatus;
+  startTime: Date;
 }
 
-export const updateTaskStatus = async ({
+export const updateTaskStartTime = async ({
   taskId,
-  status,
-}: UpdateTaskStatusProps) => {
+  startTime,
+}: UpdateTaskStartTimeProps) => {
   const { userId } = await auth();
   if (!userId) throw new Error("Você não está logado.");
 
-  if (!taskId && !status) {
-    throw new Error("ID e status são obrigatórios.");
+  if (!taskId && !startTime) {
+    throw new Error("ID e a date de início são obrigatórios.");
   }
 
   await db.tasks.update({
     where: { id: taskId },
-    data: { status },
+    data: { startTime },
   });
 
   revalidatePath("/tasks");
