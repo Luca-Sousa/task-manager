@@ -88,85 +88,77 @@ export function DateTimePicker24h({ date, onChange }: DateTimePicker24hProps) {
               Horário
             </span>
 
-            <div className="space-y-3 text-center">
-              <span className="text-center text-sm font-semibold text-foreground sm:p-2">
-                Horário
-              </span>
+            <div className="flex flex-col divide-y sm:h-[260px] sm:flex-row sm:divide-x sm:divide-y-0">
+              {/* Seletor de horas */}
+              <ScrollArea className="w-64 sm:w-auto">
+                <div className="flex p-2 sm:flex-col">
+                  {hours.reverse().map((hour) => {
+                    const now = new Date(); // Data e hora atuais
+                    const selectedDate = date ? new Date(date) : null; // Data selecionada
 
-              <div className="flex flex-col divide-y sm:h-[260px] sm:flex-row sm:divide-x sm:divide-y-0">
-                {/* Seletor de horas */}
-                <ScrollArea className="w-64 sm:w-auto">
-                  <div className="flex p-2 sm:flex-col">
-                    {hours.reverse().map((hour) => {
-                      const now = new Date(); // Data e hora atuais
-                      const selectedDate = date ? new Date(date) : null; // Data selecionada
+                    // Verifica se o horário está no passado
+                    const isPastTime =
+                      selectedDate &&
+                      selectedDate.getDate() === now.getDate() && // Mesmo dia
+                      selectedDate.getMonth() === now.getMonth() && // Mesmo mês
+                      selectedDate.getFullYear() === now.getFullYear() && // Mesmo ano
+                      hour < now.getHours(); // Horário anterior ao atual
 
-                      // Verifica se o horário está no passado
-                      const isPastTime =
-                        selectedDate &&
-                        selectedDate.getDate() === now.getDate() && // Mesmo dia
-                        selectedDate.getMonth() === now.getMonth() && // Mesmo mês
-                        selectedDate.getFullYear() === now.getFullYear() && // Mesmo ano
-                        hour < now.getHours(); // Horário anterior ao atual
+                    return (
+                      <Button
+                        key={hour}
+                        size="icon"
+                        variant={
+                          date && date.getHours() === hour ? "default" : "ghost"
+                        }
+                        className="aspect-square shrink-0 sm:w-full"
+                        onClick={() => handleTimeChange("hour", hour)}
+                        disabled={isPastTime as boolean} // Desabilita o botão se o horário estiver no passado
+                      >
+                        {hour}
+                      </Button>
+                    );
+                  })}
+                </div>
+                <ScrollBar orientation="horizontal" className="sm:hidden" />
+              </ScrollArea>
 
-                      return (
-                        <Button
-                          key={hour}
-                          size="icon"
-                          variant={
-                            date && date.getHours() === hour
-                              ? "default"
-                              : "ghost"
-                          }
-                          className="aspect-square shrink-0 sm:w-full"
-                          onClick={() => handleTimeChange("hour", hour)}
-                          disabled={isPastTime as boolean} // Desabilita o botão se o horário estiver no passado
-                        >
-                          {hour}
-                        </Button>
-                      );
-                    })}
-                  </div>
-                  <ScrollBar orientation="horizontal" className="sm:hidden" />
-                </ScrollArea>
+              {/* Seletor de minutos */}
+              <ScrollArea className="w-64 sm:w-auto">
+                <div className="flex p-2 sm:flex-col">
+                  {Array.from({ length: 60 }, (_, i) => i).map((minute) => {
+                    const now = new Date(); // Data e hora atuais
+                    const selectedDate = date ? new Date(date) : null; // Data selecionada
 
-                {/* Seletor de minutos */}
-                <ScrollArea className="w-64 sm:w-auto">
-                  <div className="flex p-2 sm:flex-col">
-                    {Array.from({ length: 60 }, (_, i) => i).map((minute) => {
-                      const now = new Date(); // Data e hora atuais
-                      const selectedDate = date ? new Date(date) : null; // Data selecionada
+                    // Verifica se o minuto está no passado
+                    const isPastMinute =
+                      selectedDate &&
+                      selectedDate.getDate() === now.getDate() && // Mesmo dia
+                      selectedDate.getMonth() === now.getMonth() && // Mesmo mês
+                      selectedDate.getFullYear() === now.getFullYear() && // Mesmo ano
+                      selectedDate.getHours() === now.getHours() && // Mesma hora
+                      minute < now.getMinutes(); // Minuto anterior ao atual
 
-                      // Verifica se o minuto está no passado
-                      const isPastMinute =
-                        selectedDate &&
-                        selectedDate.getDate() === now.getDate() && // Mesmo dia
-                        selectedDate.getMonth() === now.getMonth() && // Mesmo mês
-                        selectedDate.getFullYear() === now.getFullYear() && // Mesmo ano
-                        selectedDate.getHours() === now.getHours() && // Mesma hora
-                        minute < now.getMinutes(); // Minuto anterior ao atual
-
-                      return (
-                        <Button
-                          key={minute}
-                          size="icon"
-                          variant={
-                            date && date.getMinutes() === minute
-                              ? "default"
-                              : "ghost"
-                          }
-                          className="aspect-square shrink-0 sm:w-full"
-                          onClick={() => handleTimeChange("minute", minute)}
-                          disabled={isPastMinute as boolean} // Desabilita o botão se o minuto estiver no passado
-                        >
-                          {minute.toString().padStart(2, "0")}
-                        </Button>
-                      );
-                    })}
-                  </div>
-                  <ScrollBar orientation="horizontal" className="sm:hidden" />
-                </ScrollArea>
-              </div>
+                    return (
+                      <Button
+                        key={minute}
+                        size="icon"
+                        variant={
+                          date && date.getMinutes() === minute
+                            ? "default"
+                            : "ghost"
+                        }
+                        className="aspect-square shrink-0 sm:w-full"
+                        onClick={() => handleTimeChange("minute", minute)}
+                        disabled={isPastMinute as boolean} // Desabilita o botão se o minuto estiver no passado
+                      >
+                        {minute.toString().padStart(2, "0")}
+                      </Button>
+                    );
+                  })}
+                </div>
+                <ScrollBar orientation="horizontal" className="sm:hidden" />
+              </ScrollArea>
             </div>
           </div>
         </div>

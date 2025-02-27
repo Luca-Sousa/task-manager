@@ -10,14 +10,13 @@ import { Badge } from "@/app/_components/ui/badge";
 import { useCallback, useEffect, useMemo } from "react";
 import { updateTaskStatus } from "../../../_actions/tasks/update-task-status";
 import DeleteTaskButton from "./delete-task-button";
-import EditButtonTask from "./edit-button-task";
 import TimeSelect from "@/app/_components/time-select";
 import { Switch } from "@/app/_components/ui/switch";
 import { Label } from "@/app/_components/ui/label";
 import { Checkbox } from "@/app/_components/ui/checkbox";
 import { toast } from "sonner";
 import { TASK_CATEGORY_OPTIONS } from "@/app/_constants/data_tasks";
-import ViewDataTask from "./view-data-task";
+import ViewDataTask from "./view-edit-data-task";
 
 interface DataItemsTasksProps {
   tasks: Tasks[];
@@ -227,14 +226,13 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
                                 </Label>
                               </div>
 
-                              <ViewDataTask task={task} />
-
-                              <EditButtonTask task={task} />
-
-                              <DeleteTaskButton
-                                status={task.status}
-                                taskId={task.id}
-                              />
+                              <div className="flex items-center gap-0.5">
+                                <ViewDataTask task={task} />
+                                <DeleteTaskButton
+                                  status={task.status}
+                                  taskId={task.id}
+                                />
+                              </div>
                             </div>
                           </div>
                         </div>
