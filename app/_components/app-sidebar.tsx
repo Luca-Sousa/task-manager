@@ -17,6 +17,7 @@ import { Logo } from "./logo";
 import { data } from "../_constants/data_sidebar";
 import { Separator } from "./ui/separator";
 import CurrentTime from "./nav-current-time";
+import NavNotificationsTasks from "./nav-notifications-tasks";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -32,7 +33,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <NavTasks />
         </div>
 
-        <CurrentTime />
+        <div>
+          <NavNotificationsTasks />
+          <CurrentTime />
+        </div>
       </SidebarContent>
 
       <Separator className="group-data-[collapsible=icon]:hidden" />
