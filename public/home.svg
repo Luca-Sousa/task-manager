@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-<svg width="800px" height="800px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M8 0L0 6V8H1V15H4V10H7V15H15V8H16V6L14 4.5V1H11V2.25L8 0ZM9 10H12V13H9V10Z" fill="#000000"/>
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_183_2275)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7 0L0 5.25V7H0.875V13.125H3.5V8.75H6.125V13.125H13.125V7H14V5.25L12.25 3.9375V0.875H9.625V1.96875L7 0ZM7.875 8.75H10.5V11.375H7.875V8.75Z" fill="white"/>
+</g>
+<defs>
+<clipPath id="clip0_183_2275">
+<rect width="14" height="14" fill="white"/>
+</clipPath>
+</defs>
 </svg>
