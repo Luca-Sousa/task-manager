@@ -101,3 +101,20 @@ export const TASK_CATEGORY_OPTIONS = [
     label: TASK_CATEGORY_LABELS[TasksCategory.OTHER],
   },
 ];
+
+export const TASK_CATEGORY_ICONS = {
+  [TasksCategory.WORK]: "work.svg",
+  [TasksCategory.STUDY]: "study.svg",
+  [TasksCategory.HOME]: "home.svg",
+  [TasksCategory.HEALTH_AND_WELLNESS]: "health-and-wellness.svg",
+  [TasksCategory.FINANCIAL]: "financial.svg",
+  [TasksCategory.LEISURE]: "leisure.svg",
+  [TasksCategory.RELATIONSHIPS]: "relationships.svg",
+  [TasksCategory.VOLUNTEERING]: "volunteering.svg",
+  [TasksCategory.TRAVEL]: "travel.svg",
+  [TasksCategory.PERSONAL_DEVELOPMENT]: "personal-development.svg",
+  [TasksCategory.TECHNOLOGY]: "technology.svg",
+  [TasksCategory.SHOPPING]: "shopping.svg",
+  [TasksCategory.ERRANDS]: "errands.svg",
+  [TasksCategory.OTHER]: "other.svg",
+};
