@@ -41,13 +41,13 @@ import { updateTaskCategory } from "@/app/_actions/tasks/update-task-category";
 import { updateTaskEndTime } from "@/app/_actions/tasks/update-task-endTime";
 import { updateTaskStartTime } from "@/app/_actions/tasks/update-task-startTime";
 import { updateTaskStatus } from "@/app/_actions/tasks/update-task-status";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { DateTimePicker24h } from "./datetimePicker24h";
+import { DateTimePicker24h } from "./datetime-picker-24h";
 import { tasksTimeIguais } from "@/app/_data-access/tasks/tasks-time-iguais";
 import { Checkbox } from "@/app/_components/ui/checkbox";
 import { Switch } from "@/app/_components/ui/switch";
 import { Label } from "@/app/_components/ui/label";
 import TasksTypeBadge from "./type-badge";
+import { ScrollArea } from "@/app/_components/ui/scroll-area";
 
 interface ViewDataTaskProps {
   task: Tasks;
@@ -69,6 +69,16 @@ const ViewDataTask = ({ task }: ViewDataTaskProps) => {
   const [isSavingStartTime, setIsSavingStartTime] = useState(false);
   const [isSavingEndTime, setIsSavingEndTime] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    return () => document.body.classList.remove("overflow-hidden");
+  }, [isOpen]);
 
   useEffect(() => {
     if (isEditingName && inputRef.current) {
@@ -300,298 +310,286 @@ const ViewDataTask = ({ task }: ViewDataTaskProps) => {
 
       {isOpen && <div className="fixed inset-0 z-40 bg-black/80" />}
 
-      <SheetContent className="flex min-w-[40rem] flex-col overflow-hidden">
-        <SheetTitle className="text-lg">Informações da Tarefa</SheetTitle>
-        <ScrollArea>
-          <div className="pr-5">
-            <SheetHeader>
-              <div className="space-y-2 py-2">
-                <div className="grid grid-cols-[2.5rem,1fr] items-center">
-                  <CaptionsIcon size={20} />
-                  <div className="flex min-h-9 items-center justify-between">
-                    <h2 className="text-lg font-bold text-muted-foreground">
-                      Título
-                    </h2>
-                    {!isEditingName && (
-                      <Button
-                        variant="outline"
-                        onClick={() => setIsEditingName(true)}
-                      >
-                        Editar
-                      </Button>
-                    )}
-                  </div>
-                </div>
+      <SheetContent className="flex min-w-[40rem] flex-col">
+        <SheetHeader>
+          <SheetTitle className="text-lg">Informações da Tarefa</SheetTitle>
+          <SheetDescription>
+            Tarefa criada em:{" "}
+            {format(task.createdAt, "dd 'de' MMMM 'de' yyyy - HH:mm", {
+              locale: ptBR,
+            })}
+          </SheetDescription>
+        </SheetHeader>
 
-                <div className="grid grid-cols-[2.5rem,1fr] items-center">
-                  <span></span>
-                  {isEditingName ? (
-                    <div className="space-y-3">
-                      <Input
-                        ref={inputRef}
-                        value={taskName}
-                        onChange={(e) => setTaskName(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" && !e.shiftKey) {
-                            e.preventDefault();
-                            handleNameTask(taskName);
-                          }
-                        }}
-                        className="h-fit pl-3 !text-lg"
-                      />
-
-                      <div className="flex items-center justify-end space-x-3">
-                        <Button
-                          variant="ghost"
-                          onClick={() => {
-                            setIsEditingName(false);
-                            setTaskName(currentName);
-                          }}
-                        >
-                          Cancelar
-                        </Button>
-
-                        <Button
-                          onClick={() => {
-                            handleNameTask(taskName);
-                            setCurrentName(taskName);
-                            setIsEditingName(false);
-                          }}
-                        >
-                          Salvar
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
-                    <Input
-                      value={taskName}
-                      onChange={(e) => setTaskName(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" && !e.shiftKey) {
-                          e.preventDefault();
-                          handleNameTask(taskName);
-                        }
-                      }}
-                      onClick={() => setIsEditingName(true)}
-                      className="h-fit border-none pl-0 !text-lg focus:pl-3"
-                    />
-                  )}
-                </div>
-
-                <div className="grid grid-cols-[2.5rem,1fr] items-center">
-                  <span></span>
-                  <p className="text-xs text-muted-foreground">
-                    Tarefa criada em:{" "}
-                    {format(task.createdAt, "dd 'de' MMMM 'de' yyyy - HH:mm", {
-                      locale: ptBR,
-                    })}
-                  </p>
-                </div>
-              </div>
-
-              <div className="ml-10">
-                <Separator />
-              </div>
-
-              <div className="space-y-2 py-2">
-                <div className="grid grid-cols-[2.5rem,1fr] items-center">
-                  <AlignLeftIcon size={20} />
-                  <div className="flex min-h-9 items-center justify-between">
-                    <h2 className="text-lg font-bold text-muted-foreground">
-                      Descrição
-                    </h2>
-                    {!isEditingDescription && (
-                      <Button
-                        variant="outline"
-                        onClick={() => setIsEditingDescription(true)}
-                      >
-                        Editar
-                      </Button>
-                    )}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-[2.5rem,1fr] items-center">
-                  <span />
-                  {isEditingDescription ? (
-                    <div className="space-y-3">
-                      <Editor
-                        content={newDescription}
-                        onChange={(value) => setNewDescription(value)}
-                        placeholder="Descrição da tarefa"
-                      />
-
-                      <div className="flex items-center justify-end space-x-3">
-                        <Button
-                          variant="ghost"
-                          onClick={() => {
-                            setIsEditingDescription(false);
-                            setNewDescription(currentDescription);
-                          }}
-                        >
-                          Cancelar
-                        </Button>
-
-                        <Button
-                          onClick={() => handleDescriptionTask(newDescription)}
-                        >
-                          Salvar
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
-                    <SheetDescription
-                      onClick={() => setIsEditingDescription(true)}
-                      dangerouslySetInnerHTML={{ __html: currentDescription }}
-                      className="prose min-w-full leading-tight text-foreground prose-headings:text-foreground prose-a:text-foreground hover:prose-a:text-primary"
-                    ></SheetDescription>
-                  )}
-                </div>
-              </div>
-
-              <div className="ml-10">
-                <Separator />
-              </div>
-
-              <div className="grid grid-cols-[2.5rem,1fr] items-center py-2">
-                <TagIcon size={20} />
-                <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <h2 className="text-lg font-bold text-muted-foreground">
-                    Categoria
-                  </h2>
-
-                  <Select
-                    onValueChange={(value) =>
-                      handleCategoryTask(value as TasksCategory)
-                    }
-                    defaultValue={currentCateory}
-                  >
-                    <SelectTrigger className="max-w-fit gap-3">
-                      <SelectValue placeholder={currentCateory} />
-                    </SelectTrigger>
-                    <SelectContent align="end">
-                      {TASK_CATEGORY_OPTIONS.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="ml-10">
-                <Separator />
-              </div>
-
-              <div className="grid grid-cols-[2.5rem,1fr] items-center py-2">
-                <OptionIcon size={20} />
-                <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <div className="flex items-center gap-3">
-                    <h2 className="text-lg font-bold text-muted-foreground">
-                      Status:
-                    </h2>
-
-                    <TasksTypeBadge task={task} />
-                  </div>
-
-                  <div>
-                    {task.status === TasksStatus.NOT_STARTED && (
-                      <div className="flex items-center space-x-2">
-                        <Checkbox
-                          id={task.id}
-                          disabled={
-                            new Date(task.startTime).getTime() > Date.now()
-                          }
-                          onCheckedChange={() => handleCheckboxChange(task.id)}
-                        />
-                        <label
-                          htmlFor={task.id}
-                          className="text-sm font-medium leading-none"
-                        >
-                          Iniciar Tarefa
-                        </label>
-                      </div>
-                    )}
-
-                    {task.status === TasksStatus.IN_PROGRESS && (
-                      <div className="flex items-center space-x-2 text-foreground">
-                        <Switch
-                          id={task.id}
-                          onCheckedChange={() => handleSwitchChange(task.id)}
-                        />
-                        <Label htmlFor={task.id}>Finalizar Tarefa</Label>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <div className="ml-10">
-                <Separator />
-              </div>
-            </SheetHeader>
-
-            <div className="space-y-2 py-2">
-              <div className="grid grid-cols-[2.5rem,1fr] items-center">
-                <CalendarCheckIcon size={20} />
-
+        <ScrollArea className="pr-4">
+          <div className="space-y-2 py-3">
+            <div className="grid grid-cols-[2.5rem,1fr] items-center">
+              <CaptionsIcon size={20} />
+              <div className="flex min-h-9 items-center justify-between">
                 <h2 className="text-lg font-bold text-muted-foreground">
-                  Datas
+                  Título
                 </h2>
+                {!isEditingName && (
+                  <Button
+                    variant="outline"
+                    onClick={() => setIsEditingName(true)}
+                  >
+                    Editar
+                  </Button>
+                )}
               </div>
+            </div>
 
-              <div className="grid grid-cols-[2.5rem,1fr] items-center">
-                <span />
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-muted-foreground">
-                    Data de início:
-                  </p>
+            <div className="grid grid-cols-[2.5rem,1fr] items-center">
+              <span></span>
+              {isEditingName ? (
+                <div className="space-y-3">
+                  <Input
+                    ref={inputRef}
+                    value={taskName}
+                    onChange={(e) => setTaskName(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        handleNameTask(taskName);
+                      }
+                    }}
+                    className="h-fit pl-3 !text-base"
+                  />
 
-                  <div className="flex items-center gap-1.5">
-                    <DateTimePicker24h
-                      date={startDate}
-                      onChange={setStartDate}
-                    />
+                  <div className="flex items-center justify-end space-x-3">
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        setIsEditingName(false);
+                        setTaskName(currentName);
+                      }}
+                    >
+                      Cancelar
+                    </Button>
 
                     <Button
-                      size="icon"
-                      variant="secondary"
-                      onClick={handleStartTimeTask}
-                      disabled={isSavingStartTime || !hasDateStartChanged}
+                      onClick={() => {
+                        handleNameTask(taskName);
+                        setCurrentName(taskName);
+                        setIsEditingName(false);
+                      }}
                     >
-                      {isSavingStartTime ? (
-                        <LoaderIcon className="animate-spin" />
-                      ) : (
-                        <SaveIcon />
-                      )}
+                      Salvar
                     </Button>
                   </div>
                 </div>
+              ) : (
+                <Input
+                  value={taskName}
+                  onChange={(e) => setTaskName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      handleNameTask(taskName);
+                    }
+                  }}
+                  onClick={() => setIsEditingName(true)}
+                  className="h-fit border-none pl-0 !text-base focus:pl-3"
+                />
+              )}
+            </div>
+          </div>
+
+          <div className="ml-10">
+            <Separator />
+          </div>
+
+          <div className="space-y-2 py-3">
+            <div className="grid grid-cols-[2.5rem,1fr] items-center">
+              <AlignLeftIcon size={20} />
+              <div className="flex min-h-9 items-center justify-between">
+                <h2 className="text-lg font-bold text-muted-foreground">
+                  Descrição
+                </h2>
+                {!isEditingDescription && (
+                  <Button
+                    variant="outline"
+                    onClick={() => setIsEditingDescription(true)}
+                  >
+                    Editar
+                  </Button>
+                )}
               </div>
+            </div>
 
-              <div className="grid grid-cols-[2.5rem,1fr] items-center">
-                <span />
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-muted-foreground">
-                    Data de término:
-                  </p>
+            <div className="grid grid-cols-[2.5rem,1fr] items-center">
+              <span />
+              {isEditingDescription ? (
+                <div className="space-y-3">
+                  <Editor
+                    content={newDescription}
+                    onChange={(value) => setNewDescription(value)}
+                    placeholder="Descrição da tarefa"
+                  />
 
-                  <div className="flex items-center gap-1.5">
-                    <DateTimePicker24h date={endDate} onChange={setEndDate} />
+                  <div className="flex items-center justify-end space-x-3">
                     <Button
-                      size="icon"
-                      variant="secondary"
-                      onClick={handleEndTimeTask}
-                      disabled={isSavingEndTime || !hasDateEndChanged}
+                      variant="ghost"
+                      onClick={() => {
+                        setIsEditingDescription(false);
+                        setNewDescription(currentDescription);
+                      }}
                     >
-                      {isSavingEndTime ? (
-                        <LoaderIcon className="animate-spin" />
-                      ) : (
-                        <SaveIcon />
-                      )}
+                      Cancelar
+                    </Button>
+
+                    <Button
+                      onClick={() => handleDescriptionTask(newDescription)}
+                    >
+                      Salvar
                     </Button>
                   </div>
+                </div>
+              ) : (
+                <div
+                  onClick={() => setIsEditingDescription(true)}
+                  dangerouslySetInnerHTML={{ __html: currentDescription }}
+                  className="prose min-w-full leading-tight text-foreground prose-headings:text-foreground prose-a:text-foreground hover:prose-a:text-primary"
+                />
+              )}
+            </div>
+          </div>
+
+          <div className="ml-10">
+            <Separator />
+          </div>
+
+          <div className="grid grid-cols-[2.5rem,1fr] items-center py-3">
+            <TagIcon size={20} />
+            <div className="flex items-center justify-between text-xs text-muted-foreground">
+              <h2 className="text-lg font-bold text-muted-foreground">
+                Categoria
+              </h2>
+
+              <Select
+                onValueChange={(value) =>
+                  handleCategoryTask(value as TasksCategory)
+                }
+                defaultValue={currentCateory}
+              >
+                <SelectTrigger className="max-w-fit gap-3">
+                  <SelectValue placeholder={currentCateory} />
+                </SelectTrigger>
+                <SelectContent align="end">
+                  {TASK_CATEGORY_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="ml-10">
+            <Separator />
+          </div>
+
+          <div className="grid grid-cols-[2.5rem,1fr] items-center py-3">
+            <OptionIcon size={20} />
+            <div className="flex items-center justify-between text-xs text-muted-foreground">
+              <div className="flex items-center gap-3">
+                <h2 className="text-lg font-bold text-muted-foreground">
+                  Status:
+                </h2>
+
+                <TasksTypeBadge task={task} />
+              </div>
+
+              <div>
+                {task.status === TasksStatus.NOT_STARTED && (
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id={task.id}
+                      disabled={new Date(task.startTime).getTime() > Date.now()}
+                      onCheckedChange={() => handleCheckboxChange(task.id)}
+                    />
+                    <label
+                      htmlFor={task.id}
+                      className="text-sm font-medium leading-none"
+                    >
+                      Iniciar Tarefa
+                    </label>
+                  </div>
+                )}
+
+                {task.status === TasksStatus.IN_PROGRESS && (
+                  <div className="flex items-center space-x-2 text-foreground">
+                    <Switch
+                      id={task.id}
+                      onCheckedChange={() => handleSwitchChange(task.id)}
+                    />
+                    <Label htmlFor={task.id}>Finalizar Tarefa</Label>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="ml-10">
+            <Separator />
+          </div>
+
+          <div className="space-y-2 py-3">
+            <div className="grid grid-cols-[2.5rem,1fr] items-center">
+              <CalendarCheckIcon size={20} />
+
+              <h2 className="text-lg font-bold text-muted-foreground">Datas</h2>
+            </div>
+
+            <div className="grid grid-cols-[2.5rem,1fr] items-center">
+              <span />
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-semibold text-muted-foreground">
+                  Data de início:
+                </p>
+
+                <div className="flex items-center gap-1.5">
+                  <DateTimePicker24h date={startDate} onChange={setStartDate} />
+
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    onClick={handleStartTimeTask}
+                    disabled={isSavingStartTime || !hasDateStartChanged}
+                  >
+                    {isSavingStartTime ? (
+                      <LoaderIcon className="animate-spin" />
+                    ) : (
+                      <SaveIcon />
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-[2.5rem,1fr] items-center">
+              <span />
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-semibold text-muted-foreground">
+                  Data de término:
+                </p>
+
+                <div className="flex items-center gap-1.5">
+                  <DateTimePicker24h date={endDate} onChange={setEndDate} />
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    onClick={handleEndTimeTask}
+                    disabled={isSavingEndTime || !hasDateEndChanged}
+                  >
+                    {isSavingEndTime ? (
+                      <LoaderIcon className="animate-spin" />
+                    ) : (
+                      <SaveIcon />
+                    )}
+                  </Button>
                 </div>
               </div>
             </div>
