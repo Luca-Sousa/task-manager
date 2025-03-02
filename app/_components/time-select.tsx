@@ -20,9 +20,10 @@ import { useUser } from "@clerk/nextjs";
 
 interface TimeSelectProps {
   path: string;
+  isOpenSelectFiltersPremium?: boolean;
 }
 
-const TimeSelect = ({ path }: TimeSelectProps) => {
+const TimeSelect = ({ path, isOpenSelectFiltersPremium }: TimeSelectProps) => {
   const { user } = useUser();
   const hasPremiumPlan = user?.publicMetadata.subscriptionPlan === "premium";
 
@@ -83,7 +84,7 @@ const TimeSelect = ({ path }: TimeSelectProps) => {
         align="end"
       >
         {/* Escolha entre "Dia", "Mês" ou "Ano" */}
-        {hasPremiumPlan && (
+        {hasPremiumPlan && isOpenSelectFiltersPremium && (
           <Select
             defaultValue="day"
             onValueChange={(value) =>

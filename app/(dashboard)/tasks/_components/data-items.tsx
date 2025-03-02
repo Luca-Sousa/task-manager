@@ -2,49 +2,62 @@
 
 import { Card } from "@/app/_components/ui/card";
 import { Tasks, TasksStatus } from "@prisma/client";
-
-import { SunIcon, SunMoonIcon, MoonIcon, ClockIcon } from "lucide-react";
+import {
+  SunIcon,
+  SunMoonIcon,
+  MoonIcon,
+  ClockIcon,
+  CheckCircle,
+  XCircleIcon,
+} from "lucide-react";
 import TasksTypeBadge from "./type-badge";
-import { Separator } from "@/app/_components/ui/separator";
 import { Badge } from "@/app/_components/ui/badge";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { updateTaskStatus } from "../../../_actions/tasks/update-task-status";
 import DeleteTaskButton from "./delete-task-button";
-import TimeSelect from "@/app/_components/time-select";
 import { Switch } from "@/app/_components/ui/switch";
 import { Label } from "@/app/_components/ui/label";
-import { Checkbox } from "@/app/_components/ui/checkbox";
 import { toast } from "sonner";
 import { TASK_CATEGORY_OPTIONS } from "@/app/_constants/data_tasks";
-import ViewDataTask from "./view-edit-data-task";
+import ViewDataTask from "./view-data-task";
+import { Input } from "@/app/_components/ui/input";
+import { Checkbox } from "@/app/_components/ui/checkbox";
 
 interface DataItemsTasksProps {
   tasks: Tasks[];
 }
 
 const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
+  const [searchTerm, setSearchTerm] = useState("");
+
   const formatTime = (date: Date) =>
     `${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`;
 
+  const filteredTasks = useMemo(() => {
+    return tasks.filter((task) =>
+      task.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+  }, [tasks, searchTerm]);
+
   const tasksByPeriod = useMemo(
     () => ({
-      manhã: tasks.filter(
+      manhã: filteredTasks.filter(
         (task) =>
           new Date(task.startTime).getHours() >= 6 &&
           new Date(task.startTime).getHours() < 12,
       ),
-      tarde: tasks.filter(
+      tarde: filteredTasks.filter(
         (task) =>
           new Date(task.startTime).getHours() >= 12 &&
           new Date(task.startTime).getHours() < 18,
       ),
-      noite: tasks.filter(
+      noite: filteredTasks.filter(
         (task) =>
           new Date(task.startTime).getHours() >= 18 ||
           new Date(task.startTime).getHours() < 6,
       ),
     }),
-    [tasks],
+    [filteredTasks],
   );
 
   const statusColors = {
@@ -61,7 +74,7 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
     try {
       await updateTaskStatus({ taskId: taskId, status });
     } catch (error) {
-      console.error("Erro ao atualizar o status da tarefa:", error);
+      toast.error(`Erro ao atualizar o status da tarefa: ${error}`);
     }
   };
 
@@ -77,9 +90,12 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
   const handleSwitchChange = async (taskId: string) => {
     try {
       await handleUpdateTaskStatus(taskId, TasksStatus.COMPLETED);
-      toast.success("Tarefa Completada com Sucesso!");
+
+      // Exibe uma mensagem de sucesso
+      toast.success("Tarefa Finalizada com Sucesso!");
     } catch (error) {
       console.error("Erro ao finalizar a tarefa:", error);
+      toast.error("Erro ao finalizar a tarefa.");
     }
   };
 
@@ -105,146 +121,149 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
   }, [tasks, checkTaskStatus]);
 
   return (
-    <>
-      <Separator className="my-4" />
+    <div className="flex flex-1 flex-col gap-3">
+      <div className="flex items-center">
+        <Input
+          placeholder="Pesquisar Tarefas p/ Nome..."
+          value={searchTerm}
+          onChange={(event) => setSearchTerm(event.target.value)}
+          className="max-w-sm"
+        />
+      </div>
 
-      <div className="flex flex-1 flex-col gap-3">
-        <div className="flex items-center justify-end lg:hidden">
-          <TimeSelect path="tasks" />
-        </div>
+      <div className="space-y-5">
+        {Object.entries(tasksByPeriod).map(
+          ([period, tasks]) =>
+            tasks.length > 0 && (
+              <div key={period} className="flex flex-col gap-3">
+                <div className="flex items-center gap-1.5 font-bold">
+                  {period === "manhã" && <SunIcon size={12} />}
+                  {period === "tarde" && <SunMoonIcon size={12} />}
+                  {period === "noite" && <MoonIcon size={12} />}
+                  {period.charAt(0).toUpperCase() + period.slice(1)}
+                </div>
 
-        <div className="space-y-5">
-          {Object.entries(tasksByPeriod).map(
-            ([period, tasks]) =>
-              tasks.length > 0 && (
-                <div key={period} className="flex flex-col gap-3">
-                  <div className="flex items-center gap-1.5 font-bold">
-                    {period === "manhã" && <SunIcon size={12} />}
-                    {period === "tarde" && <SunMoonIcon size={12} />}
-                    {period === "noite" && <MoonIcon size={12} />}
-                    {period.charAt(0).toUpperCase() + period.slice(1)}
-                  </div>
+                <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  {tasks.map((task, index) => (
+                    <Card
+                      key={task.id}
+                      className={`flex flex-1 flex-col bg-muted/20 px-3 py-2 hover:bg-muted/30`}
+                    >
+                      <div className="flex flex-col justify-between">
+                        <div className="flex flex-col gap-1">
+                          <div className="flex items-center justify-between">
+                            <Badge
+                              className={`${statusColors[task.status]} hover:bg-${statusColors[task.status]} h-2 w-16`}
+                            />
 
-                  <div className="grid gap-3 xl:grid-cols-2 2xl:grid-cols-3">
-                    {tasks.map((task, index) => (
-                      <Card
-                        key={task.id}
-                        className={`flex flex-1 flex-col bg-muted/20 px-3 py-2 hover:bg-muted/30`}
-                      >
-                        <div className="flex flex-col justify-between">
-                          <div className="flex flex-col gap-1">
-                            <div className="flex items-center justify-between">
-                              <Badge
-                                className={`${statusColors[task.status]} hover:bg-${statusColors[task.status]} h-2 w-16`}
-                              />
-
-                              <span className="text-sm text-gray-600">
-                                #{index + 1}
-                              </span>
-                            </div>
-
-                            <div>
-                              <div className="w-64 truncate font-bold sm:w-full">
-                                {task.name}
-                              </div>
-
-                              <div className="flex items-center justify-between">
-                                <div className="text-xs text-muted-foreground">
-                                  <span>
-                                    {
-                                      TASK_CATEGORY_OPTIONS.find(
-                                        (category) =>
-                                          category.value === task.category,
-                                      )?.label
-                                    }
-                                  </span>
-
-                                  <div className="flex items-center gap-1.5">
-                                    <ClockIcon size={12} />
-                                    {formatTime(
-                                      new Date(task.startTime),
-                                    )} - {formatTime(new Date(task.endTime))}
-                                  </div>
-                                </div>
-
-                                <TasksTypeBadge task={task} />
-                              </div>
-                            </div>
+                            <span className="text-sm text-gray-600">
+                              #{index + 1}
+                            </span>
                           </div>
 
-                          <div className="pt-4">
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <div className="flex flex-1 items-center space-x-2">
+                          <div>
+                            <div className="w-64 truncate font-bold sm:w-full">
+                              {task.name}
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                              <div className="text-xs text-muted-foreground">
+                                <span>
+                                  {
+                                    TASK_CATEGORY_OPTIONS.find(
+                                      (category) =>
+                                        category.value === task.category,
+                                    )?.label
+                                  }
+                                </span>
+
+                                <div className="flex items-center gap-1.5">
+                                  <ClockIcon size={12} />
+                                  {formatTime(new Date(task.startTime))} -{" "}
+                                  {formatTime(new Date(task.endTime))}
+                                </div>
+                              </div>
+
+                              <TasksTypeBadge task={task} />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="pt-4">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            {task.status === TasksStatus.NOT_STARTED ? (
+                              // Switch para iniciar a tarefa
+                              <div className="flex flex-1 items-center space-x-2 text-foreground">
                                 <Checkbox
+                                  className="size-5 rounded-full border-2"
                                   id={task.id}
                                   disabled={
-                                    task.status === TasksStatus.IN_PROGRESS ||
-                                    task.status === TasksStatus.COMPLETED ||
-                                    task.status === TasksStatus.UNREALIZED ||
                                     new Date(task.startTime).getTime() >
-                                      Date.now()
-                                  }
-                                  checked={
-                                    task.status === TasksStatus.IN_PROGRESS ||
-                                    task.status === TasksStatus.COMPLETED ||
-                                    task.status === TasksStatus.UNREALIZED
+                                    Date.now()
                                   }
                                   onCheckedChange={() =>
                                     handleCheckboxChange(task.id)
                                   }
                                 />
-                                <label
-                                  htmlFor={task.id}
-                                  className="text-sm font-medium leading-none"
-                                >
-                                  {task.status === TasksStatus.COMPLETED
-                                    ? "Tarefa Finalizada"
-                                    : task.status === TasksStatus.UNREALIZED
-                                      ? "Tarefa não realizada"
-                                      : task.status === TasksStatus.IN_PROGRESS
-                                        ? "Tarefa Iniciada"
-                                        : "Iniciar Tarefa"}
-                                </label>
+                                <Label htmlFor={task.id}>Iniciar Tarefa</Label>
                               </div>
-
-                              <div
-                                className={`${(task.status === TasksStatus.COMPLETED || task.status === TasksStatus.NOT_STARTED || task.status === TasksStatus.UNREALIZED) && "hidden transition-all"} ${task.status === TasksStatus.IN_PROGRESS && "flex items-center space-x-2 text-foreground"} `}
-                              >
+                            ) : task.status === TasksStatus.IN_PROGRESS ? (
+                              // Switch para finalizar a tarefa
+                              <div className="flex flex-1 items-center space-x-2 text-foreground">
                                 <Switch
                                   id={task.id}
-                                  disabled={
-                                    task.status === TasksStatus.COMPLETED
-                                  }
                                   onCheckedChange={() =>
                                     handleSwitchChange(task.id)
                                   }
                                 />
                                 <Label htmlFor={task.id}>
-                                  {task.status === TasksStatus.COMPLETED
-                                    ? "Tarefa Completada"
-                                    : "Finalizar Tarefa"}
+                                  Finalizar Tarefa
                                 </Label>
                               </div>
-
-                              <div className="flex items-center gap-0.5">
-                                <ViewDataTask task={task} />
-                                <DeleteTaskButton
-                                  status={task.status}
-                                  taskId={task.id}
-                                />
+                            ) : (
+                              // Exibe ícone e texto para tarefas concluídas ou não realizadas
+                              <div className="flex flex-1 items-center space-x-2">
+                                {task.status === TasksStatus.COMPLETED ? (
+                                  <CheckCircle
+                                    className="stroke-green-700"
+                                    size={20}
+                                  />
+                                ) : (
+                                  <XCircleIcon
+                                    className="stroke-red-700"
+                                    size={20}
+                                  />
+                                )}
+                                <label
+                                  htmlFor={task.id}
+                                  className="text-sm font-medium leading-none"
+                                >
+                                  {task.status === TasksStatus.COMPLETED
+                                    ? "Tarefa Concluída"
+                                    : "Tarefa não realizada"}
+                                </label>
                               </div>
+                            )}
+
+                            <div className="flex items-center gap-0.5">
+                              <ViewDataTask task={task} />
+
+                              <DeleteTaskButton
+                                status={task.status}
+                                taskId={task.id}
+                              />
                             </div>
                           </div>
                         </div>
-                      </Card>
-                    ))}
-                  </div>
+                      </div>
+                    </Card>
+                  ))}
                 </div>
-              ),
-          )}
-        </div>
+              </div>
+            ),
+        )}
       </div>
-    </>
+    </div>
   );
 };
 
