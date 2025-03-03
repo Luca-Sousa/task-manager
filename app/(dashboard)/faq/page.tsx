@@ -37,8 +37,8 @@ const Faq = async () => {
         </div>
       </header>
 
-      <div className="flex h-full flex-col gap-6 overflow-hidden p-4 pt-0">
-        <div className="flex items-center justify-between">
+      <div className="flex h-full flex-col gap-6 overflow-hidden pt-0">
+        <div className="flex items-center justify-between px-4">
           <h1 className="text-xl font-bold">Perguntas Frequentes</h1>
         </div>
 

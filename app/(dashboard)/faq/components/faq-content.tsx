@@ -24,8 +24,8 @@ const FAQContent = () => {
           ?.faqs || [];
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex items-center gap-3">
+    <div className="flex w-[calc(100vw-6px)] flex-col gap-5 px-4 md:w-[calc(100vw-262px)] 2xl:w-full">
+      <div className="flex items-center gap-3 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
         {faqs_category.map((items, index) => (
           <Button
             variant={
@@ -39,15 +39,16 @@ const FAQContent = () => {
         ))}
       </div>
 
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 pb-4">
         {filteredFAQs.map((item, index) => (
           <div key={index} className="flex flex-col gap-5">
             <Accordion type="single" collapsible>
               <AccordionItem value="item-1" className="border-b-0">
-                <AccordionTrigger className="rounded-xl px-4 py-3 text-base ring-1 ring-accent hover:bg-primary/60 hover:no-underline focus:bg-primary/60">
+                <AccordionTrigger className="rounded-xl border border-accent px-4 py-3 hover:bg-primary/60 focus:bg-primary/60 xl:text-base">
                   {item.title}
                 </AccordionTrigger>
-                <AccordionContent className="px-4 py-3 text-base text-muted-foreground">
+
+                <AccordionContent className="px-4 py-3 text-muted-foreground xl:text-base">
                   {item.response}
                 </AccordionContent>
               </AccordionItem>
