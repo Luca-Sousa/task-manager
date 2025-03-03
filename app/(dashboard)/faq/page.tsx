@@ -6,10 +6,12 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/app/_components/ui/breadcrumb";
+// import { Input } from "@/app/_components/ui/input";
 import { Separator } from "@/app/_components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/app/_components/ui/sidebar";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import FAQContent from "./components/faq-content";
 
 const Faq = async () => {
   const { userId } = await auth();
@@ -35,13 +37,12 @@ const Faq = async () => {
         </div>
       </header>
 
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-          <div className="aspect-video rounded-xl bg-muted/50"></div>
-          <div className="aspect-video rounded-xl bg-muted/50" />
-          <div className="aspect-video rounded-xl bg-muted/50" />
+      <div className="flex h-full flex-col gap-6 overflow-hidden p-4 pt-0">
+        <div className="flex items-center justify-between">
+          <h1 className="text-xl font-bold">Perguntas Frequentes</h1>
         </div>
-        <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+
+        <FAQContent />
       </div>
     </SidebarInset>
   );
