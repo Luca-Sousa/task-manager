@@ -192,7 +192,6 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
                         <div className="pt-4">
                           <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             {task.status === TasksStatus.NOT_STARTED ? (
-                              // Switch para iniciar a tarefa
                               <div className="flex flex-1 items-center space-x-2 text-foreground">
                                 <Checkbox
                                   className="size-5 rounded-full border-2"
@@ -208,7 +207,6 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
                                 <Label htmlFor={task.id}>Iniciar Tarefa</Label>
                               </div>
                             ) : task.status === TasksStatus.IN_PROGRESS ? (
-                              // Switch para finalizar a tarefa
                               <div className="flex flex-1 items-center space-x-2 text-foreground">
                                 <Switch
                                   id={task.id}
@@ -221,7 +219,6 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
                                 </Label>
                               </div>
                             ) : (
-                              // Exibe ícone e texto para tarefas concluídas ou não realizadas
                               <div className="flex flex-1 items-center space-x-2">
                                 {task.status === TasksStatus.COMPLETED ? (
                                   <CheckCircle
