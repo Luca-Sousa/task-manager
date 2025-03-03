@@ -1,14 +1,14 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Button } from "./ui/button";
 import { Calendar } from "./ui/calendar";
-import { CalendarIcon, FilterIcon } from "lucide-react";
+import { FilterIcon } from "lucide-react";
 import { addDays, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "../_lib/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -25,43 +25,102 @@ interface TimeSelectProps {
 
 const TimeSelect = ({ path, isOpenSelectFiltersPremium }: TimeSelectProps) => {
   const { user } = useUser();
+  const { push } = useRouter();
+  const searchParams = useSearchParams();
+  const year = searchParams.get("year");
+  const month = searchParams.get("month");
+  const day = searchParams.get("day");
   const hasPremiumPlan = user?.publicMetadata.subscriptionPlan === "premium";
 
-  const { push } = useRouter();
-  const [date, setDate] = useState<Date | undefined>();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [date, setDate] = useState<Date>();
   const [filterType, setFilterType] = useState<"day" | "month" | "year">("day");
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
 
-  const handleDailyChange = (selectedDate: Date) => {
-    const month = selectedDate.getMonth() + 1;
-    const day = selectedDate.getDate();
-    const year = selectedDate.getFullYear();
+  useEffect(() => {
+    if (year && month && day) {
+      setFilterType("day");
+    } else if (year && month) {
+      setFilterType("month");
+    } else if (year) {
+      setFilterType("year");
+    }
+  }, [year, month, day]);
 
-    setDate(selectedDate);
-    push(`${path}/?year=${year}&month=${month}&day=${day}`);
+  const dateFilter = () => {
+    if (year && month && day) {
+      return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+    } else if (year && month) {
+      return new Date(parseInt(year), parseInt(month) - 1);
+    } else if (year) {
+      return new Date(parseInt(year), 0, 1);
+    }
+    return new Date();
+  };
+
+  const formatButtonText = () => {
+    if (year && month && day) {
+      return format(dateFilter(), "PPP", { locale: ptBR });
+    } else if (year && month) {
+      return format(dateFilter(), "'Informações de ' MMMM 'de' yyyy", {
+        locale: ptBR,
+      });
+    } else if (year) {
+      return format(dateFilter(), "'Informações de 'yyyy", { locale: ptBR });
+    }
+    return format(new Date(), "PPP", { locale: ptBR });
+  };
+
+  const handleDateChange = (date: Date) => {
+    setDate(date);
+    push(
+      `${path}/?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}`,
+    );
+    setIsOpen(false);
   };
 
   const handleSelectChange = (value: string) => {
     const daysToAdd = parseInt(value);
     const selectedDate = addDays(new Date(), daysToAdd);
-    handleDailyChange(selectedDate);
+    handleDateChange(selectedDate);
   };
 
   const handleMonthChange = () => {
     if (selectedMonth !== null && selectedYear !== null) {
       push(`${path}/?year=${selectedYear}&month=${selectedMonth}`);
     }
+    setIsOpen(false);
   };
 
   const handleYearChange = () => {
     if (selectedYear !== null) {
       push(`${path}/?year=${selectedYear}`);
     }
+    setIsOpen(false);
+  };
+
+  const renderMonthOptions = () => {
+    return Array.from({ length: 12 }, (_, index) => (
+      <SelectItem key={index} value={(index + 1).toString()}>
+        {format(new Date(2022, index, 1), "MMMM", { locale: ptBR })}
+      </SelectItem>
+    ));
+  };
+
+  const renderYearOptions = () => {
+    return Array.from({ length: 5 }, (_, index) => {
+      const year = new Date().getFullYear() - index;
+      return (
+        <SelectItem key={year} value={year.toString()}>
+          {year}
+        </SelectItem>
+      );
+    });
   };
 
   return (
-    <Popover>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
@@ -70,12 +129,7 @@ const TimeSelect = ({ path, isOpenSelectFiltersPremium }: TimeSelectProps) => {
             !date && "text-muted-foreground",
           )}
         >
-          <CalendarIcon />
-          {date ? (
-            format(date, "PPP", { locale: ptBR })
-          ) : (
-            <span>Filtre as Tarefas p/ data</span>
-          )}
+          {formatButtonText()}
           <FilterIcon />
         </Button>
       </PopoverTrigger>
@@ -83,10 +137,9 @@ const TimeSelect = ({ path, isOpenSelectFiltersPremium }: TimeSelectProps) => {
         className="flex w-auto flex-col space-y-2 p-2"
         align="end"
       >
-        {/* Escolha entre "Dia", "Mês" ou "Ano" */}
         {hasPremiumPlan && isOpenSelectFiltersPremium && (
           <Select
-            defaultValue="day"
+            defaultValue={filterType}
             onValueChange={(value) =>
               setFilterType(value as "day" | "month" | "year")
             }
@@ -121,11 +174,9 @@ const TimeSelect = ({ path, isOpenSelectFiltersPremium }: TimeSelectProps) => {
               <Calendar
                 mode="single"
                 selected={date}
-                onSelect={(selectedDate) => {
-                  if (selectedDate) {
-                    handleDailyChange(selectedDate);
-                  }
-                }}
+                onSelect={(selectedDate) =>
+                  selectedDate && handleDateChange(selectedDate)
+                }
                 initialFocus
                 locale={ptBR}
               />
@@ -138,11 +189,7 @@ const TimeSelect = ({ path, isOpenSelectFiltersPremium }: TimeSelectProps) => {
                 <SelectValue placeholder="Escolha o Mês" />
               </SelectTrigger>
               <SelectContent position="popper">
-                {Array.from({ length: 12 }, (_, index) => (
-                  <SelectItem key={index} value={(index + 1).toString()}>
-                    {format(new Date(2022, index, 1), "MMMM", { locale: ptBR })}
-                  </SelectItem>
-                ))}
+                {renderMonthOptions()}
               </SelectContent>
             </Select>
 
@@ -151,14 +198,7 @@ const TimeSelect = ({ path, isOpenSelectFiltersPremium }: TimeSelectProps) => {
                 <SelectValue placeholder="Escolha o Ano" />
               </SelectTrigger>
               <SelectContent position="popper">
-                {Array.from({ length: 5 }, (_, index) => {
-                  const year = new Date().getFullYear() - index;
-                  return (
-                    <SelectItem key={year} value={year.toString()}>
-                      {year}
-                    </SelectItem>
-                  );
-                })}
+                {renderYearOptions()}
               </SelectContent>
             </Select>
 
@@ -176,14 +216,7 @@ const TimeSelect = ({ path, isOpenSelectFiltersPremium }: TimeSelectProps) => {
                 <SelectValue placeholder="Escolha o Ano" />
               </SelectTrigger>
               <SelectContent position="popper">
-                {Array.from({ length: 5 }, (_, index) => {
-                  const year = new Date().getFullYear() - index;
-                  return (
-                    <SelectItem key={year} value={year.toString()}>
-                      {year}
-                    </SelectItem>
-                  );
-                })}
+                {renderYearOptions()}
               </SelectContent>
             </Select>
 

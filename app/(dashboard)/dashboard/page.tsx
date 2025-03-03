@@ -100,9 +100,12 @@ const Dashboard = async ({
       </header>
 
       <div className="flex h-full flex-col gap-6 overflow-hidden p-4 pt-0">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
           <h1 className="text-xl font-bold">Dashboard</h1>
-          <TimeSelect path="dashboard" isOpenSelectFiltersPremium={true} />
+
+          <div className="ml-auto">
+            <TimeSelect path="dashboard" isOpenSelectFiltersPremium={true} />
+          </div>
         </div>
 
         <div className="grid h-full gap-3 overflow-hidden 2xl:grid-cols-[2fr,1fr]">
