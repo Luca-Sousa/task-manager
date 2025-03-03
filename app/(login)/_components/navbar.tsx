@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import NavbarNavigation from "./navbar-navigation";
 
 const Navbar = async () => {
   const { userId } = await auth();
@@ -29,10 +28,11 @@ const Navbar = async () => {
       <div className="mx-auto flex items-center justify-between px-6 md:max-w-3xl md:px-0 lg:max-w-4xl xl:max-w-6xl 2xl:max-w-[1440px]">
         <div className="flex items-center gap-10">
           <div className="flex items-center gap-4">
-            <div className="relative size-8 md:size-10 xl:size-12">
+            <div className="relative size-10 xl:size-12">
               <Image
+                title="Task Manager"
                 src="/logo[256px].png"
-                alt="Finance AI"
+                alt="Logo do Site Task Manager"
                 fill
                 className="object-cover"
               />
@@ -41,9 +41,9 @@ const Navbar = async () => {
             <span className="text-lg font-bold md:text-xl">Task Manager</span>
           </div>
 
-          <div className="hidden md:block">
+          {/* <div className="hidden md:block">
             <NavbarNavigation />
-          </div>
+          </div> */}
         </div>
 
         <Sheet>
@@ -66,7 +66,7 @@ const Navbar = async () => {
                 </SheetDescription>
               </SheetHeader>
 
-              <NavbarNavigation />
+              {/* <NavbarNavigation /> */}
             </div>
 
             <SheetFooter>
@@ -80,7 +80,11 @@ const Navbar = async () => {
                   </Button>
                 ) : (
                   <div className="flex flex-col gap-3">
-                    <SignInButton mode="modal" forceRedirectUrl={"/dashboard"} fallbackRedirectUrl="/dashboard">
+                    <SignInButton
+                      mode="modal"
+                      forceRedirectUrl={"/dashboard"}
+                      fallbackRedirectUrl="/dashboard"
+                    >
                       <Button variant={"ghost"} className="gap-2">
                         <LogInIcon />
                         Fazer login

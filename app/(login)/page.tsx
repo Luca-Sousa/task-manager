@@ -5,17 +5,18 @@ const LoginPage = () => {
   return (
     <div className="mx-auto flex flex-col overflow-x-hidden p-6 md:mt-8 md:max-w-3xl md:pl-1 md:pr-0 lg:mt-16 lg:max-w-4xl xl:max-w-6xl xl:py-0 2xl:max-w-[1440px]">
       <div className="relative mx-auto flex size-full flex-col-reverse">
-        <div className="relative mt-16 aspect-video size-full xl:-mr-28 xl:ml-auto xl:mt-0 xl:max-w-6xl 2xl:-mr-32 2xl:max-w-7xl">
+        <div className="relative mt-10 aspect-square size-full sm:mt-16 sm:aspect-video xl:-mr-28 xl:ml-auto xl:mt-0 xl:max-w-6xl 2xl:-mr-32 2xl:max-w-7xl">
           <Image
+            data-testid="banner-homepage"
             src="/banner-homepage.svg"
-            alt="Imagem Home"
+            alt="Banner da Homepage"
             fill
             className="object-contain xl:object-right-top"
           />
         </div>
 
-        <div className="left-0 space-y-5 xl:absolute xl:top-1/2 xl:max-w-2xl xl:-translate-y-1/2 2xl:top-[40%] 2xl:-translate-y-[40%]">
-          <div className="flex flex-wrap gap-2 lg:gap-4">
+        <div className="left-0 space-y-8 sm:space-y-5 xl:absolute xl:top-1/2 xl:max-w-2xl xl:-translate-y-1/2 2xl:top-[40%] 2xl:-translate-y-[40%]">
+          <div className="flex flex-col-reverse gap-5 sm:flex-row sm:flex-wrap lg:gap-4">
             <Badge className="w-fit rounded-full bg-transparent px-3 ring-2 ring-sky-700 hover:bg-transparent">
               Gerenciamento
             </Badge>
