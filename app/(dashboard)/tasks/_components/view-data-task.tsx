@@ -310,7 +310,7 @@ const ViewDataTask = ({ task }: ViewDataTaskProps) => {
 
       {isOpen && <div className="fixed inset-0 z-40 bg-black/80" />}
 
-      <SheetContent className="flex min-w-[40rem] flex-col">
+      <SheetContent className="z-50 flex min-w-full flex-col md:min-w-[40rem]">
         <SheetHeader>
           <SheetTitle className="text-lg">Informações da Tarefa</SheetTitle>
           <SheetDescription>
@@ -325,7 +325,7 @@ const ViewDataTask = ({ task }: ViewDataTaskProps) => {
           <div className="space-y-2 py-3">
             <div className="grid grid-cols-[2.5rem,1fr] items-center">
               <CaptionsIcon size={20} />
-              <div className="flex min-h-9 items-center justify-between">
+              <div className="flex w-full items-center justify-between md:min-h-9">
                 <h2 className="text-lg font-bold text-muted-foreground">
                   Título
                 </h2>
@@ -343,7 +343,7 @@ const ViewDataTask = ({ task }: ViewDataTaskProps) => {
             <div className="grid grid-cols-[2.5rem,1fr] items-center">
               <span></span>
               {isEditingName ? (
-                <div className="space-y-3">
+                <div className="mr-1 space-y-3">
                   <Input
                     ref={inputRef}
                     value={taskName}
@@ -491,9 +491,9 @@ const ViewDataTask = ({ task }: ViewDataTaskProps) => {
             <Separator />
           </div>
 
-          <div className="grid grid-cols-[2.5rem,1fr] items-center py-3">
+          <div className="grid grid-cols-[2.5rem,1fr] items-start py-3">
             <OptionIcon size={20} />
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
+            <div className="flex flex-col justify-between gap-3 text-xs text-muted-foreground sm:flex-row sm:items-center">
               <div className="flex items-center gap-3">
                 <h2 className="text-lg font-bold text-muted-foreground">
                   Status:
@@ -504,23 +504,19 @@ const ViewDataTask = ({ task }: ViewDataTaskProps) => {
 
               <div>
                 {task.status === TasksStatus.NOT_STARTED && (
-                  <div className="flex items-center space-x-2">
+                  <div className="flex flex-1 items-center space-x-2 text-foreground">
                     <Checkbox
+                      className="size-5 rounded-full border-2"
                       id={task.id}
                       disabled={new Date(task.startTime).getTime() > Date.now()}
                       onCheckedChange={() => handleCheckboxChange(task.id)}
                     />
-                    <label
-                      htmlFor={task.id}
-                      className="text-sm font-medium leading-none"
-                    >
-                      Iniciar Tarefa
-                    </label>
+                    <Label htmlFor={task.id}>Iniciar Tarefa</Label>
                   </div>
                 )}
 
                 {task.status === TasksStatus.IN_PROGRESS && (
-                  <div className="flex items-center space-x-2 text-foreground">
+                  <div className="flex flex-1 items-center space-x-2 text-foreground">
                     <Switch
                       id={task.id}
                       onCheckedChange={() => handleSwitchChange(task.id)}
@@ -536,7 +532,7 @@ const ViewDataTask = ({ task }: ViewDataTaskProps) => {
             <Separator />
           </div>
 
-          <div className="space-y-2 py-3">
+          <div className="space-y-5 py-3 sm:space-y-2">
             <div className="grid grid-cols-[2.5rem,1fr] items-center">
               <CalendarCheckIcon size={20} />
 
@@ -545,7 +541,7 @@ const ViewDataTask = ({ task }: ViewDataTaskProps) => {
 
             <div className="grid grid-cols-[2.5rem,1fr] items-center">
               <span />
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
                 <p className="text-sm font-semibold text-muted-foreground">
                   Data de início:
                 </p>
@@ -571,7 +567,7 @@ const ViewDataTask = ({ task }: ViewDataTaskProps) => {
 
             <div className="grid grid-cols-[2.5rem,1fr] items-center">
               <span />
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
                 <p className="text-sm font-semibold text-muted-foreground">
                   Data de término:
                 </p>

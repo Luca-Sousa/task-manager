@@ -54,7 +54,7 @@ export function NavTasks() {
             </div>
           </SidebarGroupLabel>
 
-          <SidebarMenu>
+          <SidebarMenu className="mt-2 gap-2">
             {currentTasks.map((task) => (
               <SidebarMenuItem key={task.id}>
                 <div className="flex justify-between px-2">
