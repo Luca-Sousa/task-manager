@@ -1,7 +1,11 @@
 import "@testing-library/jest-dom";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import SubscriptionPage from "../(dashboard)/subscription/page";
 import { redirect } from "next/navigation";
+import { act, render, screen } from "@testing-library/react";
+import { getCurrentDayTasks } from "../_data-access/get-current-day-tasks";
+import { SidebarProvider } from "../_components/ui/sidebar";
+import { ClerkProvider } from "@clerk/nextjs";
 
 jest.mock("@clerk/nextjs/server", () => ({
   auth: jest.fn(),
@@ -13,84 +17,93 @@ jest.mock("../_data-access/get-current-day-tasks", () => ({
 }));
 
 jest.mock("next/navigation", () => ({
+  useRouter: jest.fn(() => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+  })),
   redirect: jest.fn(),
+  usePathname: jest.fn(() => "/subscription"),
+  useSearchParams: jest.fn(() => new URLSearchParams()),
 }));
 
 describe("SubscriptionPage", () => {
+  beforeAll(() => {
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: jest.fn().mockImplementation((query) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      })),
+    });
+  });
+
   it("deve redirecionar para a página inicial se o usuário não estiver autenticado", async () => {
     (auth as jest.Mock).mockResolvedValue({ userId: null });
 
-    await SubscriptionPage();
+    await act(async () => {
+      render(await SubscriptionPage());
+    });
+
     expect(redirect).toHaveBeenCalledWith("/");
   });
 
-  //   it("deve renderizar o componente corretamente quando o usuário está autenticado", async () => {
-  //     // Mock da função auth para retornar um userId válido
-  //     (auth as jest.Mock).mockResolvedValue({ userId: "123" });
+  it("deve renderizar o componente corretamente quando o usuário está autenticado", async () => {
+    (auth as jest.Mock).mockResolvedValue({ userId: "123" });
 
-  //     // Mock da função clerkClient para retornar um usuário sem plano premium
-  //     (clerkClient as unknown as jest.Mock).mockReturnValue({
-  //       users: {
-  //         getUser: jest.fn().mockResolvedValue({
-  //           publicMetadata: { subscriptionPlan: "free" },
-  //         }),
-  //       },
-  //     });
+    (clerkClient as unknown as jest.Mock).mockReturnValue({
+      users: {
+        getUser: jest.fn().mockResolvedValue({
+          publicMetadata: { subscriptionPlan: "free" },
+        }),
+      },
+    });
 
-  //     (getCurrentDayTasks as jest.Mock).mockResolvedValue(3);
+    (getCurrentDayTasks as jest.Mock).mockResolvedValue(3);
 
-  //     render(
-  //       <ClerkProvider>
-  //         <SidebarProvider>
-  //           <SelectedItemProvider>
-  //             <SubscriptionPage />
-  //           </SelectedItemProvider>
-  //         </SidebarProvider>
-  //       </ClerkProvider>,
-  //     );
+    await act(async () => {
+      render(
+        <ClerkProvider>
+          <SidebarProvider>{await SubscriptionPage()}</SidebarProvider>
+        </ClerkProvider>,
+      );
+    });
 
-  //     // Verificar se o título da página está presente
-  //     await waitFor(() => {
-  //       expect(
-  //         screen.getByText("Escolha o plano certo para você"),
-  //       ).toBeInTheDocument();
-  //     });
+    expect(
+      screen.getByText("Escolha o plano certo para você"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Free")).toBeInTheDocument();
+    expect(screen.getByText("Até 5 Tarefas Diárias(3/5)")).toBeInTheDocument();
+    expect(screen.getByText("Premium")).toBeInTheDocument();
+  });
 
-  //     // Verificar se o plano Free está presente
-  //     expect(screen.getByText("Free")).toBeInTheDocument();
+  it('deve mostrar o badge "Ativo" quando o usuário tem um plano premium', async () => {
+    (auth as jest.Mock).mockResolvedValue({ userId: "123" });
 
-  //     // Verificar se o número de tarefas diárias está correto
-  //     expect(screen.getByText("Até 5 Tarefas Diárias(3/5)")).toBeInTheDocument();
+    (clerkClient as unknown as jest.Mock).mockReturnValue({
+      users: {
+        getUser: jest.fn().mockResolvedValue({
+          publicMetadata: { subscriptionPlan: "premium" },
+        }),
+      },
+    });
 
-  //     // Verificar se o plano Premium está presente
-  //     expect(screen.getByText("Premium")).toBeInTheDocument();
-  //   });
+    (getCurrentDayTasks as jest.Mock).mockResolvedValue(3);
 
-  // it('deve mostrar o badge "Ativo" quando o usuário tem um plano premium', async () => {
-  //   // Mock da função auth para retornar um userId válido
-  //   (auth as jest.Mock).mockResolvedValue({ userId: "123" });
+    await act(async () => {
+      render(
+        <ClerkProvider>
+          <SidebarProvider>{await SubscriptionPage()}</SidebarProvider>
+        </ClerkProvider>,
+      );
+    });
 
-  //   // Mock da função clerkClient para retornar um usuário com plano premium
-  //   (clerkClient as unknown as jest.Mock).mockReturnValue({
-  //     users: {
-  //       getUser: jest.fn().mockResolvedValue({
-  //         publicMetadata: { subscriptionPlan: "premium" },
-  //       }),
-  //     },
-  //   });
-
-  //   // Mock da função getCurrentDayTasks para retornar um número de tarefas
-  //   (getCurrentDayTasks as jest.Mock).mockResolvedValue(3);
-
-  //   render(
-  //     <ClerkProvider>
-  //       <SidebarProvider>
-  //         <SubscriptionPage />
-  //       </SidebarProvider>
-  //     </ClerkProvider>,
-  //   );
-
-  //   // Verificar se o badge "Ativo" está presente
-  //   expect(screen.getByText("Ativo")).toBeInTheDocument();
-  // });
+    expect(screen.getByText("Ativo")).toBeInTheDocument();
+  });
 });
