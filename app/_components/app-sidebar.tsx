@@ -29,7 +29,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent className="justify-between overflow-x-hidden">
         <div>
           <NavMain items={data.navMain} />
-          <Separator className="group-data-[collapsible=icon]:hidden" />
           <NavTasks />
         </div>
 

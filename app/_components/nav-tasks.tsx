@@ -1,39 +1,26 @@
 "use client";
 
-import {
-  ClockIcon,
-  FilePenLineIcon,
-  MoreHorizontal,
-  Trash2Icon,
-  ViewIcon,
-} from "lucide-react";
+import { ClockIcon, MoreHorizontal } from "lucide-react";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/app/_components/ui/dropdown-menu";
 import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/app/_components/ui/sidebar";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Tasks } from "@prisma/client";
 import { currentTasksSchedule } from "../_data-access/tasks/current-task-schedule";
+import Image from "next/image";
+import { TASK_CATEGORY_ICONS } from "../_constants/data_tasks";
+import { Separator } from "./ui/separator";
 
 const formatTime = (date: Date) =>
   `${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
 
 export function NavTasks() {
-  const { isMobile, setOpenMobile } = useSidebar();
   const [currentTasks, setCurrentTasks] = useState<Tasks[]>([]);
 
   useEffect(() => {
@@ -56,74 +43,52 @@ export function NavTasks() {
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel className="text-sm">
-        <span className="mr-auto">Tarefas de Hoje</span>
-        <div className="-mr-1.5 rounded-full bg-primary px-2 py-1 text-xs font-bold">
-          {currentTasks.length}
-        </div>
-      </SidebarGroupLabel>
+      {currentTasks.length > 0 && (
+        <>
+          <Separator className="group-data-[collapsible=icon]:hidden" />
 
-      <SidebarMenu>
-        {currentTasks.map((task) => (
-          <SidebarMenuItem key={task.id}>
-            <SidebarMenuButton
-              onClick={() => setOpenMobile(false)}
-              asChild
-              className="justify-between"
-            >
-              <div className="flex justify-between">
-                <div className="flex items-center gap-1.5">
-                  <FilePenLineIcon size={14} />
-                  <span className="w-28 truncate">{task.name}</span>
-                </div>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <ClockIcon size={12} />
-                  {formatTime(new Date(task.startTime))}
-                </div>
-              </div>
-            </SidebarMenuButton>
+          <SidebarGroupLabel className="mt-2 text-sm">
+            <span className="mr-auto">Tarefas de Hoje</span>
+            <div className="-mr-1.5 rounded-full bg-primary px-2 py-1 text-xs font-bold">
+              {currentTasks.length}
+            </div>
+          </SidebarGroupLabel>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuAction showOnHover>
-                  <MoreHorizontal />
-                </SidebarMenuAction>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-48 rounded-lg"
-                side={isMobile ? "bottom" : "right"}
-                align={isMobile ? "end" : "start"}
-              >
-                <DropdownMenuItem className="cursor-pointer">
-                  <ViewIcon className="text-muted-foreground" />
-                  <span>Vizualizar Tarefa</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
-                  <FilePenLineIcon className="text-muted-foreground" />
-                  <span>Editar Tarefa</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer bg-destructive/70 focus:bg-destructive">
-                  <Trash2Icon className="text-muted-foreground" />
-                  <span>Deletar Tarefa</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        ))}
-        <SidebarMenuItem>
-          <SidebarMenuButton
-            className="text-sidebar-foreground/70"
-            onClick={() => setOpenMobile(false)}
-            asChild
-          >
-            <Link href="/tasks">
-              <MoreHorizontal className="text-sidebar-foreground/70" />
-              <span>Ver Tarefas</span>
-            </Link>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-      </SidebarMenu>
+          <SidebarMenu>
+            {currentTasks.map((task) => (
+              <SidebarMenuItem key={task.id}>
+                <div className="flex justify-between px-2">
+                  <div className="flex items-center gap-1.5">
+                    <Image
+                      src={TASK_CATEGORY_ICONS[task.category]}
+                      alt="Ícone da Categoria da Tarefa"
+                      width={18}
+                      height={18}
+                    />
+                    <span className="w-28 truncate text-sm capitalize">
+                      {task.name}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <ClockIcon size={12} />
+                    {formatTime(new Date(task.startTime))}
+                  </div>
+                </div>
+              </SidebarMenuItem>
+            ))}
+
+            <SidebarMenuItem>
+              <SidebarMenuButton className="text-sidebar-foreground/70" asChild>
+                <Link href="/tasks">
+                  <MoreHorizontal className="text-sidebar-foreground/70" />
+                  <span>Ver Tarefas</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </>
+      )}
     </SidebarGroup>
   );
 }
