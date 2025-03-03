@@ -24,15 +24,16 @@ const TasksPageDataView = ({ tasks }: TasksPageDataViewProps) => {
   const [viewMode, setViewMode] = useState("cards");
 
   return (
-    <div className="w-full space-y-5">
+    <div className="w-full space-y-10">
       <div className="flex justify-end gap-3">
         <Select
           onValueChange={(value) => setViewMode(value)}
           defaultValue={viewMode}
         >
-          <SelectTrigger className="w-28 sm:w-32">
+          <SelectTrigger className="hidden w-28 sm:w-32 lg:flex">
             <SelectValue />
           </SelectTrigger>
+
           <SelectContent>
             <SelectItem value="cards">Quadro</SelectItem>
             <SelectItem value="table">Tabela</SelectItem>
@@ -50,7 +51,7 @@ const TasksPageDataView = ({ tasks }: TasksPageDataViewProps) => {
         )
       ) : (
         <div className="flex flex-1 flex-col items-center justify-center gap-10">
-          <div className="mr-auto max-w-3xl space-y-5 pl-16">
+          <div className="mr-auto max-w-3xl space-y-5 lg:pl-16">
             <div className="flex flex-wrap gap-2 lg:gap-4">
               <Badge className="w-fit rounded-full bg-transparent px-3 ring-2 ring-sky-700 hover:bg-transparent">
                 Gerencie
@@ -69,7 +70,7 @@ const TasksPageDataView = ({ tasks }: TasksPageDataViewProps) => {
             </h1>
           </div>
 
-          <div className="relative aspect-video size-1/2">
+          <div className="relative aspect-square size-1/2 lg:aspect-video">
             <Image
               alt="Imagem informando que não tem tarefas cadastradas"
               src="/checklist.svg"
