@@ -2,15 +2,15 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { useUser } from "@clerk/nextjs";
 import { loadStripe } from "@stripe/stripe-js";
-import { createStripeCheckout } from "../(dashboard)/subscription/_actions/create-stripe-checkout";
-import AcquirePlanButton from "../(dashboard)/subscription/_compoments/acquire-plan-button";
+import { createStripeCheckout } from "../../(dashboard)/subscription/_actions/create-stripe-checkout";
+import AcquirePlanButton from "../../(dashboard)/subscription/_components/acquire-plan-button";
 
 jest.mock("@clerk/nextjs", () => ({
   useUser: jest.fn(),
 }));
 
 jest.mock(
-  "../(dashboard)/subscription/_actions/create-stripe-checkout",
+  "../../(dashboard)/subscription/_actions/create-stripe-checkout",
   () => ({
     createStripeCheckout: jest.fn(),
   }),

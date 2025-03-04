@@ -1,10 +1,10 @@
 import "@testing-library/jest-dom";
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import SubscriptionPage from "../(dashboard)/subscription/page";
+import SubscriptionPage from "../../(dashboard)/subscription/page";
 import { redirect } from "next/navigation";
 import { act, render, screen } from "@testing-library/react";
-import { getCurrentDayTasks } from "../_data-access/get-current-day-tasks";
-import { SidebarProvider } from "../_components/ui/sidebar";
+import { getCurrentDayTasks } from "../../_data-access/get-current-day-tasks";
+import { SidebarProvider } from "../../_components/ui/sidebar";
 import { ClerkProvider } from "@clerk/nextjs";
 
 jest.mock("@clerk/nextjs/server", () => ({
@@ -12,7 +12,7 @@ jest.mock("@clerk/nextjs/server", () => ({
   clerkClient: jest.fn(),
 }));
 
-jest.mock("../_data-access/get-current-day-tasks", () => ({
+jest.mock("../../_data-access/get-current-day-tasks", () => ({
   getCurrentDayTasks: jest.fn(),
 }));
 
@@ -47,9 +47,7 @@ describe("SubscriptionPage", () => {
   it("deve redirecionar para a página inicial se o usuário não estiver autenticado", async () => {
     (auth as jest.Mock).mockResolvedValue({ userId: null });
 
-    await act(async () => {
-      render(await SubscriptionPage());
-    });
+    await SubscriptionPage();
 
     expect(redirect).toHaveBeenCalledWith("/");
   });
