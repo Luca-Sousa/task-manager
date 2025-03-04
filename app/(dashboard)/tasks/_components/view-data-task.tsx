@@ -402,7 +402,7 @@ const ViewDataTask = ({ task }: ViewDataTaskProps) => {
             <div className="space-y-2 py-3">
               <div className="sm:gap-0r flex items-center gap-2.5 sm:grid sm:grid-cols-[2.5rem,1fr]">
                 <AlignLeftIcon size={20} />
-                <div className="flex min-h-9 items-center justify-between">
+                <div className="flex min-h-9 w-full items-center justify-between">
                   <h2 className="text-lg font-bold text-muted-foreground">
                     Descrição
                   </h2>

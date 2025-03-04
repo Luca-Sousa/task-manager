@@ -11,7 +11,7 @@ import { Separator } from "@/app/_components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/app/_components/ui/sidebar";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import FAQContent from "./components/faq-content";
+import FAQContent from "./_components/faq-content";
 
 const Faq = async () => {
   const { userId } = await auth();

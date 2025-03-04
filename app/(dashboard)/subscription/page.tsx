@@ -18,7 +18,7 @@ import { SidebarInset, SidebarTrigger } from "@/app/_components/ui/sidebar";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { CheckIcon, CrownIcon } from "lucide-react";
 import { redirect } from "next/navigation";
-import AcquirePlanButton from "./_compoments/acquire-plan-button";
+import AcquirePlanButton from "./_components/acquire-plan-button";
 import { Badge } from "@/app/_components/ui/badge";
 import { getCurrentDayTasks } from "@/app/_data-access/get-current-day-tasks";
 

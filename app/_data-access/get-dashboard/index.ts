@@ -83,13 +83,13 @@ export const getDashboard = async ({
   });
 
   return {
-    notStartedTotal,
-    inProgressTotal,
-    completedTotal,
-    unrealizedTotal,
-    tasksTotal,
-    percentageOfTasksCompleted,
-    TotalTasksPerCategory,
-    lastTasks,
+    notStartedTotal: notStartedTotal || 0,
+    inProgressTotal: inProgressTotal || 0,
+    completedTotal: completedTotal || 0,
+    unrealizedTotal: unrealizedTotal || 0,
+    tasksTotal: tasksTotal || 0,
+    percentageOfTasksCompleted: percentageOfTasksCompleted || 0,
+    TotalTasksPerCategory: TotalTasksPerCategory || [],
+    lastTasks: lastTasks || [],
   };
 };

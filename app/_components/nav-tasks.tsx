@@ -65,7 +65,7 @@ export function NavTasks() {
                       width={18}
                       height={18}
                     />
-                    <span className="w-28 truncate text-sm capitalize">
+                    <span className="w-32 truncate text-sm capitalize">
                       {task.name}
                     </span>
                   </div>

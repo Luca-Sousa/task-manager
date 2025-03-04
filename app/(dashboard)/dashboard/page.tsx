@@ -13,17 +13,16 @@ import {
 import { isMatch } from "date-fns";
 import { getDashboard } from "@/app/_data-access/get-dashboard";
 import TimeSelect from "@/app/_components/time-select";
-import SummaryCards from "../components/summary-cards";
-import TasksPieChart from "../components/tasks-pie-chart";
-import TasksPerCategory from "../components/tasks-per-category";
-import LastTasks from "../components/last-tasks";
+import SummaryCards from "./_components/summary-cards";
+import TasksPieChart from "./_components/tasks-pie-chart";
+import TasksPerCategory from "./_components/tasks-per-category";
+import LastTasks from "./_components/last-tasks";
 
 interface DashboardProps {
   searchParams: {
     year: string;
     month: string;
     day?: string;
-    week?: string;
   };
 }
 
@@ -51,7 +50,7 @@ const Dashboard = async ({
         ? `?year=${now.getFullYear()}&month=${now.getMonth() + 1}&day=${now.getDate()}`
         : month
           ? `?year=${now.getFullYear()}&month=${now.getMonth() + 1}`
-          : `?year=${now.getFullYear()}`; // Redireciona para o ano atual, se apenas o ano for passado
+          : `?year=${now.getFullYear()}`;
 
       return redirect(queryParams);
     }
@@ -60,7 +59,7 @@ const Dashboard = async ({
       ? new Date(Number(year), Number(month) - 1, Number(day))
       : month
         ? new Date(Number(year), Number(month) - 1, 1)
-        : new Date(Number(year), 0, 1); // Início do ano, se apenas o ano for passado
+        : new Date(Number(year), 0, 1);
   } else {
     const dateIsInvalid =
       !year ||

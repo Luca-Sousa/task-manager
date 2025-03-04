@@ -51,7 +51,7 @@ const TasksPageDataView = ({ tasks }: TasksPageDataViewProps) => {
         )
       ) : (
         <div className="flex flex-1 flex-col items-center justify-center gap-10">
-          <div className="mr-auto max-w-3xl space-y-5 lg:pl-16">
+          <div className="mr-auto max-w-3xl space-y-5 lg:pl-6 xl:pl-16">
             <div className="flex flex-wrap gap-2 lg:gap-4">
               <Badge className="w-fit rounded-full bg-transparent px-3 ring-2 ring-sky-700 hover:bg-transparent">
                 Gerencie
