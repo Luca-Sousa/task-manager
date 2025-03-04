@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import LoginPage from "../(login)/page";
+import LoginPage from "../../(login)/page";
 
 describe("LoginPage", () => {
   it("deve renderizar a imagem do banner corretamente", () => {
