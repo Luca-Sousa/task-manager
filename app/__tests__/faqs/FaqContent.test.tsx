@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { faqs_category } from "@/app/_constants/data-faqs";
-import FAQContent from "../(dashboard)/faq/components/faq-content";
+import FAQContent from "../../(dashboard)/faq/_components/faq-content";
 
 describe("FAQContent", () => {
   it("deve renderizar os botões de categoria corretamente", () => {

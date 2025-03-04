@@ -2,8 +2,8 @@ import { render, screen, act } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
-import Faq from "../(dashboard)/faq/page";
-import { SidebarProvider } from "../_components/ui/sidebar";
+import Faq from "../../(dashboard)/faq/page";
+import { SidebarProvider } from "../../_components/ui/sidebar";
 
 jest.mock("@clerk/nextjs/server", () => ({
   auth: jest.fn(),
