@@ -91,15 +91,15 @@ const SubscriptionPage = async () => {
                 </li>
                 <li className="flex gap-x-3">
                   <CheckIcon className="stroke-primary" />
-                  Up to 10,000 subscribers
+                  Acesso à Dashboard
                 </li>
                 <li className="flex gap-x-3">
                   <CheckIcon className="stroke-primary" />
-                  Advanced analytics
+                  Filtro básico por dia
                 </li>
                 <li className="flex gap-x-3">
                   <CheckIcon className="stroke-primary" />
-                  24-hour support response time
+                  Criação e edição de tarefas
                 </li>
               </ul>
             </div>
@@ -136,19 +136,19 @@ const SubscriptionPage = async () => {
                 </li>
                 <li className="flex gap-x-3">
                   <CheckIcon className="stroke-primary" />
-                  Unlimited subscribers
+                  Filtros avançados
                 </li>
                 <li className="flex gap-x-3">
                   <CheckIcon className="stroke-primary" />
-                  Advanced analytics
+                  Notificações e lembretes personalizados
                 </li>
                 <li className="flex gap-x-3">
                   <CheckIcon className="stroke-primary" />
-                  Marketing automations
+                  Acesso ao histórico de tarefas e relatórios
                 </li>
                 <li className="flex gap-x-3">
                   <CheckIcon className="stroke-primary" />
-                  Custom integrations
+                  Gráficos analíticos na Dashboard
                 </li>
               </ul>
 
