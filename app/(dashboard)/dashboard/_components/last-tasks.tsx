@@ -12,7 +12,7 @@ import {
   TASK_CATEGORY_LABELS,
 } from "@/app/_constants/data_tasks";
 import { Tasks } from "@prisma/client";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ClockIcon } from "lucide-react";
 import Image from "next/image";
@@ -34,59 +34,72 @@ const LastTasks = ({ lastTasks }: LastTasksProps) => {
 
       <Separator className="mb-6" />
 
-      <ScrollArea>
-        <CardContent className="space-y-6">
-          {lastTasks.map((task) => (
-            <div key={task.id} className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="rounded-lg bg-white/[5%] p-3">
-                  <Image
-                    priority
-                    src={TASK_CATEGORY_ICONS[task.category]}
-                    alt="PIX"
-                    width={24}
-                    height={24}
-                  />
+      {lastTasks.length > 0 ? (
+        <ScrollArea>
+          <CardContent className="space-y-6">
+            {lastTasks.map((task) => (
+              <div key={task.id} className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-lg bg-white/[5%] p-3">
+                    <Image
+                      priority
+                      src={TASK_CATEGORY_ICONS[task.category]}
+                      alt="PIX"
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+
+                  <div>
+                    <h4 className="max-w-40 truncate">{task.name}</h4>
+                    <p className="flex text-xs text-muted-foreground">
+                      {TASK_CATEGORY_LABELS[task.category]}
+                    </p>
+                  </div>
                 </div>
 
                 <div>
-                  <h4 className="max-w-40 truncate">{task.name}</h4>
-                  <p className="flex text-xs text-muted-foreground">
-                    {TASK_CATEGORY_LABELS[task.category]}
-                  </p>
+                  <div className="flex items-center gap-1.5 text-sm/relaxed">
+                    {format(task.startTime, "PPP", {
+                      locale: ptBR,
+                    })}
+                  </div>
+
+                  <div className="flex items-center justify-end gap-1.5 text-xs/relaxed">
+                    <ClockIcon size={12} />
+                    {format(task.startTime.getTime(), "HH:mm", {
+                      locale: ptBR,
+                    })}
+                    {" - "}
+                    {format(task.endTime.getTime(), "HH:mm", {
+                      locale: ptBR,
+                    })}
+                  </div>
                 </div>
               </div>
+            ))}
+          </CardContent>
+        </ScrollArea>
+      ) : (
+        <div className="flex h-full flex-col items-center justify-center gap-5 px-20 pb-6 sm:px-40 md:px-32 lg:px-48 xl:px-96 2xl:px-20">
+          <p className="text-center text-lg font-semibold md:text-xl">
+            Sem dados das últimas tarefas cadastradas, com crie novas tarefas
+            <br />
+            <span className="texy-xl font-bold text-primary md:text-2xl">
+              HOJE MESMO!
+            </span>
+          </p>
 
-              <div>
-                <div className="flex items-center gap-1.5 text-sm/relaxed">
-                  {format(task.startTime, "PPP", {
-                    locale: ptBR,
-                  })}
-                </div>
-
-                <div className="flex items-center justify-end gap-1.5 text-xs/relaxed">
-                  <ClockIcon size={12} />
-                  {format(
-                    task.startTime instanceof Date
-                      ? task.startTime
-                      : parseISO(task.startTime),
-                    "HH:mm", // Apenas o horário
-                    { locale: ptBR },
-                  )}
-                  &nbsp;-&nbsp;
-                  {format(
-                    task.endTime instanceof Date
-                      ? task.endTime
-                      : parseISO(task.endTime),
-                    "HH:mm", // Apenas o horário
-                    { locale: ptBR },
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </CardContent>
-      </ScrollArea>
+          <div className="relative aspect-square w-full">
+            <Image
+              src="/undraw_no-data_ig65.svg"
+              alt="Imagem referente as últimas tarefas cadastradas"
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
+      )}
     </Card>
   );
 };
