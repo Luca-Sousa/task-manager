@@ -23,6 +23,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ScrollArea } from "@/app/_components/ui/scroll-area";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 
 interface TasksPieChartProps {
   dateFilter: Date;
@@ -85,6 +86,11 @@ const TasksPieChart = ({
     },
   ];
 
+  const params = useSearchParams();
+  const day = params.get("day");
+  const month = params.get("month");
+  const year = params.get("year");
+
   return (
     <Card className="flex h-full flex-col justify-between bg-muted/20 hover:bg-muted/30">
       <CardHeader className="items-center pb-0">
@@ -92,7 +98,23 @@ const TasksPieChart = ({
           Gráfico de Desempenho
         </CardTitle>
         <CardDescription>
-          {format(dateFilter, "PPP", { locale: ptBR })}
+          {tasksTotal > 0 && year && month && day && (
+            <div>
+              Dados do dia{" "}
+              {format(dateFilter, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+            </div>
+          )}
+          {tasksTotal > 0 && year && month && !day && (
+            <div>
+              Dados do mês de{" "}
+              {format(dateFilter, "MMMM 'de' yyyy", { locale: ptBR })}
+            </div>
+          )}
+          {tasksTotal > 0 && year && !month && !day && (
+            <div>
+              Dados do ano {format(dateFilter, "yyyy", { locale: ptBR })}
+            </div>
+          )}
         </CardDescription>
       </CardHeader>
 
