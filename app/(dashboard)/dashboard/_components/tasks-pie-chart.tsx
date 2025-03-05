@@ -22,6 +22,7 @@ import { TasksStatus } from "@prisma/client";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ScrollArea } from "@/app/_components/ui/scroll-area";
+import Image from "next/image";
 
 interface TasksPieChartProps {
   dateFilter: Date;
@@ -95,107 +96,126 @@ const TasksPieChart = ({
         </CardDescription>
       </CardHeader>
 
-      <ScrollArea>
-        <CardContent className="h-full flex-1 pb-0">
-          <ChartContainer
-            config={chartConfig}
-            className="mx-auto aspect-square max-h-[250px]"
-          >
-            <PieChart>
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
-              />
-              <Pie
-                data={chartData}
-                dataKey="value"
-                nameKey="type"
-                innerRadius={70}
-                strokeWidth={5}
-              >
-                <Label
-                  content={({ viewBox }) => {
-                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                      return (
-                        <text
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
-                        >
-                          <tspan
+      {tasksTotal > 0 ? (
+        <ScrollArea>
+          <CardContent className="h-full flex-1 pb-0">
+            <ChartContainer
+              config={chartConfig}
+              className="mx-auto aspect-square max-h-[250px]"
+            >
+              <PieChart>
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent hideLabel />}
+                />
+                <Pie
+                  data={chartData}
+                  dataKey="value"
+                  nameKey="type"
+                  innerRadius={70}
+                  strokeWidth={5}
+                >
+                  <Label
+                    content={({ viewBox }) => {
+                      if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                        return (
+                          <text
                             x={viewBox.cx}
                             y={viewBox.cy}
-                            className="fill-foreground text-3xl font-bold"
+                            textAnchor="middle"
+                            dominantBaseline="middle"
                           >
-                            {tasksTotal}
-                          </tspan>
-                          <tspan
-                            x={viewBox.cx}
-                            y={(viewBox.cy || 0) + 24}
-                            className="fill-muted-foreground"
-                          >
-                            Tarefas
-                          </tspan>
-                        </text>
-                      );
-                    }
-                  }}
+                            <tspan
+                              x={viewBox.cx}
+                              y={viewBox.cy}
+                              className="fill-foreground text-3xl font-bold"
+                            >
+                              {tasksTotal}
+                            </tspan>
+                            <tspan
+                              x={viewBox.cx}
+                              y={(viewBox.cy || 0) + 24}
+                              className="fill-muted-foreground"
+                            >
+                              Tarefas
+                            </tspan>
+                          </text>
+                        );
+                      }
+                    }}
+                  />
+                </Pie>
+              </PieChart>
+            </ChartContainer>
+
+            <div className="my-12 flex w-full flex-wrap items-center justify-center gap-3">
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <SquareIcon className="fill-chart-1 stroke-chart-1" size={16} />
+                <span>Não Iniciado</span>
+              </div>
+
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <SquareIcon className="fill-chart-3 stroke-chart-3" size={16} />
+                <span>Em Andamento</span>
+              </div>
+
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <SquareIcon className="fill-chart-2 stroke-chart-2" size={16} />
+                <span>Concluído</span>
+              </div>
+
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <SquareIcon className="fill-chart-5 stroke-chart-5" size={16} />
+                <span>Não Realizado</span>
+              </div>
+            </div>
+          </CardContent>
+
+          <CardFooter className="mt-auto flex-col gap-2 pt-6 text-sm 2xl:pt-0">
+            <div className="flex items-center gap-2 font-medium leading-none">
+              <div>
+                Tarefas Concluídas:{" "}
+                <span
+                  className={`${percentageOfTasksCompleted > 50 ? "text-chart-2" : "text-chart-5"}`}
+                >
+                  {percentageOfTasksCompleted}%
+                </span>
+              </div>
+              {percentageOfTasksCompleted > 50 ? (
+                <TrendingUpIcon
+                  className={`${percentageOfTasksCompleted > 50 ? "text-chart-2" : "text-chart-5"} size-4`}
                 />
-              </Pie>
-            </PieChart>
-          </ChartContainer>
-
-          <div className="my-12 flex w-full flex-wrap items-center justify-center gap-3">
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <SquareIcon className="fill-chart-1 stroke-chart-1" size={16} />
-              <span>Não Iniciado</span>
+              ) : (
+                <TrendingDownIcon
+                  className={`${percentageOfTasksCompleted > 50 ? "text-chart-2" : "text-chart-5"} size-4`}
+                />
+              )}
             </div>
-
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <SquareIcon className="fill-chart-3 stroke-chart-3" size={16} />
-              <span>Em Andamento</span>
+            <div className="leading-none text-muted-foreground">
+              {percentageOfTasksCompleted > 50
+                ? "Desempenho Ótimo"
+                : "Desempenho Ruim"}
             </div>
+          </CardFooter>
+        </ScrollArea>
+      ) : (
+        <div className="flex h-full flex-col items-center justify-between gap-5 pt-5">
+          <p className="max-w-xs text-center text-base font-semibold text-muted-foreground sm:text-lg xl:max-w-sm 2xl:max-w-[16rem]">
+            Sem dados para o gráfico, crie novas tarefas
+            <br />
+            <span className="texy-xl font-bold text-primary">HOJE MESMO!</span>
+          </p>
 
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <SquareIcon className="fill-chart-2 stroke-chart-2" size={16} />
-              <span>Concluído</span>
-            </div>
-
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <SquareIcon className="fill-chart-5 stroke-chart-5" size={16} />
-              <span>Não Realizado</span>
-            </div>
+          <div className="relative aspect-video w-full max-w-lg 2xl:aspect-square 2xl:max-w-xs">
+            <Image
+              src="/undraw_analytics.svg"
+              alt="Imagem referente a de quantidade de tarefas por categoria"
+              fill
+              className="object-contain 2xl:object-bottom"
+            />
           </div>
-        </CardContent>
-
-        <CardFooter className="mt-auto flex-col gap-2 pt-6 text-sm 2xl:pt-0">
-          <div className="flex items-center gap-2 font-medium leading-none">
-            <div>
-              Tarefas Concluídas:{" "}
-              <span
-                className={`${percentageOfTasksCompleted > 50 ? "text-chart-2" : "text-chart-5"}`}
-              >
-                {percentageOfTasksCompleted}%
-              </span>
-            </div>
-            {percentageOfTasksCompleted > 50 ? (
-              <TrendingUpIcon
-                className={`${percentageOfTasksCompleted > 50 ? "text-chart-2" : "text-chart-5"} size-4`}
-              />
-            ) : (
-              <TrendingDownIcon
-                className={`${percentageOfTasksCompleted > 50 ? "text-chart-2" : "text-chart-5"} size-4`}
-              />
-            )}
-          </div>
-          <div className="leading-none text-muted-foreground">
-            {percentageOfTasksCompleted > 50
-              ? "Desempenho Ótimo"
-              : "Desempenho Ruim"}
-          </div>
-        </CardFooter>
-      </ScrollArea>
+        </div>
+      )}
     </Card>
   );
 };
