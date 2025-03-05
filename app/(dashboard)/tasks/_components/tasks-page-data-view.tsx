@@ -52,7 +52,7 @@ const TasksPageDataView = ({ tasks }: TasksPageDataViewProps) => {
           <DataTable data={tasks} columns={tasksColumns} />
         )
       ) : (
-        <div className="flex flex-1 flex-col items-center justify-center gap-10">
+        <div className="flex h-full flex-1 flex-col items-center justify-between">
           <div className="mr-auto max-w-3xl space-y-5 lg:pl-6 xl:pl-16">
             <div className="flex flex-wrap gap-2 lg:gap-4">
               <Badge className="w-fit rounded-full bg-transparent px-3 ring-2 ring-sky-700 hover:bg-transparent">
@@ -72,10 +72,10 @@ const TasksPageDataView = ({ tasks }: TasksPageDataViewProps) => {
             </h1>
           </div>
 
-          <div className="relative aspect-square size-1/2 lg:aspect-video">
+          <div className="relative aspect-square w-full max-w-xs sm:max-w-md lg:aspect-video lg:max-w-lg xl:max-w-xl">
             <Image
               alt="Imagem informando que não tem tarefas cadastradas"
-              src="/checklist.svg"
+              src="/undraw_add_tasks.svg"
               fill
               className="object-contain"
             />
