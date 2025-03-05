@@ -81,18 +81,18 @@ const LastTasks = ({ lastTasks }: LastTasksProps) => {
           </CardContent>
         </ScrollArea>
       ) : (
-        <div className="flex h-full flex-col items-center justify-center gap-5 px-20 pb-6 sm:px-40 md:px-32 lg:px-48 xl:px-96 2xl:px-20">
-          <p className="text-center text-lg font-semibold md:text-xl">
-            Sem dados das últimas tarefas cadastradas, com crie novas tarefas
+        <div className="flex h-full flex-col items-center justify-center gap-5 pb-6">
+          <p className="max-w-xs text-center text-lg font-semibold text-muted-foreground sm:max-w-sm md:text-xl lg:max-w-md 2xl:max-w-xs">
+            Sem dados das últimas tarefas cadastradas, crie novas tarefas
             <br />
-            <span className="texy-xl font-bold text-primary md:text-2xl">
+            <span className="text-xl font-bold text-primary md:text-2xl">
               HOJE MESMO!
             </span>
           </p>
 
-          <div className="relative aspect-square w-full">
+          <div className="relative aspect-square w-full max-w-xs">
             <Image
-              src="/undraw_no-data_ig65.svg"
+              src="/undraw_no_data.svg"
               alt="Imagem referente as últimas tarefas cadastradas"
               fill
               className="object-contain"
