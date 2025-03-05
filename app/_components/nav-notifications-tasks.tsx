@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { MessageCircleIcon } from "lucide-react";
+import { ExternalLinkIcon, MessageCircleIcon } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -122,12 +122,12 @@ const NavNotificationsTasks = () => {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
-            className="flex h-[600px] w-[--radix-dropdown-menu-trigger-width] min-w-[430px] flex-col overflow-hidden rounded-lg"
+            className="flex h-[450px] w-[--radix-dropdown-menu-trigger-width] min-w-[380px] flex-col overflow-hidden rounded-lg sm:min-w-[430px] md:h-[600px]"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
           >
-            <DropdownMenuLabel className="h-full flex-col overflow-hidden p-4 pb-16">
+            <DropdownMenuLabel className="h-full flex-col overflow-hidden p-2 pb-16">
               <h1 className="text-lg font-bold">Notificações</h1>
               <DropdownMenuSeparator className="my-5" />
 
@@ -157,10 +157,10 @@ const NavNotificationsTasks = () => {
                           </div>
 
                           <CardHeader className="p-3">
-                            <CardTitle className="w-44 truncate">
+                            <CardTitle className="w-44 truncate text-xs sm:text-base">
                               Tarefa: {notification.taskName}
                             </CardTitle>
-                            <CardDescription>
+                            <CardDescription className="text-xs sm:text-sm">
                               {notification.taskStartTime.getTime() <
                               new Date().getTime() ? (
                                 "tarefa fora do horário de início"
@@ -191,7 +191,7 @@ const NavNotificationsTasks = () => {
                             asChild
                           >
                             <Link href={"/tasks"} passHref>
-                              Ver Tarefa
+                              <ExternalLinkIcon size={16} />
                             </Link>
                           </Button>
                         </CardContent>

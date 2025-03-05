@@ -1,10 +1,11 @@
 import {
-  CircleHelpIcon,
+  ChartGanttIcon,
   Frame,
   LayoutDashboardIcon,
+  ListTodoIcon,
   Map,
   PieChart,
-  SignatureIcon,
+  TableOfContentsIcon,
 } from "lucide-react";
 
 export const data = {
@@ -18,18 +19,17 @@ export const data = {
     {
       title: "Tarefas",
       url: "/tasks",
-      icon: CircleHelpIcon,
+      icon: ListTodoIcon,
     },
     {
       title: "Assinatura",
       url: "/subscription",
-      icon: SignatureIcon,
-
+      icon: ChartGanttIcon,
     },
     {
       title: "FAQs",
       url: "/faq",
-      icon: CircleHelpIcon,
+      icon: TableOfContentsIcon,
     },
   ],
 
