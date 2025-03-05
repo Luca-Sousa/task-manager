@@ -14,16 +14,33 @@ datasource db {
 }
 
 model Tasks {
-  id          String        @id @default(uuid())
-  name        String
-  description String
-  status      TasksStatus
-  category    TasksCategory
-  startTime   DateTime
-  endTime     DateTime
-  userId      String
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id            String          @id @default(uuid())
+  name          String
+  description   String
+  status        TasksStatus
+  category      TasksCategory
+  startTime     DateTime
+  endTime       DateTime
+  userId        String
+  notifications Notifications[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Notifications {
+  id        String              @id @default(uuid())
+  taskId    String              @unique
+  task      Tasks               @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  status    NotificationsStatus @default(UNREAD)
+  userId    String
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+}
+
+enum NotificationsStatus {
+  UNREAD // Notificação não lida
+  READ // Notificação lida pelo usuário
+  ARCHIVED // Notificação arquivada
 }
 
 enum TasksStatus {

@@ -1,13 +1,13 @@
 "use server";
 
 import { db } from "@/app/_lib/prisma";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { TasksCategory, TasksStatus } from "@prisma/client";
 import { createTasksSchema } from "./schema";
+import { createNotification } from "../../notifications/create-notification";
 
 interface createTasksProps {
-  id?: string;
   name: string;
   description: string;
   status: TasksStatus;
@@ -22,9 +22,16 @@ export const createTasks = async (data: createTasksProps) => {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  await db.tasks.create({
+  const user = await clerkClient().users.getUser(userId);
+  const hasPremiumPlan = user.publicMetadata.subscriptionPlan === "premium";
+
+  const task = await db.tasks.create({
     data: { ...data, userId },
   });
+
+  if (hasPremiumPlan) {
+    await createNotification(task.id);
+  }
 
   revalidatePath("/tasks");
 };

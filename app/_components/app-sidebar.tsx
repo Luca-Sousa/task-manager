@@ -18,22 +18,26 @@ import { data } from "../_constants/data_sidebar";
 import { Separator } from "./ui/separator";
 import CurrentTime from "./nav-current-time";
 import NavNotificationsTasks from "./nav-notifications-tasks";
+import { useUser } from "@clerk/nextjs";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user } = useUser();
+  const hasPremiumPlan = user?.publicMetadata.subscriptionPlan === "premium";
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="pt-5">
         <Logo />
       </SidebarHeader>
 
-      <SidebarContent className="justify-between overflow-x-hidden">
-        <div>
+      <SidebarContent className="flex h-full flex-col justify-between overflow-hidden">
+        <div className="flex h-full flex-col overflow-hidden">
           <NavMain items={data.navMain} />
           <NavTasks />
         </div>
 
         <div>
-          <NavNotificationsTasks />
+          {hasPremiumPlan && <NavNotificationsTasks />}
           <CurrentTime />
         </div>
       </SidebarContent>
