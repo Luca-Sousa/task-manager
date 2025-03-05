@@ -16,6 +16,7 @@ import { currentTasksSchedule } from "../_data-access/tasks/current-task-schedul
 import Image from "next/image";
 import { TASK_CATEGORY_ICONS } from "../_constants/data_tasks";
 import { Separator } from "./ui/separator";
+import { ScrollArea } from "./ui/scroll-area";
 
 const formatTime = (date: Date) =>
   `${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
@@ -44,7 +45,7 @@ export function NavTasks() {
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       {currentTasks.length > 0 && (
-        <>
+        <div className="flex max-h-[300px] flex-col overflow-hidden lg:max-h-[450px]">
           <Separator className="group-data-[collapsible=icon]:hidden" />
 
           <SidebarGroupLabel className="mt-2 text-sm">
@@ -54,29 +55,33 @@ export function NavTasks() {
             </div>
           </SidebarGroupLabel>
 
-          <SidebarMenu className="mt-2 gap-2">
-            {currentTasks.map((task) => (
-              <SidebarMenuItem key={task.id}>
-                <div className="flex justify-between px-2">
-                  <div className="flex items-center gap-1.5">
-                    <Image
-                      src={TASK_CATEGORY_ICONS[task.category]}
-                      alt="Ícone da Categoria da Tarefa"
-                      width={18}
-                      height={18}
-                    />
-                    <span className="w-32 truncate text-sm capitalize">
-                      {task.name}
-                    </span>
-                  </div>
+          <SidebarMenu className="mt-2 h-full flex-col gap-2 overflow-hidden">
+            <ScrollArea className="h-full">
+              <div className="space-y-3 pr-2.5">
+                {currentTasks.map((task) => (
+                  <SidebarMenuItem key={task.id}>
+                    <div className="flex justify-between px-2">
+                      <div className="flex items-center gap-1.5">
+                        <Image
+                          src={TASK_CATEGORY_ICONS[task.category]}
+                          alt="Ícone da Categoria da Tarefa"
+                          width={18}
+                          height={18}
+                        />
+                        <span className="w-32 truncate text-sm capitalize">
+                          {task.name}
+                        </span>
+                      </div>
 
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <ClockIcon size={12} />
-                    {formatTime(new Date(task.startTime))}
-                  </div>
-                </div>
-              </SidebarMenuItem>
-            ))}
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <ClockIcon size={12} />
+                        {formatTime(new Date(task.startTime))}
+                      </div>
+                    </div>
+                  </SidebarMenuItem>
+                ))}
+              </div>
+            </ScrollArea>
 
             <SidebarMenuItem>
               <SidebarMenuButton className="text-sidebar-foreground/70" asChild>
@@ -87,7 +92,7 @@ export function NavTasks() {
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
-        </>
+        </div>
       )}
     </SidebarGroup>
   );

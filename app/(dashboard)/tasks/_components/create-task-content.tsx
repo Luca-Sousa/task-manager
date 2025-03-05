@@ -69,7 +69,6 @@ const CreateTaskDialogContent = ({
       await createTasks({
         ...data,
         status: TasksStatus.NOT_STARTED,
-        id: taskId,
       });
 
       onSuccess?.();
@@ -78,7 +77,7 @@ const CreateTaskDialogContent = ({
         {
           description: format(
             new Date(),
-            "EEEE, dd 'de' MMMM , yyyy 'at' h:mm a",
+            "EEEE, dd 'de' MMMM , yyyy 'às' h:mm a",
             {
               locale: ptBR,
             },
