@@ -136,7 +136,7 @@ const DataItemsTasks = ({ tasks }: DataItemsTasksProps) => {
           ([period, tasks]) =>
             tasks.length > 0 && (
               <div key={period} className="flex flex-col gap-3">
-                <div className="flex items-center gap-1.5 font-bold">
+                <div className="flex items-center gap-1.5 text-xl font-bold">
                   {period === "manhã" && <SunIcon size={12} />}
                   {period === "tarde" && <SunMoonIcon size={12} />}
                   {period === "noite" && <MoonIcon size={12} />}

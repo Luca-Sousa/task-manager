@@ -26,19 +26,21 @@ const TasksPageDataView = ({ tasks }: TasksPageDataViewProps) => {
   return (
     <div className="w-full space-y-10">
       <div className="flex justify-end gap-3">
-        <Select
-          onValueChange={(value) => setViewMode(value)}
-          defaultValue={viewMode}
-        >
-          <SelectTrigger className="hidden w-28 sm:w-32 lg:flex">
-            <SelectValue />
-          </SelectTrigger>
+        {tasks.length > 0 && (
+          <Select
+            onValueChange={(value) => setViewMode(value)}
+            defaultValue={viewMode}
+          >
+            <SelectTrigger className="hidden w-28 sm:w-32 lg:flex">
+              <SelectValue />
+            </SelectTrigger>
 
-          <SelectContent>
-            <SelectItem value="cards">Quadro</SelectItem>
-            <SelectItem value="table">Tabela</SelectItem>
-          </SelectContent>
-        </Select>
+            <SelectContent>
+              <SelectItem value="cards">Quadro</SelectItem>
+              <SelectItem value="table">Tabela</SelectItem>
+            </SelectContent>
+          </Select>
+        )}
 
         <TimeSelect path="tasks" />
       </div>

@@ -40,7 +40,7 @@ const DeleteTaskButton = ({ taskId, status }: DeleteTaskButtonProps) => {
         </Button>
       </AlertDialogTrigger>
 
-      <AlertDialogContent>
+      <AlertDialogContent className="max-w-xs sm:max-w-sm md:max-w-lg">
         <AlertDialogHeader>
           <AlertDialogTitle>
             Você tem certeza que deseja deletar a tarefa?
